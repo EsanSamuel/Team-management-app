@@ -1,0 +1,212 @@
+"use server";
+import { getUser } from "./user.service";
+import prisma from "../prismadb";
+import { Project, Task, User } from "../generated/prisma";
+
+export const createTask = async ({
+  title,
+  description,
+  Status,
+  priority,
+  Duedate,
+  assignedTo,
+  projectId,
+  workspaceId,
+}: {
+  title: string;
+  description: string;
+  Status: string;
+  projectId: string;
+  priority: string;
+  Duedate: string;
+  assignedTo: string;
+  workspaceId: any;
+}) => {
+  try {
+    const user = await getUser();
+
+    if (!user?.id) {
+      console.error("User is undefined in create_workspace");
+      return;
+    }
+
+    const task = await prisma.task.create({
+      data: {
+        title,
+        description,
+        Status,
+        priority,
+        Duedate,
+        assignee: {
+          connect: {
+            id: assignedTo,
+          },
+        },
+        project: {
+          connect: {
+            id: projectId,
+          },
+        },
+        creator: {
+          connect: {
+            id: user?.id,
+          },
+        },
+        workspace: {
+          connect: {
+            id: workspaceId,
+          },
+        },
+      },
+    });
+    console.log(task);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getTasks = async (
+  projectId: string
+): Promise<(Task & { assignee: User } & { project: Project })[]> => {
+  const user = await getUser();
+
+  if (!user?.id) {
+    console.error("User is undefined in create_workspace");
+    return [];
+  }
+  try {
+    const tasks = await prisma.task.findMany({
+      where: {
+        projectId: projectId,
+      },
+      include: {
+        assignee: true,
+        project: true,
+        workspace: true,
+      },
+    });
+    console.log("Tasks:", tasks);
+    return tasks;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+
+export const getTask = async (
+  taskId: string
+): Promise<(Task & { assignee: User } & { project: Project }) | undefined> => {
+  const user = await getUser();
+
+  if (!user?.id) {
+    console.error("User is undefined in create_workspace");
+    return;
+  }
+  try {
+    const task = await prisma.task.findUnique({
+      where: {
+        id: taskId,
+      },
+      include: {
+        assignee: true,
+        project: true,
+        workspace: true,
+      },
+    });
+    console.log("Tasks:", task);
+    return task ?? undefined;
+  } catch (error) {
+    console.log(error);
+    return undefined;
+  }
+};
+
+export const getAllTasksInWorkspace = async (
+  workspaceId: string
+): Promise<(Task & { assignee: User } & { project: Project })[]> => {
+  const user = await getUser();
+
+  if (!user?.id) {
+    console.error("User is undefined in create_workspace");
+    return [];
+  }
+  try {
+    const tasks = await prisma.task.findMany({
+      where: {
+        workspaceId: workspaceId,
+      },
+      include: {
+        assignee: true,
+        project: true,
+        workspace: true,
+      },
+    });
+    console.log("Tasks:", tasks);
+    return tasks;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+
+export const editTask = async ({
+  title,
+  description,
+  Status,
+  priority,
+  Duedate,
+  assignedTo,
+  projectId,
+  taskId,
+  workspaceId,
+}: {
+  taskId: any;
+  title: string;
+  description: string;
+  Status: string;
+  projectId: string;
+  priority: string;
+  Duedate: string;
+  assignedTo: string;
+  workspaceId: any;
+}) => {
+  try {
+    const user = await getUser();
+
+    if (!user?.id) {
+      console.error("User is undefined in create_workspace");
+      return;
+    }
+
+    const task = await prisma.task.update({
+      where: {
+        id: taskId,
+      },
+      data: {
+        title,
+        description,
+        Status,
+        priority,
+        Duedate,
+        project: {
+          connect: {
+            id: projectId,
+          },
+        },
+        assignee: {
+          connect: {
+            id: assignedTo,
+          },
+        },
+        workspace: {
+          connect: {
+            id: workspaceId,
+          },
+        },
+      },
+    });
+    console.log(task);
+  } catch (error) {
+    console.log(error);
+  }
+};

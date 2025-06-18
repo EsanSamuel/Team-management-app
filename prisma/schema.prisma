@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String      @id @default(auto()) @map("_id") @db.ObjectId
+  username       String
+  email          String      @unique
+  profilePicture String?
+  bio            String?
+  hashedPassword String?
+  Workspace      Workspace[]
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  Project      Project[]
+  CreatedTask  Task[]    @relation("creator")
+  AssignedTask Task[]    @relation("assignee")
+  Member       Member[]
+}
+
+model Workspace {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  userId      String   @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user    User      @relation(fields: [userId], references: [id])
+  Project Project[]
+  Member  Member[]
+  Task    Task[]
+}
+
+model Member {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  workspaceId String   @db.ObjectId
+
+  user      User      @relation(fields: [userId], references: [id])
+  workspace Workspace @relation(fields: [workspaceId], references: [id])
+
+  role Role
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+  OWNER
+}
+
+model Project {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  emoji       String
+  name        String
+  description String?
+  userId      String   @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  workspaceId String   @db.ObjectId
+
+  user      User      @relation(fields: [userId], references: [id])
+  workspace Workspace @relation(fields: [workspaceId], references: [id])
+  Task      Task[]
+}
+
+model Task {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String?
+  Status      String
+  Duedate     String
+  priority    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  creatorId   String   @db.ObjectId
+  projectId   String   @db.ObjectId
+  assigneeId  String   @db.ObjectId
+  workspaceId String   @db.ObjectId
+
+  creator   User      @relation("creator", fields: [creatorId], references: [id])
+  assignee  User      @relation("assignee", fields: [assigneeId], references: [id])
+  project   Project   @relation(fields: [projectId], references: [id])
+  workspace Workspace @relation(fields: [workspaceId], references: [id])
+}
