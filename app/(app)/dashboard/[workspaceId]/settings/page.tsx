@@ -8,9 +8,9 @@ import {
   edit_workspace,
   getWorkSpaceById,
 } from "@/lib/actions/workspace.service";
-import { Workspace } from "@/lib/generated/prisma";
+import { User, Workspace } from "@/lib/generated/prisma";
 import { Description } from "@radix-ui/react-dialog";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import {
   AlertDialog,
@@ -24,6 +24,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { authorizeRole } from "@/lib/actions/member.service";
+import { getUser } from "@/lib/actions/user.service";
 
 const page = () => {
   const { workspaceId } = useParams();
@@ -32,10 +34,36 @@ const page = () => {
     name: "",
     description: "",
   });
-
+  const [user, setUser] = useState<User>();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [checkingIsAdmin, setCheckingisAdmin] = useState(true);
+  const router = useRouter();
   useEffect(() => {
+    getUser().then(setUser as any);
     getWorkSpaceById(workspaceId as any).then(setWorkspace as any);
   }, [workspaceId]);
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      if (user?.id && workspaceId) {
+        const result = await authorizeRole(user?.id, workspaceId, [
+          "ADMIN",
+          "OWNER",
+        ]);
+        setIsAdmin(result as boolean);
+        setCheckingisAdmin(false);
+      }
+    };
+
+    checkAdmin();
+  }, [user?.id, workspaceId]);
+
+  useEffect(() => {
+    if (!checkingIsAdmin && isAdmin === false) {
+      alert("You are not eligible for this page");
+      return router.push(`/dashboard/${workspaceId}`);
+    }
+  },  [checkingIsAdmin, isAdmin, router, workspaceId]);
 
   useEffect(() => {
     if (workspace) {

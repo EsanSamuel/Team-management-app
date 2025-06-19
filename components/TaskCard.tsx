@@ -104,6 +104,7 @@ const TaskCard = ({
       Array.isArray(statusArray) &&
       statusArray.some((status) => value.array!.includes(status))
     ) {
+      console.log(tasks.filter((task) => task.Status === value.filterBy))
       return value.filterBy
         ? tasks.filter((task) => task.Status === value.filterBy)
         : tasks;
@@ -162,39 +163,39 @@ const TaskCard = ({
   };
 
   const TaskStatus = (index: number) => {
-    if (tasks[index].Status === "Backlog") {
+    if (filterTaskWithSearchBar()[index].Status === "Backlog") {
       return (
         <Badge className="bg-gray-100 text-gray-500 hover:bg-gray-100 px-2 flex gap-1 items-center text-[12px]">
           <CircleHelp />
-          {tasks[index].Status.toUpperCase()}
+          {filterTaskWithSearchBar()[index].Status.toUpperCase()}
         </Badge>
       );
-    } else if (tasks[index].Status === "Todo") {
+    } else if (filterTaskWithSearchBar()[index].Status === "Todo") {
       return (
         <Badge className="bg-blue-100 text-blue-500 hover:bg-blue-100 px-2 flex gap-1 items-center text-[12px]">
           <Circle />
-          {tasks[index].Status.toUpperCase()}
+          {filterTaskWithSearchBar()[index].Status.toUpperCase()}
         </Badge>
       );
-    } else if (tasks[index].Status === "In Progress") {
+    } else if (filterTaskWithSearchBar()[index].Status === "In Progress") {
       return (
         <Badge className="bg-yellow-100 text-yellow-500 hover:bg-yellow-100 px-2 flex gap-1 items-center text-[12px]">
           <Timer />
-          {tasks[index].Status.toUpperCase()}
+          {filterTaskWithSearchBar()[index].Status.toUpperCase()}
         </Badge>
       );
-    } else if (tasks[index].Status === "In Review") {
+    } else if (filterTaskWithSearchBar()[index].Status === "In Review") {
       return (
         <Badge className="bg-purple-100 text-purple-500 hover:bg-purple-100 px-2 flex gap-1 items-center text-[12px]">
           <ScanEye />
-          {tasks[index].Status.toUpperCase()}
+          {filterTaskWithSearchBar()[index].Status.toUpperCase()}
         </Badge>
       );
-    } else if (tasks[index].Status === "Done") {
+    } else if (filterTaskWithSearchBar()[index].Status === "Done") {
       return (
         <Badge className="bg-green-100 text-green-500 hover:bg-green-100 px-2 flex gap-1 items-center text-[12px]">
           <CircleCheck />
-          {tasks[index].Status.toUpperCase()}
+          {filterTaskWithSearchBar()[index].Status.toUpperCase()}
         </Badge>
       );
     }

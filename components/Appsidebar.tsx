@@ -75,7 +75,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { AddUserToWorkspace } from "@/lib/actions/member.service";
+import {
+  AddUserToWorkspace,
+  authorizeRole,
+} from "@/lib/actions/member.service";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import Link from "next/link";
 
@@ -83,30 +86,6 @@ interface IProps {
   user: User;
   workspace: Workspace[] & { Member: Member };
 }
-
-// Menu items.
-const items = [
-  {
-    title: "Dashboard",
-    url: "#",
-    icon: LayoutDashboard,
-  },
-  {
-    title: "Tasks",
-    url: "/Tasks",
-    icon: CircleCheckBig,
-  },
-  {
-    title: "Members",
-    url: "/members",
-    icon: Users,
-  },
-  {
-    title: "Settings",
-    url: "/settings",
-    icon: Settings,
-  },
-];
 
 export function AppSidebar({ user, workspace }: IProps) {
   const pathname = usePathname();
@@ -118,6 +97,7 @@ export function AppSidebar({ user, workspace }: IProps) {
     "workspace",
     workspace[0]
   );
+  const [isAdmin, setIsAdmin] = useState(false);
   const [workspaceprops, setWorkspace] = React.useState({
     name: "",
     description: "",
@@ -136,6 +116,48 @@ export function AppSidebar({ user, workspace }: IProps) {
   if (!activeWorkspace) {
     return null;
   }
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      if (user?.id && activeWorkspace?.id) {
+        const result = await authorizeRole(user?.id, activeWorkspace?.id, [
+          "ADMIN",
+          "OWNER",
+        ]);
+        setIsAdmin(result as boolean);
+      }
+    };
+
+    checkAdmin();
+  }, [user?.id, activeWorkspace?.id]);
+
+  // Menu items.
+  const items = [
+    {
+      title: "Dashboard",
+      url: "#",
+      icon: LayoutDashboard,
+    },
+    {
+      title: "Tasks",
+      url: "/Tasks",
+      icon: CircleCheckBig,
+    },
+    {
+      title: "Members",
+      url: "/members",
+      icon: Users,
+    },
+    isAdmin && {
+      title: "Settings",
+      url: "/settings",
+      icon: Settings,
+    },
+  ].filter(Boolean) as {
+    title: string;
+    url: string;
+    icon: React.ElementType;
+  }[];
 
   const createWorkspace = async () => {
     try {

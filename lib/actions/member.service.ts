@@ -1,5 +1,6 @@
 "use server";
 
+import { $Enums } from "../generated/prisma";
 import prisma from "../prismadb";
 import { getUser } from "./user.service";
 
@@ -52,6 +53,25 @@ export const getMembers = async (workspaceId: string) => {
       },
     });
     return members;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const authorizeRole = async (
+  userId: string,
+  workspaceId: any,
+  requiredRoles: $Enums.Role[]
+) => {
+  try {
+    const member = await prisma.member.findFirst({
+      where: {
+        userId,
+        workspaceId,
+        role: { in: requiredRoles },
+      },
+    });
+    return !!member;
   } catch (error) {
     console.log(error);
   }

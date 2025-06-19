@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { getUser } from "@/lib/actions/user.service";
 import { getWorkSpace } from "@/lib/actions/workspace.service";
 import { WorkspaceProvider } from "@/context/workspaceContext";
+import { authorizeRole } from "@/lib/actions/member.service";
 
 export default async function Layout({
   children,
