@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import {
   Activity,
   ArrowBigDownDash,
@@ -43,7 +43,7 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 import { getProject } from "@/lib/actions/project.service";
-import { getMembers } from "@/lib/actions/member.service";
+import { authorizeRole, getMembers } from "@/lib/actions/member.service";
 import { createTask, getTasks } from "@/lib/actions/task.service";
 import TaskCard from "@/components/TaskCard";
 
@@ -58,6 +58,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import { getUser } from "@/lib/actions/user.service";
+import { toast } from "sonner";
 
 const Page = () => {
   const { workspaceId, projectId } = useParams();
@@ -75,15 +77,34 @@ const Page = () => {
   const [tasks, setTasks] = useState<
     (Task & { assignee: User } & { project: Project })[]
   >([]);
+  const [user, setUser] = useState<User>();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     getProject(projectId as string).then(setProject);
     getMembers(workspaceId as string).then(setMembers as any);
     getTasks(projectId as string).then(setTasks as any);
+    getUser().then(setUser as any);
   }, [projectId, workspaceId]);
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      if (user?.id && workspaceId) {
+        const result = await authorizeRole(user?.id, workspaceId, [
+          "ADMIN",
+          "OWNER",
+        ]);
+        setIsAdmin(result as boolean);
+      }
+    };
+
+    checkAdmin();
+  }, [user?.id, workspaceId]);
 
   const create_Task = async () => {
     await createTask({ ...task, projectId: projectId as string, workspaceId });
+    toast("Task has been created!");
   };
 
   const getDoneTaskCount = tasks.filter(
@@ -93,27 +114,30 @@ const Page = () => {
   const getOverdiewTask =
     tasks.length - tasks.filter((task) => task.Status === "Done").length;
 
-
-
   return (
-    <div className="xl:px-10 py-10 md:px-10 px-5">
-      <div className="flex justify-between items-center mb-6">
+    <div className="xl:px-10 py-10 md:px-10 px-3">
+      <div className="flex xl:justify-between flex-col xl:flex-row w-full mb-6">
         <div className="flex items-center gap-2">
           <span className="text-xl">{project?.emoji}</span>
           <h1 className="text-lg font-semibold text-gray-800 flex gap-3 items-center">
             {project?.name}{" "}
             <button>
-              <Pencil size={13} />
+              <Pencil
+                size={13}
+                onClick={() => router.push(`/settings/${projectId}`)}
+              />
             </button>
           </h1>
         </div>
         <Dialog>
-          <form className="overflow-y-auto">
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="size-3 mr-2" />
-                New Task
-              </Button>
+          <form className="">
+            <DialogTrigger asChild >
+                <Button className="xl:w- w-full mt-3">
+                  <div className="flex  items-center justify-center bg-transparent">
+                    <Plus className="size-3" />
+                  </div>
+                  New Task
+                </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
@@ -238,43 +262,44 @@ const Page = () => {
         </Dialog>
       </div>
 
-      <div className="grid xl:grid-cols-3 sm:grid-cols-1 gap-5">
-        <Card className="p-4 border-dashed">
-          <div className="flex justify-between text-sm text-muted-foreground">
-            <span className="flex items-center gap-1">
-              Total Tasks <ArrowBigUpDash size={14} />
-            </span>
-            <Activity size={14} />
-          </div>
-          <h2 className="text-2xl font-bold text-gray-800 mt-1">
-            {tasks.length}
-          </h2>
-        </Card>
-        <Card className="p-4 border-dashed">
-          <div className="flex justify-between text-sm text-muted-foreground">
-            <span className="flex items-center gap-1">
-              Overdue Tasks{" "}
-              <ArrowBigDownDash className="text-red-400" size={14} />
-            </span>
-            <Activity size={14} />
-          </div>
-          <h2 className="text-2xl font-bold text-gray-800 mt-1">
-            {getOverdiewTask}
-          </h2>
-        </Card>
-        <Card className="p-4 border-dashed">
-          <div className="flex justify-between text-sm text-muted-foreground">
-            <span className="flex items-center gap-1">
-              Completed Tasks <ArrowBigUpDash size={14} />
-            </span>
-            <Activity size={14} />
-          </div>
-          <h2 className="text-2xl font-bold text-gray-800 mt-1">
-            {getDoneTaskCount}
-          </h2>
-        </Card>
+      <div className="overflow-x-auto overflow-hidden">
+        <div className="grid grid-cols-3 min-w-[700px] gap-5">
+          <Card className="p-4 border-dashed">
+            <div className="flex justify-between text-sm text-muted-foreground">
+              <span className="flex items-center gap-1">
+                Total Tasks <ArrowBigUpDash size={14} />
+              </span>
+              <Activity size={14} />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-800 mt-1">
+              {tasks.length}
+            </h2>
+          </Card>
+          <Card className="p-4 border-dashed">
+            <div className="flex justify-between text-sm text-muted-foreground">
+              <span className="flex items-center gap-1">
+                Overdue Tasks{" "}
+                <ArrowBigDownDash className="text-red-400" size={14} />
+              </span>
+              <Activity size={14} />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-800 mt-1">
+              {getOverdiewTask}
+            </h2>
+          </Card>
+          <Card className="p-4 border-dashed">
+            <div className="flex justify-between text-sm text-muted-foreground">
+              <span className="flex items-center gap-1">
+                Completed Tasks <ArrowBigUpDash size={14} />
+              </span>
+              <Activity size={14} />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-800 mt-1">
+              {getDoneTaskCount}
+            </h2>
+          </Card>
+        </div>
       </div>
-
       <Separator className="my-6" />
 
       {view === "Table" && (

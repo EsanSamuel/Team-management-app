@@ -9,6 +9,7 @@ import { signIn, useSession } from "next-auth/react";
 import { FieldValues, Form, SubmitHandler, useForm } from "react-hook-form";
 import { registerUser } from "@/lib/actions/user.service";
 import { redirect, useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type IAuthState = "LOGIN" | "SIGNUP";
 
@@ -56,7 +57,7 @@ const Authform = () => {
           password,
           redirect: false,
         });
-
+        toast("Account created successful!");
         if (res?.ok) {
           console.log("signIn successful!");
           router.push("/dashboard");
@@ -69,7 +70,7 @@ const Authform = () => {
           password,
           redirect: false,
         });
-
+        toast("Sign in successful!");
         if (res?.ok) {
           console.log("signIn successful!");
           router.push("/dashboard");

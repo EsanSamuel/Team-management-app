@@ -76,3 +76,30 @@ export const authorizeRole = async (
     console.log(error);
   }
 };
+
+export const editRole = async (memberId: string, role: "ADMIN" | "MEMBER") => {
+  try {
+    const editrole = await prisma.member.update({
+      where: {
+        id: memberId,
+      },
+      data: {
+        role: role,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const remove_Member = async (memberId: any) => {
+  try {
+    await prisma.member.delete({
+      where: {
+        id: memberId,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};

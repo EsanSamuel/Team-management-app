@@ -9,6 +9,7 @@ import { ShieldHalf, Zap } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const page = ({ params }: { params: { workspaceId: string } }) => {
   const router = useRouter();
@@ -28,6 +29,7 @@ const page = ({ params }: { params: { workspaceId: string } }) => {
   const joinWorkspaceAsMember = async () => {
     try {
       const member = await AddUserToWorkspace(params.workspaceId, "MEMBER");
+      toast("You have been added to this workspace");
       console.log(member);
     } catch (error) {
       console.log(error);

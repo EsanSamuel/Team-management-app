@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Poppins, Inter, Montserrat } from "next/font/google";
 import Provider from "@/components/Provider";
+import { Toaster } from "sonner";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -37,7 +38,10 @@ export default function RootLayout({
       <body
         className={`${poppins.variable} ${inter.variable} ${montserrat.variable}`}
       >
-        <Provider>{children}</Provider>
+        <Provider>
+          <Toaster />
+          {children}
+        </Provider>
       </body>
     </html>
   );

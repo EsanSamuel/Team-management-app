@@ -145,98 +145,101 @@ const Karban = ({
 
   return (
     <>
-      <div className="flex justify-between w-full mt-5">
-        <div className="flex gap-2  text-gray-600">
-          <Input
-            placeholder="Filter tasks..."
-            onChange={(e) => setSearchTasks(e.target.value)}
-          />
+      <div className="flex justify-between gap-2 w-full mt-5">
+        <div className="overflow-x-auto overflow-hidden">
+          <div className="flex flex-wrap md:flex-nowrap gap-2 text-gray-600 min-w-[320px]">
+            <Input
+              placeholder="Filter tasks..."
+              onChange={(e) => setSearchTasks(e.target.value)}
+              className="min-w-[200px]"
+            />
 
-          <DropdownMenu>
-            <DropdownMenuTrigger className="">
-              <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2">
-                <ArrowRightLeft /> Priority{" "}
-                <ChevronsUpDown size={12} className="text-gray-600" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Priority</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {["Low", "Medium", "High"].map((priority) => (
+            <DropdownMenu>
+              <DropdownMenuTrigger className="">
+                <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2">
+                  <ArrowRightLeft /> Priority{" "}
+                  <ChevronsUpDown size={12} className="text-gray-600" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Priority</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {["Low", "Medium", "High"].map((priority) => (
+                  <DropdownMenuItem
+                    onClick={() =>
+                      setFilterByStatus({
+                        ...filterByStatus,
+                        filterBy: priority,
+                        array: ["Low", "Medium", "High"],
+                      })
+                    }
+                  >
+                    {priority}
+                  </DropdownMenuItem>
+                ))}
+                <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={() =>
                     setFilterByStatus({
                       ...filterByStatus,
-                      filterBy: priority,
+                      filterBy: "",
                       array: ["Low", "Medium", "High"],
                     })
                   }
                 >
-                  {priority}
+                  Clear Filter
                 </DropdownMenuItem>
-              ))}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() =>
-                  setFilterByStatus({
-                    ...filterByStatus,
-                    filterBy: "",
-                    array: ["Low", "Medium", "High"],
-                  })
-                }
-              >
-                Clear Filter
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger className="">
-              <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2">
-                <Person />
-                Assigned To{" "}
-                <ChevronsUpDown size={12} className="text-gray-600" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Assignees</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {members.map((member) => (
+            <DropdownMenu>
+              <DropdownMenuTrigger className="">
+                <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2">
+                  <Person />
+                  Assigned To{" "}
+                  <ChevronsUpDown size={12} className="text-gray-600" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Assignees</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {members.map((member) => (
+                  <DropdownMenuItem
+                    className="flex gap-2 items-center"
+                    onClick={() =>
+                      setFilterByStatus({
+                        ...filterByStatus,
+                        filterBy: member.user.username,
+                        array: members,
+                      })
+                    }
+                  >
+                    <Avatar className="h-5 w-5">
+                      <AvatarImage src={member.user.profilePicture!} />
+                      <AvatarFallback>{member.user.username[0]}</AvatarFallback>
+                    </Avatar>
+                    <span>{member.user.username}</span>
+                  </DropdownMenuItem>
+                ))}
+
+                <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  className="flex gap-2 items-center"
                   onClick={() =>
                     setFilterByStatus({
                       ...filterByStatus,
-                      filterBy: member.user.username,
-                      array: members,
+                      filterBy: "",
                     })
                   }
                 >
-                  <Avatar className="h-5 w-5">
-                    <AvatarImage src={member.user.profilePicture!} />
-                    <AvatarFallback>{member.user.username[0]}</AvatarFallback>
-                  </Avatar>
-                  <span>{member.user.username}</span>
+                  Clear Filter
                 </DropdownMenuItem>
-              ))}
-
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() =>
-                  setFilterByStatus({
-                    ...filterByStatus,
-                    filterBy: "",
-                  })
-                }
-              >
-                Clear Filter
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
 
         <Select onValueChange={(value) => setView(value)}>
-          <SelectTrigger className="w-auto">
+          <SelectTrigger className="w-auto xl:ml-0 ml-2">
             <SelectValue
               placeholder="View As"
               className="placeholder:text-gray-400"
@@ -251,221 +254,233 @@ const Karban = ({
         </Select>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 mt-5">
-        <div className="bg-gray-100 rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
-              <CircleHelp className="h-4 w-4" /> Backlog
+      <div className="overflow-x-auto overflow-hidden ">
+        <div className="grid xl:grid-cols-4 grid-cols-5 min-w-[1000px] gap-6 mt-5">
+          <div className="bg-gray-100 rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                <CircleHelp className="h-4 w-4" /> Backlog
+              </div>
+              <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
+                {filteredBacklog.length}
+              </Badge>
             </div>
-            <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
-              {filteredBacklog.length}
-            </Badge>
+
+            {filteredBacklog.map((task, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
+              >
+                <h2 className="font-medium text-sm text-gray-800 truncate">
+                  {task.title}
+                </h2>
+                <Separator className="my-2" />
+                <div className="flex items-center justify-between text-xs text-gray-600">
+                  <div className="flex items-center gap-2">
+                    <Avatar className="h-6 w-6">
+                      <AvatarImage src={task.assignee.profilePicture!} />
+                      <AvatarFallback>
+                        {task.assignee.username[0]}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span>{task.assignee.username}</span>
+                  </div>
+                  <span
+                    className={`text-[11px] px-2 py-0.5 rounded-full ${
+                      new Date(task.Duedate) < new Date()
+                        ? "bg-red-100 text-red-500"
+                        : "bg-yellow-100 text-yellow-600"
+                    }`}
+                  >
+                    {task.Duedate}
+                  </span>
+                </div>
+                <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1 truncate">
+                  {task.project.emoji} {task.project.name}
+                </div>
+              </div>
+            ))}
           </div>
 
-          {filteredBacklog.map((task, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
-            >
-              <h2 className="font-medium text-sm text-gray-800 truncate">
-                {task.title}
-              </h2>
-              <Separator className="my-2" />
-              <div className="flex items-center justify-between text-xs text-gray-600">
-                <div className="flex items-center gap-2">
-                  <Avatar className="h-6 w-6">
-                    <AvatarImage src={task.assignee.profilePicture!} />
-                    <AvatarFallback>{task.assignee.username[0]}</AvatarFallback>
-                  </Avatar>
-                  <span>{task.assignee.username}</span>
-                </div>
-                <span
-                  className={`text-[11px] px-2 py-0.5 rounded-full ${
-                    new Date(task.Duedate) < new Date()
-                      ? "bg-red-100 text-red-500"
-                      : "bg-yellow-100 text-yellow-600"
-                  }`}
-                >
-                  {task.Duedate}
-                </span>
+          <div className="bg-gray-100 rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                <Circle className="h-4 w-4 text-blue-500" /> Todo
               </div>
-              <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1 truncate">
-                {task.project.emoji} {task.project.name}
-              </div>
+              <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
+                {filteredTodo.length}
+              </Badge>
             </div>
-          ))}
-        </div>
 
-        <div className="bg-gray-100 rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
-              <Circle className="h-4 w-4 text-blue-500" /> Todo
-            </div>
-            <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
-              {filteredTodo.length}
-            </Badge>
+            {filteredTodo.map((task, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
+              >
+                <h2 className="font-medium text-sm text-gray-800 truncate">
+                  {task.title}
+                </h2>
+                <Separator className="my-2" />
+                <div className="flex items-center justify-between text-xs text-gray-600">
+                  <div className="flex items-center gap-2">
+                    <Avatar className="h-6 w-6">
+                      <AvatarImage src={task.assignee.profilePicture!} />
+                      <AvatarFallback>
+                        {task.assignee.username[0]}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span>{task.assignee.username}</span>
+                  </div>
+                  <span
+                    className={`text-[11px] px-2 py-0.5 rounded-full ${
+                      new Date(task.Duedate) < new Date()
+                        ? "bg-red-100 text-red-500"
+                        : "bg-yellow-100 text-yellow-600"
+                    }`}
+                  >
+                    {task.Duedate}
+                  </span>
+                </div>
+                <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1 truncate">
+                  {task.project.emoji} {task.project.name}
+                </div>
+              </div>
+            ))}
           </div>
 
-          {filteredTodo.map((task, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
-            >
-              <h2 className="font-medium text-sm text-gray-800 truncate">
-                {task.title}
-              </h2>
-              <Separator className="my-2" />
-              <div className="flex items-center justify-between text-xs text-gray-600">
-                <div className="flex items-center gap-2">
-                  <Avatar className="h-6 w-6">
-                    <AvatarImage src={task.assignee.profilePicture!} />
-                    <AvatarFallback>{task.assignee.username[0]}</AvatarFallback>
-                  </Avatar>
-                  <span>{task.assignee.username}</span>
-                </div>
-                <span
-                  className={`text-[11px] px-2 py-0.5 rounded-full ${
-                    new Date(task.Duedate) < new Date()
-                      ? "bg-red-100 text-red-500"
-                      : "bg-yellow-100 text-yellow-600"
-                  }`}
-                >
-                  {task.Duedate}
-                </span>
+          <div className="bg-gray-100 rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                <Timer className="h-4 w-4 text-yellow-500" /> Progress
               </div>
-              <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1 truncate">
-                {task.project.emoji} {task.project.name}
-              </div>
+              <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
+                {filteredProgress.length}
+              </Badge>
             </div>
-          ))}
-        </div>
 
-        <div className="bg-gray-100 rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
-              <Timer className="h-4 w-4 text-yellow-500" /> Progress
-            </div>
-            <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
-              {filteredProgress.length}
-            </Badge>
+            {filteredProgress.map((task, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
+              >
+                <h2 className="font-medium text-sm text-gray-800 truncate">
+                  {task.title}
+                </h2>
+                <Separator className="my-2" />
+                <div className="flex items-center justify-between text-xs text-gray-600">
+                  <div className="flex items-center gap-2">
+                    <Avatar className="h-6 w-6">
+                      <AvatarImage src={task.assignee.profilePicture!} />
+                      <AvatarFallback>
+                        {task.assignee.username[0]}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span>{task.assignee.username}</span>
+                  </div>
+                  <span
+                    className={`text-[11px] px-2 py-0.5 rounded-full ${
+                      new Date(task.Duedate) < new Date()
+                        ? "bg-red-100 text-red-500"
+                        : "bg-yellow-100 text-yellow-600"
+                    }`}
+                  >
+                    {task.Duedate}
+                  </span>
+                </div>
+                <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1 truncate">
+                  {task.project.emoji} {task.project.name}
+                </div>
+              </div>
+            ))}
           </div>
 
-          {filteredProgress.map((task, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
-            >
-              <h2 className="font-medium text-sm text-gray-800 truncate">
-                {task.title}
-              </h2>
-              <Separator className="my-2" />
-              <div className="flex items-center justify-between text-xs text-gray-600">
-                <div className="flex items-center gap-2">
-                  <Avatar className="h-6 w-6">
-                    <AvatarImage src={task.assignee.profilePicture!} />
-                    <AvatarFallback>{task.assignee.username[0]}</AvatarFallback>
-                  </Avatar>
-                  <span>{task.assignee.username}</span>
-                </div>
-                <span
-                  className={`text-[11px] px-2 py-0.5 rounded-full ${
-                    new Date(task.Duedate) < new Date()
-                      ? "bg-red-100 text-red-500"
-                      : "bg-yellow-100 text-yellow-600"
-                  }`}
-                >
-                  {task.Duedate}
-                </span>
+          <div className="bg-gray-100 rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                <ScanEye className="h-4 w-4 text-purple-500" /> Review
               </div>
-              <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1 truncate">
-                {task.project.emoji} {task.project.name}
-              </div>
+              <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
+                {filteredReview.length}
+              </Badge>
             </div>
-          ))}
-        </div>
 
-        <div className="bg-gray-100 rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
-              <ScanEye className="h-4 w-4 text-purple-500" /> Review
-            </div>
-            <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
-              {filteredReview.length}
-            </Badge>
+            {filteredReview.map((task, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
+              >
+                <h2 className="font-medium text-sm text-gray-800 truncate">
+                  {task.title}
+                </h2>
+                <Separator className="my-2" />
+                <div className="flex items-center justify-between text-xs text-gray-600">
+                  <div className="flex items-center gap-2">
+                    <Avatar className="h-6 w-6">
+                      <AvatarImage src={task.assignee.profilePicture!} />
+                      <AvatarFallback>
+                        {task.assignee.username[0]}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span>{task.assignee.username}</span>
+                  </div>
+                  <span
+                    className={`text-[11px] px-2 py-0.5 rounded-full ${
+                      new Date(task.Duedate) < new Date()
+                        ? "bg-red-100 text-red-500"
+                        : "bg-yellow-100 text-yellow-600"
+                    }`}
+                  >
+                    {task.Duedate}
+                  </span>
+                </div>
+                <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1 truncate">
+                  {task.project.emoji} {task.project.name}
+                </div>
+              </div>
+            ))}
           </div>
 
-          {filteredReview.map((task, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
-            >
-              <h2 className="font-medium text-sm text-gray-800 truncate">
-                {task.title}
-              </h2>
-              <Separator className="my-2" />
-              <div className="flex items-center justify-between text-xs text-gray-600">
-                <div className="flex items-center gap-2">
-                  <Avatar className="h-6 w-6">
-                    <AvatarImage src={task.assignee.profilePicture!} />
-                    <AvatarFallback>{task.assignee.username[0]}</AvatarFallback>
-                  </Avatar>
-                  <span>{task.assignee.username}</span>
-                </div>
-                <span
-                  className={`text-[11px] px-2 py-0.5 rounded-full ${
-                    new Date(task.Duedate) < new Date()
-                      ? "bg-red-100 text-red-500"
-                      : "bg-yellow-100 text-yellow-600"
-                  }`}
-                >
-                  {task.Duedate}
-                </span>
+          <div className="bg-gray-100 rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                <CircleCheck className="h-4 w-4 text-green-500" /> Done
               </div>
-              <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1 truncate">
-                {task.project.emoji} {task.project.name}
-              </div>
+              <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
+                {filteredDone.length}
+              </Badge>
             </div>
-          ))}
-        </div>
 
-        <div className="bg-gray-100 rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
-              <CircleCheck className="h-4 w-4 text-green-500" /> Done
-            </div>
-            <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
-              {filteredDone.length}
-            </Badge>
+            {filteredDone.map((task, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
+              >
+                <h2 className="font-medium text-sm text-gray-800 truncate">
+                  {task.title}
+                </h2>
+                <Separator className="my-2" />
+                <div className="flex items-center justify-between text-xs text-gray-600">
+                  <div className="flex items-center gap-2">
+                    <Avatar className="h-6 w-6">
+                      <AvatarImage src={task.assignee.profilePicture!} />
+                      <AvatarFallback>
+                        {task.assignee.username[0]}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span>{task.assignee.username}</span>
+                  </div>
+                  <span
+                    className={`text-[11px] px-2 py-0.5 rounded-full bg-green-100 text-green-600 `}
+                  >
+                    {task.Duedate}
+                  </span>
+                </div>
+                <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1 truncate">
+                  {task.project.emoji} {task.project.name}
+                </div>
+              </div>
+            ))}
           </div>
-
-          {filteredDone.map((task, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
-            >
-              <h2 className="font-medium text-sm text-gray-800 truncate">
-                {task.title}
-              </h2>
-              <Separator className="my-2" />
-              <div className="flex items-center justify-between text-xs text-gray-600">
-                <div className="flex items-center gap-2">
-                  <Avatar className="h-6 w-6">
-                    <AvatarImage src={task.assignee.profilePicture!} />
-                    <AvatarFallback>{task.assignee.username[0]}</AvatarFallback>
-                  </Avatar>
-                  <span>{task.assignee.username}</span>
-                </div>
-                <span
-                  className={`text-[11px] px-2 py-0.5 rounded-full bg-green-100 text-green-600 `}
-                >
-                  {task.Duedate}
-                </span>
-              </div>
-              <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1 truncate">
-                {task.project.emoji} {task.project.name}
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </>

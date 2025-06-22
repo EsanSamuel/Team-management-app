@@ -34,7 +34,7 @@ const DashboardCard = () => {
   };
   return (
     <Card className="w-full rounded-xl p-4 shadow-sm border border-gray-200 bg-white">
-      <CardHeader className="flex gap-2 p-0 mb-4 border-b border-gray-100">
+      <CardHeader className="flex gap-2 p-0 mb-1 border-b border-gray-100 overflow-x-auto overflow-hidden">
         {["Recent Projects", "Recent Task", "Recent Members"].map(
           (tab, idx) => (
             <Button
@@ -49,7 +49,7 @@ const DashboardCard = () => {
         )}
       </CardHeader>
 
-      <CardContent className="flex flex-col gap-5">
+      <CardContent className="flex flex-col gap-5 p-0">
         {workspaceProjects?.map((project) => (
           <div
             key={project.id}
@@ -68,7 +68,7 @@ const DashboardCard = () => {
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="xl:flex items-center gap-2 xl:block hidden">
                 <span className="text-xs text-gray-600">Created by</span>
                 <Avatar title={project?.user?.username} className="h-7 w-7">
                   <AvatarImage src={project?.user?.profilePicture!} />

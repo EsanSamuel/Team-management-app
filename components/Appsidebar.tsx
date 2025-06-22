@@ -6,6 +6,7 @@ import {
   Calendar,
   ChevronUp,
   CircleCheckBig,
+  CirclePlus,
   Command,
   Frame,
   GalleryVerticalEnd,
@@ -49,7 +50,10 @@ import { signOut } from "next-auth/react";
 import { redirect, usePathname, useRouter } from "next/navigation";
 import { Separator } from "./ui/separator";
 import React, { useEffect, useState } from "react";
-import { getWorkSpaceProjects } from "@/lib/actions/project.service";
+import {
+  create_Project,
+  getWorkSpaceProjects,
+} from "@/lib/actions/project.service";
 import { useWorkspace } from "@/context/workspaceContext";
 import { create_workspace } from "@/lib/actions/workspace.service";
 import { FieldValues, useForm } from "react-hook-form";
@@ -81,6 +85,8 @@ import {
 } from "@/lib/actions/member.service";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import Link from "next/link";
+import { Toaster } from "./ui/sonner";
+import { toast } from "sonner";
 
 interface IProps {
   user: User;
@@ -99,6 +105,11 @@ export function AppSidebar({ user, workspace }: IProps) {
   );
   const [isAdmin, setIsAdmin] = useState(false);
   const [workspaceprops, setWorkspace] = React.useState({
+    name: "",
+    description: "",
+  });
+  const [project, setProject] = useState({
+    emoji: "",
     name: "",
     description: "",
   });
@@ -162,6 +173,7 @@ export function AppSidebar({ user, workspace }: IProps) {
   const createWorkspace = async () => {
     try {
       const new_workspace = await create_workspace({ ...workspaceprops });
+      toast("Workspace has been created!");
       console.log(new_workspace);
       if (new_workspace) {
         const member = await AddUserToWorkspace(new_workspace.id, "OWNER");
@@ -179,7 +191,7 @@ export function AppSidebar({ user, workspace }: IProps) {
   const handleSignOut = async () => {
     try {
       await signOut();
-      return redirect("/");
+      redirect("/");
     } catch (error) {}
   };
 
@@ -197,6 +209,18 @@ export function AppSidebar({ user, workspace }: IProps) {
     };
     getProjects();
   }, [workspaceId]);
+
+  const create_workspace_project = async () => {
+    try {
+      const new_project = await create_Project({
+        ...project,
+        workspaceId: activeWorkspace?.id,
+      });
+      console.log(new_project);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Sidebar>
@@ -252,7 +276,7 @@ export function AppSidebar({ user, workspace }: IProps) {
                     sideOffset={4}
                   >
                     <DropdownMenuLabel className="text-muted-foreground text-xs">
-                      Teams
+                      Workspaces
                     </DropdownMenuLabel>
                     {workspace.map((team, index) => (
                       <DropdownMenuItem
@@ -272,77 +296,79 @@ export function AppSidebar({ user, workspace }: IProps) {
                     ))}
                     <DropdownMenuSeparator />
 
-                    <Dialog>
-                      <form onSubmit={handleSubmit(createWorkspace)}>
-                        <div className="">
-                          <DialogTrigger className="flex gap-2 p-2">
-                            <div className="flex size-6 items-center justify-center rounded-md bg-transparent">
-                              <Plus className="size-4" />
-                            </div>
-                            <div className="text-muted-foreground text-sm font-medium">
-                              Create workspace
-                            </div>
-                          </DialogTrigger>
-                        </div>
-                        <DialogContent className="sm:max-w-[425px]">
-                          <DialogHeader>
-                            <DialogTitle>
-                              Let&apos;s build a workspace
-                            </DialogTitle>
-                            <DialogDescription className="text-[12px]">
-                              Boost your productivity by making it easier foor
-                              everyone to access projects in one direction.
-                            </DialogDescription>
-                          </DialogHeader>
-                          <div className="grid gap-4 mt-4">
-                            <div className="grid gap-3">
-                              <Label htmlFor="name-1" className="text-[12px]">
-                                Workspace name
-                              </Label>
-                              <Input
-                                id="name-1"
-                                onChange={(e) =>
-                                  setWorkspace((prev) => ({
-                                    ...prev,
-                                    name: e.target.value,
-                                  }))
-                                }
-                              />
-                            </div>
-                            <div className="grid gap-3">
-                              <Label
-                                htmlFor="username-1"
-                                className="text-[12px]"
-                              >
-                                Workspace description
-                              </Label>
-                              <Textarea
-                                id="description"
-                                onChange={(e) =>
-                                  setWorkspace((prev) => ({
-                                    ...prev,
-                                    description: e.target.value,
-                                  }))
-                                }
-                              />
-                            </div>
-                            <DialogDescription className="text-[10px]">
-                              Get your members onboard with a few words about
-                              your workspace
-                            </DialogDescription>
+                    {isAdmin && (
+                      <Dialog>
+                        <form onSubmit={handleSubmit(createWorkspace)}>
+                          <div className="">
+                            <DialogTrigger className="flex gap-2 p-2 items-center">
+                              <div className="flex size-6 items-center justify-center rounded-md bg-transparent">
+                                <Plus className="size-4" />
+                              </div>
+                              <div className="text-muted-foreground text-sm font-medium">
+                                Create workspace
+                              </div>
+                            </DialogTrigger>
                           </div>
-                          <DialogFooter>
-                            <Button
-                              type="submit"
-                              className="w-full"
-                              onClick={createWorkspace}
-                            >
-                              Create workspace
-                            </Button>
-                          </DialogFooter>
-                        </DialogContent>
-                      </form>
-                    </Dialog>
+                          <DialogContent className="sm:max-w-[425px]">
+                            <DialogHeader>
+                              <DialogTitle>
+                                Let&apos;s build a workspace
+                              </DialogTitle>
+                              <DialogDescription className="text-[12px]">
+                                Boost your productivity by making it easier foor
+                                everyone to access projects in one direction.
+                              </DialogDescription>
+                            </DialogHeader>
+                            <div className="grid gap-4 mt-4">
+                              <div className="grid gap-3">
+                                <Label htmlFor="name-1" className="text-[12px]">
+                                  Workspace name
+                                </Label>
+                                <Input
+                                  id="name-1"
+                                  onChange={(e) =>
+                                    setWorkspace((prev) => ({
+                                      ...prev,
+                                      name: e.target.value,
+                                    }))
+                                  }
+                                />
+                              </div>
+                              <div className="grid gap-3">
+                                <Label
+                                  htmlFor="username-1"
+                                  className="text-[12px]"
+                                >
+                                  Workspace description
+                                </Label>
+                                <Textarea
+                                  id="description"
+                                  onChange={(e) =>
+                                    setWorkspace((prev) => ({
+                                      ...prev,
+                                      description: e.target.value,
+                                    }))
+                                  }
+                                />
+                              </div>
+                              <DialogDescription className="text-[10px]">
+                                Get your members onboard with a few words about
+                                your workspace
+                              </DialogDescription>
+                            </div>
+                            <DialogFooter>
+                              <Button
+                                type="submit"
+                                className="w-full"
+                                onClick={createWorkspace}
+                              >
+                                Create workspace
+                              </Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </form>
+                      </Dialog>
+                    )}
                   </DropdownMenuContent>
                 </DropdownMenu>
               </SidebarMenuItem>
@@ -375,7 +401,80 @@ export function AppSidebar({ user, workspace }: IProps) {
 
         {/*Projects */}
         <SidebarGroup>
-          <SidebarGroupLabel>Projects</SidebarGroupLabel>
+          <SidebarGroupLabel className="flex justify-between items-center">
+            Projects{" "}
+            {isAdmin && (
+              <Dialog>
+                <form>
+                  <DialogTrigger asChild>
+                    <CirclePlus size={13} className="text-gray-500" />
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                      <DialogTitle>Create Project</DialogTitle>
+                      <DialogDescription className="text-[12px]">
+                        Organize and manage tasks, resources, and team
+                        collaboration
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4">
+                      <div className="grid gap-3">
+                        <Label htmlFor="name-1" className="text-[12px]">
+                          Project Emoji
+                        </Label>
+                        <Input
+                          id="name-1"
+                          name="name"
+                          onChange={(e) =>
+                            setProject((prev) => ({
+                              ...prev,
+                              emoji: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
+                      <div className="grid gap-3">
+                        <Label htmlFor="name-1" className="text-[12px]">
+                          Project title
+                        </Label>
+                        <Input
+                          id="name-1"
+                          name="name"
+                          onChange={(e) =>
+                            setProject((prev) => ({
+                              ...prev,
+                              name: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
+                      <div className="grid gap-3">
+                        <Label htmlFor="username-1" className="text-[12px]">
+                          Project description
+                        </Label>
+                        <Textarea
+                          onChange={(e) =>
+                            setProject((prev) => ({
+                              ...prev,
+                              description: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <DialogClose asChild>
+                        <Button variant="outline">Cancel</Button>
+                      </DialogClose>
+                      <Button type="submit" onClick={create_workspace_project}>
+                        Create
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </form>
+              </Dialog>
+            )}
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {workspaceProjects?.map((item) => (
@@ -429,7 +528,7 @@ export function AppSidebar({ user, workspace }: IProps) {
                   <span>Billing</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleSignOut}>
-                  <span>Sign out</span>
+                  <span className="text-red-400">Sign out</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

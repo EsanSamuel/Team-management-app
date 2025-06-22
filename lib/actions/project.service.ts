@@ -8,7 +8,8 @@ interface IProject {
   name: string;
   description: string;
   emoji: string;
-  workspaceId: string;
+  workspaceId?: string;
+  projectId?: any;
 }
 
 export const create_Project = async ({
@@ -98,6 +99,49 @@ export const getProject = async (
       },
     });
     return project ?? undefined;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const edit_Project = async ({
+  name,
+  description,
+  emoji,
+  projectId,
+}: IProject): Promise<void> => {
+  try {
+    const user = await getUser();
+
+    if (!user?.id) {
+      console.error("User is undefined in create_workspace");
+      return;
+    }
+
+    const editproject = await prisma?.project?.update({
+      where: {
+        id: projectId,
+      },
+      data: {
+        emoji,
+        name,
+        description,
+      },
+    });
+
+    console.log(editproject);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const delete_Project = async (projectId: any) => {
+  try {
+    await prisma.project.delete({
+      where: {
+        id: projectId,
+      },
+    });
   } catch (error) {
     console.log(error);
   }

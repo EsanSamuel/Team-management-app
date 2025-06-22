@@ -210,3 +210,15 @@ export const editTask = async ({
     console.log(error);
   }
 };
+
+export const delete_Task = async (taskId: any) => {
+  try {
+    await prisma.task.delete({
+      where: {
+        id: taskId,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};

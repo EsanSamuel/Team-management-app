@@ -61,8 +61,8 @@ const page = () => {
   };
 
   return (
-    <div className="p-10">
-      <div className="flex justify-between">
+    <div className="xl:p-10 md:p-10 p-3">
+      <div className="flex xl:justify-between md:justify-between flex-col md:flex-row">
         <div className="flex flex-col mb-5">
           <h1 className="font-semibold text-[16px]">Tasks</h1>
           <p className="text-gray-500 text-[12px]">
@@ -72,7 +72,7 @@ const page = () => {
         <Dialog>
           <form className="overflow-y-auto">
             <DialogTrigger asChild>
-              <Button>
+              <Button className="xl:w- w-full">
                 <Plus className="size-3 mr-2" />
                 New Task
               </Button>

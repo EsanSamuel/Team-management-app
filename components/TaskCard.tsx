@@ -24,6 +24,7 @@ import {
   ListChecks,
   ScanEye,
   Timer,
+  Trash2,
 } from "lucide-react";
 import {
   ColumnDef,
@@ -70,6 +71,18 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 import { getMembers } from "@/lib/actions/member.service";
 import { useRouter } from "next/navigation";
 import { getWorkSpaceProjects } from "@/lib/actions/project.service";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { delete_Task } from "@/lib/actions/task.service";
 
 const TaskCard = ({
   tasks,
@@ -104,7 +117,7 @@ const TaskCard = ({
       Array.isArray(statusArray) &&
       statusArray.some((status) => value.array!.includes(status))
     ) {
-      console.log(tasks.filter((task) => task.Status === value.filterBy))
+      console.log(tasks.filter((task) => task.Status === value.filterBy));
       return value.filterBy
         ? tasks.filter((task) => task.Status === value.filterBy)
         : tasks;
@@ -202,189 +215,192 @@ const TaskCard = ({
   };
   return (
     <div className="mt-5">
-      <div className="flex justify-between w-full">
-        <div className="flex gap-2  text-gray-600">
-          <Input
-            placeholder="Filter tasks..."
-            onChange={(e) => setSearchTasks(e.target.value)}
-          />
+      <div className="flex justify-between gap-3 w-full">
+        <div className=" overflow-x-auto overflow-hidden">
+          <div className="flex flex-wrap md:flex-nowrap gap-2 text-gray-600 min-w-[320px]">
+            <Input
+              placeholder="Filter tasks..."
+              onChange={(e) => setSearchTasks(e.target.value)}
+              className="min-w-[200px]"
+            />
 
-          <DropdownMenu>
-            <DropdownMenuTrigger className="">
-              <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2">
-                <ListChecks />
-                Status <ChevronsUpDown size={7} className="text-gray-600" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Status</DropdownMenuLabel>
-              <DropdownMenuSeparator />
+            <DropdownMenu>
+              <DropdownMenuTrigger className="">
+                <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2">
+                  <ListChecks />
+                  Status <ChevronsUpDown size={7} className="text-gray-600" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Status</DropdownMenuLabel>
+                <DropdownMenuSeparator />
 
-              {["Backlog", "Todo", "In Progress", "In Review", "Done"].map(
-                (status) => (
+                {["Backlog", "Todo", "In Progress", "In Review", "Done"].map(
+                  (status) => (
+                    <DropdownMenuItem
+                      onClick={() =>
+                        setFilterByStatus({
+                          ...filterByStatus,
+                          filterBy: status,
+                          array: [
+                            "Backlog",
+                            "Todo",
+                            "In Progress",
+                            "In Review",
+                            "Done",
+                          ],
+                        })
+                      }
+                    >
+                      {status}
+                    </DropdownMenuItem>
+                  )
+                )}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() =>
+                    setFilterByStatus({
+                      ...filterByStatus,
+                      filterBy: "",
+                      array: [
+                        "Backlog",
+                        "Todo",
+                        "In Progress",
+                        "In Review",
+                        "Done",
+                      ],
+                    })
+                  }
+                >
+                  Clear Filter
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger className="">
+                <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2">
+                  <ArrowRightLeft /> Priority{" "}
+                  <ChevronsUpDown size={12} className="text-gray-600" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Priority</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {["Low", "Medium", "High"].map((priority) => (
                   <DropdownMenuItem
                     onClick={() =>
                       setFilterByStatus({
                         ...filterByStatus,
-                        filterBy: status,
-                        array: [
-                          "Backlog",
-                          "Todo",
-                          "In Progress",
-                          "In Review",
-                          "Done",
-                        ],
+                        filterBy: priority,
+                        array: ["Low", "Medium", "High"],
                       })
                     }
                   >
-                    {status}
+                    {priority}
                   </DropdownMenuItem>
-                )
-              )}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() =>
-                  setFilterByStatus({
-                    ...filterByStatus,
-                    filterBy: "",
-                    array: [
-                      "Backlog",
-                      "Todo",
-                      "In Progress",
-                      "In Review",
-                      "Done",
-                    ],
-                  })
-                }
-              >
-                Clear Filter
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger className="">
-              <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2">
-                <ArrowRightLeft /> Priority{" "}
-                <ChevronsUpDown size={12} className="text-gray-600" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Priority</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {["Low", "Medium", "High"].map((priority) => (
+                ))}
+                <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={() =>
                     setFilterByStatus({
                       ...filterByStatus,
-                      filterBy: priority,
+                      filterBy: "",
                       array: ["Low", "Medium", "High"],
                     })
                   }
                 >
-                  {priority}
+                  Clear Filter
                 </DropdownMenuItem>
-              ))}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() =>
-                  setFilterByStatus({
-                    ...filterByStatus,
-                    filterBy: "",
-                    array: ["Low", "Medium", "High"],
-                  })
-                }
-              >
-                Clear Filter
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger className="">
-              <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2">
-                <Person />
-                Assigned To{" "}
-                <ChevronsUpDown size={12} className="text-gray-600" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Assignees</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {members.map((member) => (
+            <DropdownMenu>
+              <DropdownMenuTrigger className="">
+                <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2">
+                  <Person />
+                  Assigned To{" "}
+                  <ChevronsUpDown size={12} className="text-gray-600" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Assignees</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {members.map((member) => (
+                  <DropdownMenuItem
+                    className="flex gap-2 items-center"
+                    onClick={() =>
+                      setFilterByStatus({
+                        ...filterByStatus,
+                        filterBy: member.user.username,
+                        array: members,
+                      })
+                    }
+                  >
+                    <Avatar className="h-5 w-5">
+                      <AvatarImage src={member.user.profilePicture!} />
+                      <AvatarFallback>{member.user.username[0]}</AvatarFallback>
+                    </Avatar>
+                    <span>{member.user.username}</span>
+                  </DropdownMenuItem>
+                ))}
+
+                <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  className="flex gap-2 items-center"
                   onClick={() =>
                     setFilterByStatus({
                       ...filterByStatus,
-                      filterBy: member.user.username,
-                      array: members,
+                      filterBy: "",
                     })
                   }
                 >
-                  <Avatar className="h-5 w-5">
-                    <AvatarImage src={member.user.profilePicture!} />
-                    <AvatarFallback>{member.user.username[0]}</AvatarFallback>
-                  </Avatar>
-                  <span>{member.user.username}</span>
+                  Clear Filter
                 </DropdownMenuItem>
-              ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
 
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() =>
-                  setFilterByStatus({
-                    ...filterByStatus,
-                    filterBy: "",
-                  })
-                }
-              >
-                Clear Filter
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger className="">
-              <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2">
-                <Folder /> Projects{" "}
-                <ChevronsUpDown size={12} className="text-gray-600" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Projects</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {projects.map((project) => (
+            <DropdownMenu>
+              <DropdownMenuTrigger className="">
+                <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2">
+                  <Folder /> Projects{" "}
+                  <ChevronsUpDown size={12} className="text-gray-600" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Projects</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {projects.map((project) => (
+                  <DropdownMenuItem
+                    onClick={() =>
+                      setFilterByStatus({
+                        ...filterByStatus,
+                        filterBy: project.name,
+                        array: projects,
+                      })
+                    }
+                  >
+                    {project?.emoji} {project?.name}
+                  </DropdownMenuItem>
+                ))}
+                <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={() =>
                     setFilterByStatus({
                       ...filterByStatus,
-                      filterBy: project.name,
+                      filterBy: "",
                       array: projects,
                     })
                   }
                 >
-                  {project?.emoji} {project?.name}
+                  Clear Filter
                 </DropdownMenuItem>
-              ))}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() =>
-                  setFilterByStatus({
-                    ...filterByStatus,
-                    filterBy: "",
-                    array: projects,
-                  })
-                }
-              >
-                Clear Filter
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
 
-        <Select onValueChange={(value) => setView(value)}>
-          <SelectTrigger className="w-auto">
+        <Select onValueChange={(value) => setView(value)} >
+          <SelectTrigger className="w-auto xl:ml-0 ml-2" >
             <SelectValue
               placeholder="View As"
               className="placeholder:text-gray-400"
@@ -532,6 +548,38 @@ const TaskCard = ({
                           View Task
                         </DropdownMenuItem>
                         <DropdownMenuItem>Edit Task</DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="outline"
+                              className="bg-red-400 hover:bg-red-500 hover:text-white text-white mt-1 flex gap-2 items-center"
+                            >
+                              <Trash2 /> Delete Task
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>
+                                Are you absolutely sure?
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This action cannot be undone. This will
+                                permanently delete your account and remove your
+                                data from our servers.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                className="bg-red-400"
+                                onClick={() => delete_Task(task?.id)}
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
