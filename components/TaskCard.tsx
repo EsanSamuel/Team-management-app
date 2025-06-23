@@ -83,6 +83,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { delete_Task } from "@/lib/actions/task.service";
+import { toast } from "sonner";
 
 const TaskCard = ({
   tasks,
@@ -160,6 +161,13 @@ const TaskCard = ({
       ].some((field) => field.includes(searchTasks));
 
     return filterStatus(filterByStatus).filter(matchSearch);
+  };
+
+  const filterByDueDate = () => {
+    return filterTaskWithSearchBar().sort(
+      (a: Task, b: Task) =>
+        new Date(a.Duedate).getDate() - new Date(b.Duedate).getDate()
+    );
   };
 
   const toggleRow = (id: string) => {
@@ -397,10 +405,11 @@ const TaskCard = ({
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
+          {/*<Button onClick={filterByDueDate}>Filter By Due date</Button>*/}
         </div>
 
-        <Select onValueChange={(value) => setView(value)} >
-          <SelectTrigger className="w-auto xl:ml-0 ml-2" >
+        <Select onValueChange={(value) => setView(value)}>
+          <SelectTrigger className="w-auto xl:ml-0 ml-2">
             <SelectValue
               placeholder="View As"
               className="placeholder:text-gray-400"
@@ -573,7 +582,10 @@ const TaskCard = ({
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
                               <AlertDialogAction
                                 className="bg-red-400"
-                                onClick={() => delete_Task(task?.id)}
+                                onClick={() => {
+                                  delete_Task(task?.id)
+                                  toast.success("Task removed!")
+                                }}
                               >
                                 Delete
                               </AlertDialogAction>

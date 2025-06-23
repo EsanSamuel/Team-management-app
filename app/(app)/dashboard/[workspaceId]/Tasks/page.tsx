@@ -31,6 +31,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { getMembers } from "@/lib/actions/member.service";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getWorkSpaceProjects } from "@/lib/actions/project.service";
+import { toast } from "sonner";
 
 const page = () => {
   const { workspaceId } = useParams();
@@ -58,6 +59,7 @@ const page = () => {
 
   const create_Task = async () => {
     await createTask({ ...task, workspaceId });
+    toast.success("Task created!");
   };
 
   return (

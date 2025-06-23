@@ -14,6 +14,8 @@ import {
   ArrowDownFromLine,
   ArrowRightLeft,
   Pencil,
+  ChevronUp,
+  ChevronDown,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -104,7 +106,7 @@ const Page = () => {
 
   const create_Task = async () => {
     await createTask({ ...task, projectId: projectId as string, workspaceId });
-    toast("Task has been created!");
+    toast.success("Task has been created!");
   };
 
   const getDoneTaskCount = tasks.filter(
@@ -131,13 +133,13 @@ const Page = () => {
         </div>
         <Dialog>
           <form className="">
-            <DialogTrigger asChild >
-                <Button className="xl:w- w-full mt-3">
-                  <div className="flex  items-center justify-center bg-transparent">
-                    <Plus className="size-3" />
-                  </div>
-                  New Task
-                </Button>
+            <DialogTrigger asChild>
+              <Button className="xl:w- w-full mt-3">
+                <div className="flex  items-center justify-center bg-transparent">
+                  <Plus className="size-3" />
+                </div>
+                New Task
+              </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
@@ -267,7 +269,10 @@ const Page = () => {
           <Card className="p-4 border-dashed">
             <div className="flex justify-between text-sm text-muted-foreground">
               <span className="flex items-center gap-1">
-                Total Tasks <ArrowBigUpDash size={14} />
+                Total Tasks{" "}
+                <span className="text-green-400 flex items-center gap-1">
+                  <ChevronUp size={13} /> {tasks.length}
+                </span>
               </span>
               <Activity size={14} />
             </div>
@@ -279,7 +284,9 @@ const Page = () => {
             <div className="flex justify-between text-sm text-muted-foreground">
               <span className="flex items-center gap-1">
                 Overdue Tasks{" "}
-                <ArrowBigDownDash className="text-red-400" size={14} />
+                <span className="text-red-400 flex items-center gap-1">
+                  <ChevronDown size={13} /> {getOverdiewTask}
+                </span>
               </span>
               <Activity size={14} />
             </div>
@@ -290,7 +297,10 @@ const Page = () => {
           <Card className="p-4 border-dashed">
             <div className="flex justify-between text-sm text-muted-foreground">
               <span className="flex items-center gap-1">
-                Completed Tasks <ArrowBigUpDash size={14} />
+                Completed Tasks{" "}
+                <span className="text-green-400 flex items-center gap-1">
+                  <ChevronUp size={13} /> {getDoneTaskCount}
+                </span>
               </span>
               <Activity size={14} />
             </div>

@@ -84,7 +84,7 @@ const Page = () => {
 
   const removeMember = async (memberId: string) => {
     await remove_Member(memberId);
-    toast("User has been removed from this workspace!");
+    toast.success("User has been removed from this workspace!");
   };
 
   return (
@@ -187,7 +187,7 @@ const Page = () => {
                       className="text-red-400 hover:text-red-500"
                       onClick={() => removeMember(member.id)}
                     >
-                      Remove this user
+                      Remove {member?.user?.username}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>

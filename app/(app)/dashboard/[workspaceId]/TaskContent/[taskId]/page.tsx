@@ -30,6 +30,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { getWorkSpaceProjects } from "@/lib/actions/project.service";
 import { getMembers } from "@/lib/actions/member.service";
+import { toast } from "sonner";
 
 const page = () => {
   const { taskId, workspaceId } = useParams();
@@ -70,6 +71,7 @@ const page = () => {
 
   const edit_Task = async () => {
     await editTask({ ...taskValues, workspaceId, taskId });
+    toast.success("Task edited!")
   };
 
   return (

@@ -1,7 +1,13 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { getUser } from "@/lib/actions/user.service";
-import { Activity, ArrowBigDownDash, ArrowBigUpDash, Plus } from "lucide-react";
+import {
+  Activity,
+  ArrowBigDownDash,
+  ArrowBigUpDash,
+  ChevronUp,
+  Plus,
+} from "lucide-react";
 import Image from "next/image";
 import React, { CSSProperties, useEffect, useState } from "react";
 import {
@@ -57,7 +63,7 @@ const DashboardPage = ({
   const create_workspace_project = async () => {
     try {
       const new_project = await create_Project({ ...project, workspaceId });
-      toast("Project has been created!");
+      toast.success("Project has been created!");
       console.log(new_project);
     } catch (error) {
       console.log(error);
@@ -186,7 +192,10 @@ const DashboardPage = ({
                 <Card className="p-4 border-dashed">
                   <div className="flex justify-between text-[13px] text-muted-foreground">
                     <span className="flex items-center gap-1">
-                      Total Projects <ArrowBigUpDash size={14} />
+                      Total Projects{" "}
+                      <span className="text-green-400 flex items-center gap-1">
+                        <ChevronUp size={13} /> {projects.length}
+                      </span>
                     </span>
                     <Activity size={14} />
                   </div>
@@ -197,7 +206,10 @@ const DashboardPage = ({
                 <Card className="p-4 border-dashed">
                   <div className="flex justify-between text-[13px] text-muted-foreground">
                     <span className="flex items-center gap-1">
-                      Total Tasks <ArrowBigUpDash size={14} />
+                      Total Tasks{" "}
+                      <span className="text-green-400 flex items-center gap-1">
+                        <ChevronUp size={13} /> {tasks.length}
+                      </span>
                     </span>
                     <Activity size={14} />
                   </div>
@@ -208,7 +220,10 @@ const DashboardPage = ({
                 <Card className="p-4 border-dashed">
                   <div className="flex justify-between text-[13px] text-muted-foreground">
                     <span className="flex items-center gap-1">
-                      Assigned Tasks <ArrowBigUpDash size={14} />
+                      Assigned Tasks{" "}
+                      <span className="text-green-400 flex items-center gap-1">
+                        <ChevronUp size={13} /> {getAssignedTasksCount}
+                      </span>
                     </span>
                     <Activity size={14} />
                   </div>
@@ -219,7 +234,10 @@ const DashboardPage = ({
                 <Card className="p-4 border-dashed">
                   <div className="flex justify-between text-[13px] text-muted-foreground">
                     <span className="flex items-center gap-1">
-                      Completed Tasks <ArrowBigUpDash size={14} />
+                      Completed Tasks{" "}
+                      <span className="text-green-400 flex items-center gap-1">
+                        <ChevronUp size={13} /> {getDoneTaskCount}
+                      </span>
                     </span>
                     <Activity size={14} />
                   </div>

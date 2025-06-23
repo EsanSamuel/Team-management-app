@@ -51,6 +51,9 @@ export const getMembers = async (workspaceId: string) => {
       include: {
         user: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
     return members;
   } catch (error) {

@@ -69,6 +69,9 @@ export const getWorkSpaceProjects = async (
         user: true,
         workspace: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
     return project;
   } catch (error) {

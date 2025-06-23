@@ -173,7 +173,7 @@ export function AppSidebar({ user, workspace }: IProps) {
   const createWorkspace = async () => {
     try {
       const new_workspace = await create_workspace({ ...workspaceprops });
-      toast("Workspace has been created!");
+      toast.success("Workspace has been created!");
       console.log(new_workspace);
       if (new_workspace) {
         const member = await AddUserToWorkspace(new_workspace.id, "OWNER");
@@ -217,6 +217,7 @@ export function AppSidebar({ user, workspace }: IProps) {
         workspaceId: activeWorkspace?.id,
       });
       console.log(new_project);
+      toast.success("Project created!")
     } catch (error) {
       console.log(error);
     }

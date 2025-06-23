@@ -57,12 +57,13 @@ const Authform = () => {
           password,
           redirect: false,
         });
-        toast("Account created successful!");
+        toast.success("Account created successful!");
         if (res?.ok) {
           console.log("signIn successful!");
           router.push("/dashboard");
         } else {
           console.log("signIn failed", res);
+          toast.error("Sign in failed!")
         }
       } else if (authState === "LOGIN") {
         const res = await signIn("credentials", {
@@ -70,16 +71,18 @@ const Authform = () => {
           password,
           redirect: false,
         });
-        toast("Sign in successful!");
+        toast.success("Sign in successful!");
         if (res?.ok) {
           console.log("signIn successful!");
           router.push("/dashboard");
         } else {
           console.log("signIn failed", res);
+          toast.error("Login failed!")
         }
       }
     } catch (error) {
       console.log("Signing Up failed");
+      toast.error("Signing in failed!")
     }
   };
 

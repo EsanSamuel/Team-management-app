@@ -8,6 +8,7 @@ import {
   ScanEye,
   Timer,
   User as Person,
+  Plus,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Badge } from "./ui/badge";
@@ -34,6 +35,8 @@ import { getMembers } from "@/lib/actions/member.service";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { Dialog, DialogTrigger } from "./ui/dialog";
+import CreateTask from "./CreateTask";
 
 const Karban = ({
   tasks,
@@ -259,11 +262,18 @@ const Karban = ({
           <div className="bg-gray-100 rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
-                <CircleHelp className="h-4 w-4" /> Backlog
+                <CircleHelp className="h-4 w-4" /> Backlog{" "}
+                <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
+                  {filteredBacklog.length}
+                </Badge>
               </div>
-              <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
-                {filteredBacklog.length}
-              </Badge>
+
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Plus size={13} />
+                </DialogTrigger>
+                <CreateTask workspaceId={workspaceId!} status="Backlog" />
+              </Dialog>
             </div>
 
             {filteredBacklog.map((task, index) => (
@@ -306,10 +316,17 @@ const Karban = ({
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
                 <Circle className="h-4 w-4 text-blue-500" /> Todo
+                <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
+                  {filteredTodo.length}
+                </Badge>
               </div>
-              <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
-                {filteredTodo.length}
-              </Badge>
+              
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Plus size={13} />
+                </DialogTrigger>
+                <CreateTask workspaceId={workspaceId!} status="Todo" />
+              </Dialog>
             </div>
 
             {filteredTodo.map((task, index) => (
@@ -352,10 +369,17 @@ const Karban = ({
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
                 <Timer className="h-4 w-4 text-yellow-500" /> Progress
+                <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
+                  {filteredProgress.length}
+                </Badge>
               </div>
-              <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
-                {filteredProgress.length}
-              </Badge>
+             
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Plus size={13} />
+                </DialogTrigger>
+                <CreateTask workspaceId={workspaceId!} status="In Progress" />
+              </Dialog>
             </div>
 
             {filteredProgress.map((task, index) => (
@@ -398,10 +422,17 @@ const Karban = ({
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
                 <ScanEye className="h-4 w-4 text-purple-500" /> Review
+                <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
+                  {filteredReview.length}
+                </Badge>
               </div>
-              <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
-                {filteredReview.length}
-              </Badge>
+              
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Plus size={13} />
+                </DialogTrigger>
+                <CreateTask workspaceId={workspaceId!} status="In Review" />
+              </Dialog>
             </div>
 
             {filteredReview.map((task, index) => (
@@ -444,10 +475,17 @@ const Karban = ({
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
                 <CircleCheck className="h-4 w-4 text-green-500" /> Done
+                <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
+                  {filteredDone.length}
+                </Badge>
               </div>
-              <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
-                {filteredDone.length}
-              </Badge>
+              
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Plus size={13} />
+                </DialogTrigger>
+                <CreateTask workspaceId={workspaceId!} status="Done" />
+              </Dialog>
             </div>
 
             {filteredDone.map((task, index) => (

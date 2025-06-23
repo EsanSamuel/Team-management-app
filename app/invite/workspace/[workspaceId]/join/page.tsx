@@ -2,9 +2,10 @@
 import Authform from "@/components/AuthComponent";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { AddUserToWorkspace } from "@/lib/actions/member.service";
+import { AddUserToWorkspace, getMembers } from "@/lib/actions/member.service";
+import { getUser } from "@/lib/actions/user.service";
 import { getWorkSpaceById } from "@/lib/actions/workspace.service";
-import { Workspace } from "@/lib/generated/prisma";
+import { Member, User, Workspace } from "@/lib/generated/prisma";
 import { ShieldHalf, Zap } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -16,21 +17,29 @@ const page = ({ params }: { params: { workspaceId: string } }) => {
   const { status } = useSession();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [workspace, setWorkspace] = useState<Workspace>();
+  const [members, setMembers] = useState<Member[]>([]);
+  const [user, setUser] = useState<User | any>();
 
   useEffect(() => {
     const getWorkSpace = async () => {
       const workspace = await getWorkSpaceById(params.workspaceId);
       setWorkspace(workspace as Workspace);
       console.log(workspace);
+      getMembers(params.workspaceId).then(setMembers as Member | any);
+      getUser().then(setUser as any);
     };
     getWorkSpace();
   }, [params.workspaceId]);
 
   const joinWorkspaceAsMember = async () => {
     try {
-      const member = await AddUserToWorkspace(params.workspaceId, "MEMBER");
-      toast("You have been added to this workspace");
-      console.log(member);
+      if (!members.some((member) => member.userId === user?.id)) {
+        const member = await AddUserToWorkspace(params.workspaceId, "MEMBER");
+        toast.success("You have been added to this workspace");
+        console.log(member);
+      } else {
+        toast.error("You are already in this workspace");
+      }
     } catch (error) {
       console.log(error);
     }

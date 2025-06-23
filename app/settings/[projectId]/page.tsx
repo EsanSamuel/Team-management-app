@@ -24,6 +24,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 export default function EditProjectPage() {
   const { projectId } = useParams();
@@ -48,6 +49,7 @@ export default function EditProjectPage() {
   const edit_workspace_project = async () => {
     try {
       const editproject = await edit_Project({ ...form, projectId });
+      toast.success("Project edited!")
       console.log(editproject);
     } catch (error) {
       console.log(error);

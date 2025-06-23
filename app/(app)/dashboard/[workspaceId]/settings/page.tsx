@@ -26,6 +26,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { authorizeRole } from "@/lib/actions/member.service";
 import { getUser } from "@/lib/actions/user.service";
+import { toast } from "sonner";
 
 const page = () => {
   const { workspaceId } = useParams();
@@ -76,10 +77,12 @@ const page = () => {
 
   const editWorkspace = async () => {
     await edit_workspace({ ...form, workspaceId });
+    toast.success("Workspace updated!")
   };
 
   const deleteWorkspace = async () => {
     await delete_Workspace(workspaceId);
+    toast.success("Workspace deleted!")
   };
 
   return (

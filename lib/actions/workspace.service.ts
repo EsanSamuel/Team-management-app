@@ -54,6 +54,9 @@ export const getWorkSpace = async () => {
           },
         },
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
     return workspace;
   } catch (error) {

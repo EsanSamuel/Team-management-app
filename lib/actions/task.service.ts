@@ -84,6 +84,9 @@ export const getTasks = async (
         project: true,
         workspace: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
     console.log("Tasks:", tasks);
     return tasks;
@@ -139,6 +142,9 @@ export const getAllTasksInWorkspace = async (
         assignee: true,
         project: true,
         workspace: true,
+      },
+      orderBy: {
+        createdAt: "desc",
       },
     });
     console.log("Tasks:", tasks);
