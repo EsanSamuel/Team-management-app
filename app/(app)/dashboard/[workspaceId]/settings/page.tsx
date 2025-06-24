@@ -28,7 +28,7 @@ import { authorizeRole } from "@/lib/actions/member.service";
 import { getUser } from "@/lib/actions/user.service";
 import { toast } from "sonner";
 
-const page = () => {
+const Page = () => {
   const { workspaceId } = useParams();
   const [workspace, setWorkspace] = useState<Workspace>();
   const [form, setForm] = useState({
@@ -174,4 +174,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

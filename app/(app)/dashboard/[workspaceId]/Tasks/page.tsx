@@ -55,7 +55,7 @@ const Page = () => {
     getAllTasksInWorkspace(workspaceId as string).then(setTasks);
     getMembers(workspaceId as string).then(setMembers as any);
     getWorkSpaceProjects(workspaceId as string).then(setProjects);
-  }, []);
+  }, [workspaceId]);
 
   const create_Task = async () => {
     await createTask({ ...task, workspaceId });

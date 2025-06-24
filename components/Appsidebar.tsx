@@ -202,7 +202,7 @@ export function AppSidebar({ user, workspace }: IProps) {
       const [, params, workspaceId] = pathname.split("/");
       setWorkspaceId(workspaceId);
     }
-  }, [pathname]);
+  }, [pathname, workspaceId]);
 
   useEffect(() => {
     const getProjects = async () => {
@@ -210,7 +210,7 @@ export function AppSidebar({ user, workspace }: IProps) {
       setWorkspaceProjects(projects as any[]);
     };
     getProjects();
-  }, [workspaceId]);
+  }, [activeWorkspace.id]);
 
   const create_workspace_project = async () => {
     try {

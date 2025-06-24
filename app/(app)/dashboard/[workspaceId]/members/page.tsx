@@ -37,7 +37,6 @@ const Page = () => {
     const getWorkSpace = async () => {
       const workspace = await getWorkSpaceById(workspaceId as string);
       setWorkspace(workspace as Workspace);
-      console.log(workspace);
     };
     getWorkSpace();
     getUser().then(setUser as any);
@@ -61,7 +60,6 @@ const Page = () => {
     const getWorkSpaceMembers = async () => {
       const members = await getMembers(workspaceId as string);
       setMembers(members as any);
-      console.log(workspace);
     };
     getWorkSpaceMembers();
   }, [workspaceId]);

@@ -144,7 +144,7 @@ const Karban = ({
         (task) => task.Status === "In Review"
       ) as any
     );
-  }, [tasks]);
+  }, [filterTaskWithSearchBar]);
 
   return (
     <>
@@ -320,7 +320,7 @@ const Karban = ({
                   {filteredTodo.length}
                 </Badge>
               </div>
-              
+
               <Dialog>
                 <DialogTrigger asChild>
                   <Plus size={13} />
@@ -373,7 +373,7 @@ const Karban = ({
                   {filteredProgress.length}
                 </Badge>
               </div>
-             
+
               <Dialog>
                 <DialogTrigger asChild>
                   <Plus size={13} />
@@ -426,7 +426,7 @@ const Karban = ({
                   {filteredReview.length}
                 </Badge>
               </div>
-              
+
               <Dialog>
                 <DialogTrigger asChild>
                   <Plus size={13} />
@@ -479,7 +479,7 @@ const Karban = ({
                   {filteredDone.length}
                 </Badge>
               </div>
-              
+
               <Dialog>
                 <DialogTrigger asChild>
                   <Plus size={13} />
