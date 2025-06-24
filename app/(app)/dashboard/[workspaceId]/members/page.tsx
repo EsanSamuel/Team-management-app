@@ -12,7 +12,7 @@ import {
 import { getUser } from "@/lib/actions/user.service";
 import { getWorkSpaceById } from "@/lib/actions/workspace.service";
 import { Member, User, Workspace } from "@/lib/generated/prisma";
-import { Check, Copy } from "lucide-react";
+import { Check, ChevronDown, Copy } from "lucide-react";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import {
@@ -116,7 +116,7 @@ const Page = () => {
           {isAdmin ? (
             <div className="flex gap-2 mt-2">
               <Input
-                value={`http://localhost:3000/invite/workspace/${workspaceId}/join`}
+                value={`https://synccorp.vercel.app/invite/workspace/${workspaceId}/join`}
                 className="text-gray-700 text-[13px]"
                 readOnly
               />
@@ -162,8 +162,8 @@ const Page = () => {
                 <DropdownMenu>
                   <DropdownMenuTrigger>
                     {" "}
-                    <Button className="text-[12px] bg-white border-[1px] text-black">
-                      {member.role}
+                    <Button className="text-[12px] bg-white border-[1px] text-black flex gap-1 items-center">
+                      {member.role} <ChevronDown size={12} />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>

@@ -49,11 +49,16 @@ export default function EditProjectPage() {
   const edit_workspace_project = async () => {
     try {
       const editproject = await edit_Project({ ...form, projectId });
-      toast.success("Project edited!")
+      toast.success("Project edited!");
       console.log(editproject);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleDelete = async () => {
+    await delete_Project(projectId);
+    toast.success("Project deleted!");
   };
 
   return (
@@ -138,7 +143,7 @@ export default function EditProjectPage() {
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction
                   className="bg-red-400"
-                  onClick={() => delete_Project(projectId)}
+                  onClick={handleDelete}
                 >
                   Delete
                 </AlertDialogAction>
