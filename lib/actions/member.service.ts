@@ -1,5 +1,6 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { $Enums } from "../generated/prisma";
 import prisma from "../prismadb";
 import { getUser } from "./user.service";
@@ -13,7 +14,7 @@ export const AddUserToWorkspace = async (
 
     if (!user?.id) {
       console.error("User is undefined in create_workspace");
-      return;
+      redirect("/");
     }
     const member = await prisma.member.create({
       data: {
@@ -37,12 +38,6 @@ export const AddUserToWorkspace = async (
 };
 
 export const getMembers = async (workspaceId: string) => {
-  const user = await getUser();
-
-  if (!user?.id) {
-    console.error("User is undefined in create_workspace");
-    return;
-  }
   try {
     const members = await prisma.member.findMany({
       where: {

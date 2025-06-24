@@ -2,6 +2,7 @@
 import { getUser } from "./user.service";
 import prisma from "../prismadb";
 import { Project, Task, User } from "../generated/prisma";
+import { redirect } from "next/navigation";
 
 export const createTask = async ({
   title,
@@ -27,7 +28,7 @@ export const createTask = async ({
 
     if (!user?.id) {
       console.error("User is undefined in create_workspace");
-      return;
+      redirect("/");
     }
 
     const task = await prisma.task.create({
@@ -68,12 +69,6 @@ export const createTask = async ({
 export const getTasks = async (
   projectId: string
 ): Promise<(Task & { assignee: User } & { project: Project })[]> => {
-  const user = await getUser();
-
-  if (!user?.id) {
-    console.error("User is undefined in create_workspace");
-    return [];
-  }
   try {
     const tasks = await prisma.task.findMany({
       where: {
@@ -99,12 +94,6 @@ export const getTasks = async (
 export const getTask = async (
   taskId: string
 ): Promise<(Task & { assignee: User } & { project: Project }) | undefined> => {
-  const user = await getUser();
-
-  if (!user?.id) {
-    console.error("User is undefined in create_workspace");
-    return;
-  }
   try {
     const task = await prisma.task.findUnique({
       where: {
@@ -127,12 +116,6 @@ export const getTask = async (
 export const getAllTasksInWorkspace = async (
   workspaceId: string
 ): Promise<(Task & { assignee: User } & { project: Project })[]> => {
-  const user = await getUser();
-
-  if (!user?.id) {
-    console.error("User is undefined in create_workspace");
-    return [];
-  }
   try {
     const tasks = await prisma.task.findMany({
       where: {
@@ -177,13 +160,6 @@ export const editTask = async ({
   workspaceId: any;
 }) => {
   try {
-    const user = await getUser();
-
-    if (!user?.id) {
-      console.error("User is undefined in create_workspace");
-      return;
-    }
-
     const task = await prisma.task.update({
       where: {
         id: taskId,

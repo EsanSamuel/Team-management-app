@@ -3,6 +3,7 @@
 import prisma from "../prismadb";
 import { getUser } from "./user.service";
 import { Member, Workspace } from "../generated/prisma";
+import { redirect } from "next/navigation";
 
 interface IWorkspace {
   name: string;
@@ -17,7 +18,6 @@ export const create_workspace = async ({ name, description }: IWorkspace) => {
 
     if (!user?.id) {
       console.error("User is undefined in create_workspace");
-      return;
     }
 
     const new_workspace = await prisma.workspace.create({
@@ -39,12 +39,6 @@ export const create_workspace = async ({ name, description }: IWorkspace) => {
 };
 
 export const getWorkSpace = async () => {
-  const user = await getUser();
-
-  if (!user?.id) {
-    console.error("User is undefined in create_workspace");
-    return;
-  }
   try {
     const workspace = await prisma.workspace.findMany({
       include: {
@@ -86,13 +80,6 @@ export const edit_workspace = async ({
   workspaceId,
 }: IWorkspace) => {
   try {
-    const user = await getUser();
-
-    if (!user?.id) {
-      console.error("User is undefined in create_workspace");
-      return;
-    }
-
     const new_workspace = await prisma.workspace.update({
       where: {
         id: workspaceId,

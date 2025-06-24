@@ -3,6 +3,7 @@
 import prisma from "../prismadb";
 import { getUser } from "./user.service";
 import { Project, User, Workspace } from "../generated/prisma";
+import { redirect } from "next/navigation";
 
 interface IProject {
   name: string;
@@ -24,7 +25,7 @@ export const create_Project = async ({
 
     if (!user?.id) {
       console.error("User is undefined in create_workspace");
-      return;
+      redirect("/");
     }
 
     const new_project = await prisma?.project?.create({
@@ -54,12 +55,6 @@ export const create_Project = async ({
 export const getWorkSpaceProjects = async (
   workspaceId: string
 ): Promise<(Project & { user: User } & { workspace: Workspace })[]> => {
-  const user = await getUser();
-
-  if (!user?.id) {
-    console.error("User is undefined in create_workspace");
-    return [];
-  }
   try {
     const project = await prisma.project.findMany({
       where: {
@@ -85,12 +80,6 @@ export const getProject = async (
 ): Promise<
   (Project & { user: User } & { workspace: Workspace }) | undefined
 > => {
-  const user = await getUser();
-
-  if (!user?.id) {
-    console.error("User is undefined in create_workspace");
-    return undefined;
-  }
   try {
     const project = await prisma.project.findUnique({
       where: {
@@ -114,13 +103,6 @@ export const edit_Project = async ({
   projectId,
 }: IProject): Promise<void> => {
   try {
-    const user = await getUser();
-
-    if (!user?.id) {
-      console.error("User is undefined in create_workspace");
-      return;
-    }
-
     const editproject = await prisma?.project?.update({
       where: {
         id: projectId,

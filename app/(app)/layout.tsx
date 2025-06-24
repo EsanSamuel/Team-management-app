@@ -7,6 +7,7 @@ import { getWorkSpace } from "@/lib/actions/workspace.service";
 import { WorkspaceProvider } from "@/context/workspaceContext";
 import { authorizeRole } from "@/lib/actions/member.service";
 import { Toaster } from "@/components/ui/sonner";
+import { redirect } from "next/navigation";
 
 export default async function Layout({
   children,
@@ -19,6 +20,7 @@ export default async function Layout({
     item?.Member?.some((member: any) => member?.user?.id === user?.id)
   );
   console.log("Your workspace:", userWorkspace);
+  if (!user) redirect("/");
   return (
     <WorkspaceProvider>
       <SidebarProvider>

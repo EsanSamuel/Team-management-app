@@ -4,6 +4,8 @@ import "./globals.css";
 import { Poppins, Inter, Montserrat } from "next/font/google";
 import Provider from "@/components/Provider";
 import { Toaster } from "sonner";
+import { getUser } from "@/lib/actions/user.service";
+import { redirect } from "next/navigation";
 
 const poppins = Poppins({
   subsets: ["latin"],
