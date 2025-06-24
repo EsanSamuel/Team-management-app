@@ -18,7 +18,7 @@ type PageProps = {
   };
 };
 
-const page = ({ params }: PageProps) => {
+const Page = ({ params }: PageProps) => {
   const { workspaceId } = params;
   const router = useRouter();
   const { status } = useSession();
@@ -105,4 +105,4 @@ const page = ({ params }: PageProps) => {
   );
 };
 
-export default page;
+export default Page;
