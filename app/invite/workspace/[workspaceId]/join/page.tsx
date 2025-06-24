@@ -8,18 +8,12 @@ import { getWorkSpaceById } from "@/lib/actions/workspace.service";
 import { Member, User, Workspace } from "@/lib/generated/prisma";
 import { ShieldHalf, Zap } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-type PageProps = {
-  params: {
-    workspaceId: string;
-  };
-};
-
-const Page = ({ params }: PageProps) => {
-  const { workspaceId } = params;
+const Page = () => {
+  const { workspaceId } = useParams();
   const router = useRouter();
   const { status } = useSession();
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -29,10 +23,10 @@ const Page = ({ params }: PageProps) => {
 
   useEffect(() => {
     const getWorkSpace = async () => {
-      const workspace = await getWorkSpaceById(workspaceId);
+      const workspace = await getWorkSpaceById(workspaceId as any);
       setWorkspace(workspace as Workspace);
       console.log(workspace);
-      getMembers(workspaceId).then(setMembers as Member | any);
+      getMembers(workspaceId as any).then(setMembers as Member | any);
       getUser().then(setUser as any);
     };
     getWorkSpace();
@@ -41,7 +35,7 @@ const Page = ({ params }: PageProps) => {
   const joinWorkspaceAsMember = async () => {
     try {
       if (!members.some((member) => member.userId === user?.id)) {
-        const member = await AddUserToWorkspace(workspaceId, "MEMBER");
+        const member = await AddUserToWorkspace(workspaceId as any, "MEMBER");
         toast.success("You have been added to this workspace");
         router.push(`/dashboard/${workspaceId}`);
         console.log(member);
