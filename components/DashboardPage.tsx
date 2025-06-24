@@ -187,7 +187,7 @@ const DashboardPage = ({
         {projects.length !== 0 ? (
           <>
             <div className="overflow-x-auto overflow-hidden">
-              <div className="grid grid-cols-4 gap-3 min-w-[800px] w-max xl:w-full mt-7">
+              <div className="grid grid-cols-4 gap-3 min-w-[900px] w-max xl:w-full mt-7">
                 <Card className="p-4 border-dashed shadow-none">
                   <div className="flex justify-between text-[13px] text-muted-foreground">
                     <span className="flex items-center gap-1">

@@ -155,7 +155,12 @@ export function AppSidebar({ user, workspace }: IProps) {
     getProjects();
   }, [activeWorkspace?.id]);
 
-  // ✅ Only now do the conditional return
+  useEffect(() => {
+    if (pathname === "/dashboard") {
+      router.push(`/dashboard/${activeWorkspace?.id}`);
+    }
+  }, [router, activeWorkspace.id, pathname]);
+
   if (!activeWorkspace) {
     return null;
   }

@@ -25,7 +25,8 @@ export const create_Project = async ({
 
     if (!user?.id) {
       console.error("User is undefined in create_workspace");
-      redirect("/");
+      return
+
     }
 
     const new_project = await prisma?.project?.create({

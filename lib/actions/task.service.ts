@@ -28,7 +28,7 @@ export const createTask = async ({
 
     if (!user?.id) {
       console.error("User is undefined in create_workspace");
-      redirect("/");
+      return
     }
 
     const task = await prisma.task.create({

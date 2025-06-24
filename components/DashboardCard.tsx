@@ -29,7 +29,7 @@ const DashboardCard = ({
   return (
     <Card className="w-full rounded-xl p-4 shadow-sm border border-gray-200 bg-white shadow-none">
       <CardHeader className="flex gap-2 p-0 mb-1 border-b border-gray-100 overflow-x-auto overflow-hidden">
-        {["Recent Projects", "Recent Task", "Recent Members"].map(
+        {["Recent Projects" /*"Recent Task", "Recent Members"*/].map(
           (tab, idx) => (
             <Button
               key={idx}
