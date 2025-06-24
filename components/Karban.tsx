@@ -116,7 +116,7 @@ const Karban = ({
       ].some((field) => field.includes(searchTasks));
 
     return filterStatus(filterByStatus).filter(matchSearch);
-  }, [filterStatus(filterByStatus)]);
+  }, [filterStatus, filterByStatus, searchTasks]);
 
   const getDoneTaskCount = tasks.filter(
     (task) => task.Status === "DONE"
@@ -167,8 +167,9 @@ const Karban = ({
               <DropdownMenuContent>
                 <DropdownMenuLabel>Priority</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                {["Low", "Medium", "High"].map((priority) => (
+                {["Low", "Medium", "High"].map((priority, index) => (
                   <DropdownMenuItem
+                    key={index}
                     onClick={() =>
                       setFilterByStatus({
                         ...filterByStatus,
@@ -208,6 +209,7 @@ const Karban = ({
                 <DropdownMenuSeparator />
                 {members.map((member) => (
                   <DropdownMenuItem
+                    key={member.id}
                     className="flex gap-2 items-center"
                     onClick={() =>
                       setFilterByStatus({
