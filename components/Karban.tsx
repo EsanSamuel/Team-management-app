@@ -73,35 +73,44 @@ const Karban = ({
     getMembers(workspaceId as string).then(setMembers as any);
   }, [workspaceId]);
 
-  const filterStatus = (value: { filterBy: string; array: any[] }) => {
-    const statusArray = ["Backlog", "Todo", "In Progress", "In Review", "Done"];
-    const priorityArray = ["Low", "Medium", "High"];
-    const membersArray = members;
-    if (
-      Array.isArray(statusArray) &&
-      statusArray.some((status) => value.array!.includes(status))
-    ) {
-      return value.filterBy
-        ? tasks.filter((task) => task.Status === value.filterBy)
-        : tasks;
-    } else if (
-      Array.isArray(priorityArray) &&
-      priorityArray.some((priority) => value.array!.includes(priority))
-    ) {
-      return value.filterBy
-        ? tasks.filter((task) => task.priority === value.filterBy)
-        : tasks;
-    } else if (
-      Array.isArray(membersArray) &&
-      membersArray.some((member) => value.array!.includes(member))
-    ) {
-      return value.filterBy
-        ? tasks.filter((task) => task.assignee.username === value.filterBy)
-        : tasks;
-    } else {
-      return tasks;
-    }
-  };
+  const filterStatus = useCallback(
+    (value: { filterBy: string; array: any[] }) => {
+      const statusArray = [
+        "Backlog",
+        "Todo",
+        "In Progress",
+        "In Review",
+        "Done",
+      ];
+      const priorityArray = ["Low", "Medium", "High"];
+      const membersArray = members;
+      if (
+        Array.isArray(statusArray) &&
+        statusArray.some((status) => value.array!.includes(status))
+      ) {
+        return value.filterBy
+          ? tasks.filter((task) => task.Status === value.filterBy)
+          : tasks;
+      } else if (
+        Array.isArray(priorityArray) &&
+        priorityArray.some((priority) => value.array!.includes(priority))
+      ) {
+        return value.filterBy
+          ? tasks.filter((task) => task.priority === value.filterBy)
+          : tasks;
+      } else if (
+        Array.isArray(membersArray) &&
+        membersArray.some((member) => value.array!.includes(member))
+      ) {
+        return value.filterBy
+          ? tasks.filter((task) => task.assignee.username === value.filterBy)
+          : tasks;
+      } else {
+        return tasks;
+      }
+    },
+    [tasks, members]
+  );
 
   const filterTaskWithSearchBar = useCallback(() => {
     if (!searchTasks.trim()) return filterStatus(filterByStatus);
