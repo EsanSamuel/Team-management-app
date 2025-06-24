@@ -14,7 +14,7 @@ export const AddUserToWorkspace = async (
 
     if (!user?.id) {
       console.error("User is undefined in create_workspace");
-      redirect("/");
+      return
     }
     const member = await prisma.member.create({
       data: {

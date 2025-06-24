@@ -18,6 +18,7 @@ export const create_workspace = async ({ name, description }: IWorkspace) => {
 
     if (!user?.id) {
       console.error("User is undefined in create_workspace");
+      return
     }
 
     const new_workspace = await prisma.workspace.create({

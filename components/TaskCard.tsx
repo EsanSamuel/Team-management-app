@@ -1,6 +1,6 @@
 "use client";
 import { Member, Project, Task, User } from "@/lib/generated/prisma";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import {
@@ -150,20 +150,20 @@ const TaskCard = ({
     }
   };
 
-  const filterTaskWithSearchBar = () => {
-    if (!searchTasks.trim()) return filterStatus(filterByStatus);
+const filterTaskWithSearchBar = useCallback(() => {
+  if (!searchTasks.trim()) return filterStatus(filterByStatus);
 
-    const matchSearch = (task: Task & { assignee: User }) =>
-      [
-        task.title.toLowerCase(),
-        task.Status.toLowerCase(),
-        task.Duedate.toLowerCase(),
-        task.assignee.username.toLowerCase(),
-        task.priority.toLowerCase(),
-      ].some((field) => field.includes(searchTasks));
+  const matchSearch = (task: Task & { assignee: User }) =>
+    [
+      task.title.toLowerCase(),
+      task.Status.toLowerCase(),
+      task.Duedate.toLowerCase(),
+      task.assignee.username.toLowerCase(),
+      task.priority.toLowerCase(),
+    ].some((field) => field.includes(searchTasks.toLowerCase()));
 
-    return filterStatus(filterByStatus).filter(matchSearch);
-  };
+  return filterStatus(filterByStatus).filter(matchSearch);
+}, [searchTasks, filterByStatus, filterStatus]);
 
   const filterByDueDate = () => {
     return filterTaskWithSearchBar().sort(
