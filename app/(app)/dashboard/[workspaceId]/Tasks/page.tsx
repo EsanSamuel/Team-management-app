@@ -92,7 +92,6 @@ const page = () => {
                   <Input
                     autoFocus
                     id="title"
-                    placeholder="Enter task title"
                     onChange={(e) =>
                       setTask({ ...task, title: e.target.value })
                     }
@@ -102,7 +101,6 @@ const page = () => {
                   <Label htmlFor="desc">Description</Label>
                   <Textarea
                     id="desc"
-                    placeholder="Describe the task"
                     onChange={(e) =>
                       setTask({ ...task, description: e.target.value })
                     }
@@ -117,7 +115,7 @@ const page = () => {
                     }
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select a project" />
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="w-full">
                       {projects?.map((project) => (
@@ -144,7 +142,7 @@ const page = () => {
                     }
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select a member" />
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="w-full">
                       {members.map((member) => (
@@ -180,7 +178,7 @@ const page = () => {
                     }
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select status" />
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       {[
@@ -205,7 +203,7 @@ const page = () => {
                     }
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select priority" />
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       {["Low", "Medium", "High"].map((level) => (

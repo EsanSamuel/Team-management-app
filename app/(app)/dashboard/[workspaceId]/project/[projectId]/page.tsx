@@ -154,7 +154,6 @@ const Page = () => {
                   <Input
                     autoFocus
                     id="title"
-                    placeholder="Enter task title"
                     onChange={(e) =>
                       setTask({ ...task, title: e.target.value })
                     }
@@ -164,7 +163,6 @@ const Page = () => {
                   <Label htmlFor="desc">Description</Label>
                   <Textarea
                     id="desc"
-                    placeholder="Describe the task"
                     onChange={(e) =>
                       setTask({ ...task, description: e.target.value })
                     }
@@ -178,7 +176,7 @@ const Page = () => {
                     }
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select a member" />
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="w-full">
                       {members.map((member) => (
@@ -214,7 +212,7 @@ const Page = () => {
                     }
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select status" />
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       {[
@@ -239,7 +237,7 @@ const Page = () => {
                     }
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select priority" />
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       {["Low", "Medium", "High"].map((level) => (
@@ -266,7 +264,7 @@ const Page = () => {
 
       <div className="overflow-x-auto overflow-hidden">
         <div className="grid grid-cols-3 min-w-[700px] gap-5">
-          <Card className="p-4 border-dashed">
+          <Card className="p-4 border-dashed shadow-none">
             <div className="flex justify-between text-sm text-muted-foreground">
               <span className="flex items-center gap-1">
                 Total Tasks{" "}
@@ -280,7 +278,7 @@ const Page = () => {
               {tasks.length}
             </h2>
           </Card>
-          <Card className="p-4 border-dashed">
+          <Card className="p-4 border-dashed shadow-none">
             <div className="flex justify-between text-sm text-muted-foreground">
               <span className="flex items-center gap-1">
                 Overdue Tasks{" "}
@@ -294,7 +292,7 @@ const Page = () => {
               {getOverdiewTask}
             </h2>
           </Card>
-          <Card className="p-4 border-dashed">
+          <Card className="p-4 border-dashed shadow-none">
             <div className="flex justify-between text-sm text-muted-foreground">
               <span className="flex items-center gap-1">
                 Completed Tasks{" "}

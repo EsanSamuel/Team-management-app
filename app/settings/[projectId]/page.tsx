@@ -57,7 +57,7 @@ export default function EditProjectPage() {
   };
 
   return (
-    <div className="min-h-screen bg-muted flex justify-center items-start p-6">
+    <div className="min-h-screen bg-muted flex justify-center items-start xl:p-6 p-3">
       <Card className="w-full max-w-2xl p-6 space-y-8 rounded-2xl shadow-md">
         {/* Header */}
         <div className="flex items-center gap-4">

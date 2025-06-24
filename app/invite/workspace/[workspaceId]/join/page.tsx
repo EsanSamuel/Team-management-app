@@ -36,6 +36,7 @@ const page = ({ params }: { params: { workspaceId: string } }) => {
       if (!members.some((member) => member.userId === user?.id)) {
         const member = await AddUserToWorkspace(params.workspaceId, "MEMBER");
         toast.success("You have been added to this workspace");
+        router.push(`/dashboard/${params.workspaceId}`);
         console.log(member);
       } else {
         toast.error("You are already in this workspace");

@@ -7,13 +7,15 @@ import { getWorkSpaceProjects } from "@/lib/actions/project.service";
 import { format } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
-const DashboardCard = () => {
+const DashboardCard = ({
+  workspaceProjects,
+}: {
+  workspaceProjects: (Project & { user: User })[];
+}) => {
   const router = useRouter();
   const pathname = usePathname();
   const [workspaceId, setWorkspaceId] = useState("");
-  const [workspaceProjects, setWorkspaceProjects] = useState<
-    (Project & { user: User })[]
-  >([]);
+
   useEffect(() => {
     if (pathname.includes("/")) {
       const [, params, workspaceId] = pathname.split("/");
@@ -21,19 +23,11 @@ const DashboardCard = () => {
     }
   }, [pathname]);
 
-  useEffect(() => {
-    const getProjects = async () => {
-      const projects = await getWorkSpaceProjects(workspaceId);
-      setWorkspaceProjects(projects as any[]);
-    };
-    getProjects();
-  }, [workspaceId]);
-
   const routeToProject = (id: string) => {
     router.push(`/dashboard/${workspaceId}/project/${id}`);
   };
   return (
-    <Card className="w-full rounded-xl p-4 shadow-sm border border-gray-200 bg-white">
+    <Card className="w-full rounded-xl p-4 shadow-sm border border-gray-200 bg-white shadow-none">
       <CardHeader className="flex gap-2 p-0 mb-1 border-b border-gray-100 overflow-x-auto overflow-hidden">
         {["Recent Projects", "Recent Task", "Recent Members"].map(
           (tab, idx) => (
@@ -52,7 +46,7 @@ const DashboardCard = () => {
       <CardContent className="flex flex-col gap-5 p-0">
         {workspaceProjects?.map((project) => (
           <div
-            key={project.id}
+            key={project?.id}
             onClick={() => routeToProject(project.id)}
             className="cursor-pointer hover:bg-gray-50 transition rounded-lg p-3 border border-gray-100"
           >

@@ -71,11 +71,11 @@ const page = () => {
 
   const edit_Task = async () => {
     await editTask({ ...taskValues, workspaceId, taskId });
-    toast.success("Task edited!")
+    toast.success("Task edited!");
   };
 
   return (
-    <div className="p-10">
+    <div className="xl:p-10 p-3">
       <div className="flex mb-5 justify-between">
         <div className="flex flex-col gap-1">
           <h1 className="font-semibold text-[16px]">Tasks</h1>
@@ -102,7 +102,6 @@ const page = () => {
                   <Input
                     autoFocus
                     id="title"
-                    placeholder="Enter task title"
                     onChange={(e) =>
                       setTaskValues({ ...taskValues, title: e.target.value })
                     }
@@ -113,7 +112,6 @@ const page = () => {
                   <Label htmlFor="desc">Description</Label>
                   <Textarea
                     id="desc"
-                    placeholder="Describe the task"
                     onChange={(e) =>
                       setTaskValues({
                         ...taskValues,
@@ -133,7 +131,7 @@ const page = () => {
                     value={taskValues.projectId as any}
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select a project" />
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="w-full">
                       {projects?.map((project) => (
@@ -161,7 +159,7 @@ const page = () => {
                     value={taskValues.assignedTo}
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select a member" />
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="w-full">
                       {members.map((member) => (
@@ -199,7 +197,7 @@ const page = () => {
                     value={taskValues.Status}
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select status" />
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       {[
@@ -225,7 +223,7 @@ const page = () => {
                     value={taskValues.priority}
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select priority" />
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       {["Low", "Medium", "High"].map((level) => (
@@ -300,7 +298,7 @@ const page = () => {
           </div>
         </div>
 
-        <div className="p-3 rounded-[10px] border">
+        <div className="p-3 rounded-[10px] border xl:min-h-auto min-h-[200px]">
           <div className="flex justify-between items-center w-full">
             <>
               <h1 className="text-gray-800 text-[13px] font-bold">

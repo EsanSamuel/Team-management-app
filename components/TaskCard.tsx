@@ -84,6 +84,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { delete_Task } from "@/lib/actions/task.service";
 import { toast } from "sonner";
+import { Dialog, DialogTrigger } from "./ui/dialog";
+import EditTaskModal from "./EditTaskModal";
 
 const TaskCard = ({
   tasks,
@@ -324,7 +326,7 @@ const TaskCard = ({
             </DropdownMenu>
 
             <DropdownMenu>
-              <DropdownMenuTrigger className="">
+              <DropdownMenuTrigger className="" asChild>
                 <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2">
                   <Person />
                   Assigned To{" "}
@@ -556,7 +558,27 @@ const TaskCard = ({
                         >
                           View Task
                         </DropdownMenuItem>
-                        <DropdownMenuItem>Edit Task</DropdownMenuItem>
+
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <h1
+                              className="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive
+                               data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20
+                             data-[variant=destructive]:focus:text-destructive 
+                             data-[variant=destructive]:*:[svg]:!text-destructive 
+                             [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default 
+                             items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled]:pointer-events-none 
+                             data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+                            >
+                              Edit Task
+                            </h1>
+                          </DialogTrigger>
+                          <EditTaskModal
+                            workspaceId={workspaceId!}
+                            taskId={task.id}
+                          />
+                        </Dialog>
+
                         <DropdownMenuSeparator />
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
@@ -583,8 +605,8 @@ const TaskCard = ({
                               <AlertDialogAction
                                 className="bg-red-400"
                                 onClick={() => {
-                                  delete_Task(task?.id)
-                                  toast.success("Task removed!")
+                                  delete_Task(task?.id);
+                                  toast.success("Task removed!");
                                 }}
                               >
                                 Delete

@@ -33,7 +33,6 @@ import { Project, Task, User } from "@/lib/generated/prisma";
 import { getAllTasksInWorkspace } from "@/lib/actions/task.service";
 import { authorizeRole } from "@/lib/actions/member.service";
 import { toast } from "sonner";
-import { RotatingLines } from "react-loader-spinner";
 import { useWorkspace } from "@/context/workspaceContext";
 import { ClipLoader, FadeLoader } from "react-spinners";
 
@@ -55,7 +54,7 @@ const DashboardPage = ({
     name: "",
     description: "",
   });
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<(Project & { user: User })[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isAdmin, setIsAdmin] = useState(false);
   const { loader } = useWorkspace();
@@ -185,11 +184,11 @@ const DashboardPage = ({
       </div>
 
       <>
-        {project ? (
+        {projects.length !== 0 ? (
           <>
             <div className="overflow-x-auto overflow-hidden">
               <div className="grid grid-cols-4 gap-3 min-w-[800px] w-max xl:w-full mt-7">
-                <Card className="p-4 border-dashed">
+                <Card className="p-4 border-dashed shadow-none">
                   <div className="flex justify-between text-[13px] text-muted-foreground">
                     <span className="flex items-center gap-1">
                       Total Projects{" "}
@@ -203,7 +202,7 @@ const DashboardPage = ({
                     {projects.length}
                   </h2>
                 </Card>
-                <Card className="p-4 border-dashed">
+                <Card className="p-4 border-dashed shadow-none">
                   <div className="flex justify-between text-[13px] text-muted-foreground">
                     <span className="flex items-center gap-1">
                       Total Tasks{" "}
@@ -217,7 +216,7 @@ const DashboardPage = ({
                     {tasks.length}
                   </h2>
                 </Card>
-                <Card className="p-4 border-dashed">
+                <Card className="p-4 border-dashed shadow-none">
                   <div className="flex justify-between text-[13px] text-muted-foreground">
                     <span className="flex items-center gap-1">
                       Assigned Tasks{" "}
@@ -231,7 +230,7 @@ const DashboardPage = ({
                     {getAssignedTasksCount}
                   </h2>
                 </Card>
-                <Card className="p-4 border-dashed">
+                <Card className="p-4 border-dashed shadow-none">
                   <div className="flex justify-between text-[13px] text-muted-foreground">
                     <span className="flex items-center gap-1">
                       Completed Tasks{" "}
@@ -249,18 +248,22 @@ const DashboardPage = ({
             </div>
 
             <div className="mt-5">
-              <DashboardCard />
+              <DashboardCard workspaceProjects={projects as any} />
             </div>
           </>
         ) : (
-          <div className="flex items-center justify-center h-full">
+          <div className="flex items-center justify-center h-full mt-20  ">
             {" "}
-            <FadeLoader
-              color="oklch(0.55 0.02 264)"
-              cssOverride={override}
-              aria-label="Loading Spinner"
-              data-testid="loader"
-            />
+            <div className="w-2 h-2">
+              <FadeLoader
+                color="oklch(0.55 0.02 264)"
+                cssOverride={override}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+                className="w-3 h-3"
+       
+              />
+            </div>
           </div>
         )}
       </>

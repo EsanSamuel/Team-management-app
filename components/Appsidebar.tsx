@@ -190,9 +190,11 @@ export function AppSidebar({ user, workspace }: IProps) {
   };
   const handleSignOut = async () => {
     try {
-      await signOut();
-      redirect("/");
-    } catch (error) {}
+      await signOut({ redirect: false });
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -217,7 +219,7 @@ export function AppSidebar({ user, workspace }: IProps) {
         workspaceId: activeWorkspace?.id,
       });
       console.log(new_project);
-      toast.success("Project created!")
+      toast.success("Project created!");
     } catch (error) {
       console.log(error);
     }
@@ -297,79 +299,77 @@ export function AppSidebar({ user, workspace }: IProps) {
                     ))}
                     <DropdownMenuSeparator />
 
-                    {isAdmin && (
-                      <Dialog>
-                        <form onSubmit={handleSubmit(createWorkspace)}>
-                          <div className="">
-                            <DialogTrigger className="flex gap-2 p-2 items-center">
-                              <div className="flex size-6 items-center justify-center rounded-md bg-transparent">
-                                <Plus className="size-4" />
-                              </div>
-                              <div className="text-muted-foreground text-sm font-medium">
-                                Create workspace
-                              </div>
-                            </DialogTrigger>
-                          </div>
-                          <DialogContent className="sm:max-w-[425px]">
-                            <DialogHeader>
-                              <DialogTitle>
-                                Let&apos;s build a workspace
-                              </DialogTitle>
-                              <DialogDescription className="text-[12px]">
-                                Boost your productivity by making it easier foor
-                                everyone to access projects in one direction.
-                              </DialogDescription>
-                            </DialogHeader>
-                            <div className="grid gap-4 mt-4">
-                              <div className="grid gap-3">
-                                <Label htmlFor="name-1" className="text-[12px]">
-                                  Workspace name
-                                </Label>
-                                <Input
-                                  id="name-1"
-                                  onChange={(e) =>
-                                    setWorkspace((prev) => ({
-                                      ...prev,
-                                      name: e.target.value,
-                                    }))
-                                  }
-                                />
-                              </div>
-                              <div className="grid gap-3">
-                                <Label
-                                  htmlFor="username-1"
-                                  className="text-[12px]"
-                                >
-                                  Workspace description
-                                </Label>
-                                <Textarea
-                                  id="description"
-                                  onChange={(e) =>
-                                    setWorkspace((prev) => ({
-                                      ...prev,
-                                      description: e.target.value,
-                                    }))
-                                  }
-                                />
-                              </div>
-                              <DialogDescription className="text-[10px]">
-                                Get your members onboard with a few words about
-                                your workspace
-                              </DialogDescription>
+                    <Dialog>
+                      <form onSubmit={handleSubmit(createWorkspace)}>
+                        <div className="">
+                          <DialogTrigger className="flex gap-2 p-2 items-center">
+                            <div className="flex size-6 items-center justify-center rounded-md bg-transparent">
+                              <Plus className="size-4" />
                             </div>
-                            <DialogFooter>
-                              <Button
-                                type="submit"
-                                className="w-full"
-                                onClick={createWorkspace}
+                            <div className="text-muted-foreground text-sm font-medium">
+                              Create workspace
+                            </div>
+                          </DialogTrigger>
+                        </div>
+                        <DialogContent className="sm:max-w-[425px]">
+                          <DialogHeader>
+                            <DialogTitle>
+                              Let&apos;s build a workspace
+                            </DialogTitle>
+                            <DialogDescription className="text-[12px]">
+                              Boost your productivity by making it easier foor
+                              everyone to access projects in one direction.
+                            </DialogDescription>
+                          </DialogHeader>
+                          <div className="grid gap-4 mt-4">
+                            <div className="grid gap-3">
+                              <Label htmlFor="name-1" className="text-[12px]">
+                                Workspace name
+                              </Label>
+                              <Input
+                                id="name-1"
+                                onChange={(e) =>
+                                  setWorkspace((prev) => ({
+                                    ...prev,
+                                    name: e.target.value,
+                                  }))
+                                }
+                              />
+                            </div>
+                            <div className="grid gap-3">
+                              <Label
+                                htmlFor="username-1"
+                                className="text-[12px]"
                               >
-                                Create workspace
-                              </Button>
-                            </DialogFooter>
-                          </DialogContent>
-                        </form>
-                      </Dialog>
-                    )}
+                                Workspace description
+                              </Label>
+                              <Textarea
+                                id="description"
+                                onChange={(e) =>
+                                  setWorkspace((prev) => ({
+                                    ...prev,
+                                    description: e.target.value,
+                                  }))
+                                }
+                              />
+                            </div>
+                            <DialogDescription className="text-[10px]">
+                              Get your members onboard with a few words about
+                              your workspace
+                            </DialogDescription>
+                          </div>
+                          <DialogFooter>
+                            <Button
+                              type="submit"
+                              className="w-full"
+                              onClick={createWorkspace}
+                            >
+                              Create workspace
+                            </Button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </form>
+                    </Dialog>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </SidebarMenuItem>

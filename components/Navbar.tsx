@@ -33,6 +33,8 @@ export function Navbar() {
       return "Members";
     } else if (pathname.includes("/Tasks")) {
       return "Tasks";
+    }  else if (pathname.includes("/TaskContent")) {
+      return "Task";
     }
   };
   return (
