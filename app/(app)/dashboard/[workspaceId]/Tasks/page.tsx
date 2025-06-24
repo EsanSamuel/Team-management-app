@@ -33,7 +33,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getWorkSpaceProjects } from "@/lib/actions/project.service";
 import { toast } from "sonner";
 
-const page = () => {
+const Page = () => {
   const { workspaceId } = useParams();
   const [tasks, setTasks] = useState<
     (Task & { assignee: User } & { project: Project })[]
@@ -249,4 +249,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

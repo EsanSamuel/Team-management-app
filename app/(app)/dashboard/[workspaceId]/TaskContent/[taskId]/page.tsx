@@ -32,7 +32,7 @@ import { getWorkSpaceProjects } from "@/lib/actions/project.service";
 import { getMembers } from "@/lib/actions/member.service";
 import { toast } from "sonner";
 
-const page = () => {
+const Page = () => {
   const { taskId, workspaceId } = useParams();
   const [task, setTask] = useState<
     Task & { assignee: User } & { project: Project }
@@ -319,4 +319,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
