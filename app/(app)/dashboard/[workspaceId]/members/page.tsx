@@ -140,7 +140,7 @@ const Page = () => {
 
         <div className="mt-5 flex flex-col gap-5">
           {members?.map((member) => (
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center" key={member.id}>
               <div className="flex gap-3 items-center">
                 <Avatar>
                   <AvatarImage src={member?.user?.profilePicture!} />

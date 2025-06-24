@@ -124,10 +124,6 @@ export function AppSidebar({ user, workspace }: IProps) {
     },
   });
 
-  if (!activeWorkspace) {
-    return null;
-  }
-
   useEffect(() => {
     const checkAdmin = async () => {
       if (user?.id && activeWorkspace?.id) {
@@ -141,6 +137,28 @@ export function AppSidebar({ user, workspace }: IProps) {
 
     checkAdmin();
   }, [user?.id, activeWorkspace?.id]);
+
+  useEffect(() => {
+    if (pathname.includes("/")) {
+      const [, , workspaceId] = pathname.split("/");
+      setWorkspaceId(workspaceId);
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    const getProjects = async () => {
+      if (activeWorkspace?.id) {
+        const projects = await getWorkSpaceProjects(activeWorkspace.id);
+        setWorkspaceProjects(projects as any[]);
+      }
+    };
+    getProjects();
+  }, [activeWorkspace?.id]);
+
+  // ✅ Only now do the conditional return
+  if (!activeWorkspace) {
+    return null;
+  }
 
   // Menu items.
   const items = [
@@ -196,21 +214,6 @@ export function AppSidebar({ user, workspace }: IProps) {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    if (pathname.includes("/")) {
-      const [, params, workspaceId] = pathname.split("/");
-      setWorkspaceId(workspaceId);
-    }
-  }, [pathname, workspaceId]);
-
-  useEffect(() => {
-    const getProjects = async () => {
-      const projects = await getWorkSpaceProjects(activeWorkspace.id);
-      setWorkspaceProjects(projects as any[]);
-    };
-    getProjects();
-  }, [activeWorkspace.id]);
 
   const create_workspace_project = async () => {
     try {

@@ -150,7 +150,7 @@ const Authform = () => {
         </p>
       ) : (
         <p className="text-[12px] text-center">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <span className="underline cursor-pointer" onClick={toogleAuthState}>
             SignUp
           </span>

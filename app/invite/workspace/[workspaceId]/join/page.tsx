@@ -59,7 +59,7 @@ const Page = () => {
         {!showAuthModal ? (
           <Card className="p-6 bg-white shadow-lg xl:w-[420px] w-full rounded-2xl text-center flex flex-col gap-4 border border-gray-100">
             <h1 className="text-xl font-semibold text-gray-800">
-              👋 You're Invited to Join SyncCorp!
+              👋 You&apos;re Invited to Join SyncCorp!
             </h1>
             <p className="text-gray-500 text-sm leading-relaxed">
               {status !== "authenticated"

@@ -24,7 +24,7 @@ const page = async () => {
         <div>
           <h1 className="font-semibold text-[16px]">Workspace Overview</h1>
           <p className="text-gray-500 text-[12px]">
-            Here's an overview for this workspace!
+            Here&apos;s an overview for this workspace!
           </p>
         </div>
 

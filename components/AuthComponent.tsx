@@ -40,7 +40,7 @@ const Authform = ({ setShowAuthModal }: { setShowAuthModal: any }) => {
     if (status === "authenticated") {
       setShowAuthModal(false);
     }
-  }, [status, router]);
+  }, [status, router, setShowAuthModal]);
 
   const handleAuth: SubmitHandler<FieldValues> = async ({
     username,
