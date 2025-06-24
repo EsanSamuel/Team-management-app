@@ -12,7 +12,14 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-const page = ({ params }: { params: { workspaceId: string } }) => {
+type PageProps = {
+  params: {
+    workspaceId: string;
+  };
+};
+
+const page = ({ params }: PageProps) => {
+  const { workspaceId } = params;
   const router = useRouter();
   const { status } = useSession();
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -22,21 +29,21 @@ const page = ({ params }: { params: { workspaceId: string } }) => {
 
   useEffect(() => {
     const getWorkSpace = async () => {
-      const workspace = await getWorkSpaceById(params.workspaceId);
+      const workspace = await getWorkSpaceById(workspaceId);
       setWorkspace(workspace as Workspace);
       console.log(workspace);
-      getMembers(params.workspaceId).then(setMembers as Member | any);
+      getMembers(workspaceId).then(setMembers as Member | any);
       getUser().then(setUser as any);
     };
     getWorkSpace();
-  }, [params.workspaceId]);
+  }, [workspaceId]);
 
   const joinWorkspaceAsMember = async () => {
     try {
       if (!members.some((member) => member.userId === user?.id)) {
-        const member = await AddUserToWorkspace(params.workspaceId, "MEMBER");
+        const member = await AddUserToWorkspace(workspaceId, "MEMBER");
         toast.success("You have been added to this workspace");
-        router.push(`/dashboard/${params.workspaceId}`);
+        router.push(`/dashboard/${workspaceId}`);
         console.log(member);
       } else {
         toast.error("You are already in this workspace");
