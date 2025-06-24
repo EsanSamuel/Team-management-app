@@ -246,8 +246,9 @@ const TaskCard = ({
                 <DropdownMenuSeparator />
 
                 {["Backlog", "Todo", "In Progress", "In Review", "Done"].map(
-                  (status) => (
+                  (status, index) => (
                     <DropdownMenuItem
+                      key={index}
                       onClick={() =>
                         setFilterByStatus({
                           ...filterByStatus,
@@ -297,8 +298,9 @@ const TaskCard = ({
               <DropdownMenuContent>
                 <DropdownMenuLabel>Priority</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                {["Low", "Medium", "High"].map((priority) => (
+                {["Low", "Medium", "High"].map((priority, index) => (
                   <DropdownMenuItem
+                    key={index}
                     onClick={() =>
                       setFilterByStatus({
                         ...filterByStatus,
@@ -338,6 +340,7 @@ const TaskCard = ({
                 <DropdownMenuSeparator />
                 {members.map((member) => (
                   <DropdownMenuItem
+                    key={member.id}
                     className="flex gap-2 items-center"
                     onClick={() =>
                       setFilterByStatus({
@@ -381,6 +384,7 @@ const TaskCard = ({
                 <DropdownMenuSeparator />
                 {projects.map((project) => (
                   <DropdownMenuItem
+                    key={project.id}
                     onClick={() =>
                       setFilterByStatus({
                         ...filterByStatus,

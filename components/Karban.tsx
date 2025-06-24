@@ -10,7 +10,7 @@ import {
   User as Person,
   Plus,
 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Badge } from "./ui/badge";
 import { Member, Project, Task, User } from "@/lib/generated/prisma";
 import { Separator } from "./ui/separator";
@@ -103,7 +103,7 @@ const Karban = ({
     }
   };
 
-  const filterTaskWithSearchBar = () => {
+  const filterTaskWithSearchBar = useCallback(() => {
     if (!searchTasks.trim()) return filterStatus(filterByStatus);
 
     const matchSearch = (task: Task & { assignee: User }) =>
@@ -116,7 +116,7 @@ const Karban = ({
       ].some((field) => field.includes(searchTasks));
 
     return filterStatus(filterByStatus).filter(matchSearch);
-  };
+  }, [filterStatus(filterByStatus)]);
 
   const getDoneTaskCount = tasks.filter(
     (task) => task.Status === "DONE"

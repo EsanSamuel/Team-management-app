@@ -22,6 +22,11 @@ const eslintConfig = [
       "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
       "@typescript-eslint/ban-ts-comment": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
+      "@typescript-eslint/no-unused-expressions": "off",
+      "@typescript-eslint/no-require-imports": "off",
+      "@typescript-eslint/no-empty-object-type": "off",
+      "@typescript-eslint/no-this-alias": "off"
+
     },
   },
 ];
