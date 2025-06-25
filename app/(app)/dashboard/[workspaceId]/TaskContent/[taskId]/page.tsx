@@ -250,7 +250,10 @@ const Page = () => {
 
       <div className="flex gap-2 text-[13px] items-center mb-5">
         <div className="flex gap-2">
-          {task?.project?.emoji}
+          {/*{task?.project?.emoji}*/}
+          <Badge className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary text-center flex items-center">
+            {task?.project?.name[0]}
+          </Badge>
           <h1 className="text-gray-700">{task?.project?.name} </h1>
         </div>
         <ChevronRight size={12} /> <span className="">{task?.title}</span>

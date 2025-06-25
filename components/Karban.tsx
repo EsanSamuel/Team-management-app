@@ -157,9 +157,9 @@ const Karban = ({
 
   return (
     <>
-      <div className="flex justify-between gap-2 w-full mt-5">
+      <div className="flex xl:justify-between flex-col md:flex-row gap-3 w-full">
         <div className="overflow-x-auto overflow-hidden">
-          <div className="flex flex-wrap md:flex-nowrap gap-2 text-gray-600 min-w-[320px]">
+          <div className="flex flex-wrap md:flex-nowrap gap-2 text-gray-600">
             <Input
               placeholder="Filter tasks..."
               onChange={(e) => setSearchTasks(e.target.value)}
@@ -253,7 +253,7 @@ const Karban = ({
         </div>
 
         <Select onValueChange={(value) => setView(value)}>
-          <SelectTrigger className="w-auto xl:ml-0 ml-2">
+          <SelectTrigger className="xl:w-auto sm:max-w-[150px] xl:ml-0">
             <SelectValue
               placeholder="View As"
               className="placeholder:text-gray-400"

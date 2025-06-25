@@ -120,7 +120,10 @@ const Page = () => {
     <div className="xl:px-10 py-10 md:px-10 px-3">
       <div className="flex xl:justify-between flex-col xl:flex-row w-full mb-6">
         <div className="flex items-center gap-2">
-          <span className="text-xl">{project?.emoji}</span>
+          {/*      <span className="text-xl">{project?.emoji}</span> */}
+          <Badge className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary text-center flex items-center">
+            {project?.name[0]}
+          </Badge>
           <h1 className="text-lg font-semibold text-gray-800 flex gap-3 items-center">
             {project?.name}{" "}
             <button>

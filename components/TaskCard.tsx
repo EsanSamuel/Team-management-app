@@ -150,20 +150,20 @@ const TaskCard = ({
     }
   };
 
-const filterTaskWithSearchBar = useCallback(() => {
-  if (!searchTasks.trim()) return filterStatus(filterByStatus);
+  const filterTaskWithSearchBar = useCallback(() => {
+    if (!searchTasks.trim()) return filterStatus(filterByStatus);
 
-  const matchSearch = (task: Task & { assignee: User }) =>
-    [
-      task.title.toLowerCase(),
-      task.Status.toLowerCase(),
-      task.Duedate.toLowerCase(),
-      task.assignee.username.toLowerCase(),
-      task.priority.toLowerCase(),
-    ].some((field) => field.includes(searchTasks.toLowerCase()));
+    const matchSearch = (task: Task & { assignee: User }) =>
+      [
+        task.title.toLowerCase(),
+        task.Status.toLowerCase(),
+        task.Duedate.toLowerCase(),
+        task.assignee.username.toLowerCase(),
+        task.priority.toLowerCase(),
+      ].some((field) => field.includes(searchTasks.toLowerCase()));
 
-  return filterStatus(filterByStatus).filter(matchSearch);
-}, [searchTasks, filterByStatus, filterStatus]);
+    return filterStatus(filterByStatus).filter(matchSearch);
+  }, [searchTasks, filterByStatus, filterStatus]);
 
   const filterByDueDate = () => {
     return filterTaskWithSearchBar().sort(
@@ -225,9 +225,9 @@ const filterTaskWithSearchBar = useCallback(() => {
   };
   return (
     <div className="mt-5">
-      <div className="flex justify-between gap-3 w-full">
+      <div className="flex xl:justify-between flex-col md:flex-row gap-3 w-full">
         <div className=" overflow-x-auto overflow-hidden">
-          <div className="flex flex-wrap md:flex-nowrap gap-2 text-gray-600 min-w-[320px]">
+          <div className="flex flex-wrap md:flex-nowrap gap-2 text-gray-600 w-full">
             <Input
               placeholder="Filter tasks..."
               onChange={(e) => setSearchTasks(e.target.value)}
@@ -415,7 +415,7 @@ const filterTaskWithSearchBar = useCallback(() => {
         </div>
 
         <Select onValueChange={(value) => setView(value)}>
-          <SelectTrigger className="w-auto xl:ml-0 ml-2">
+          <SelectTrigger className="xl:w-auto sm:max-w-[150px] xl:ml-0">
             <SelectValue
               placeholder="View As"
               className="placeholder:text-gray-400"
@@ -489,14 +489,19 @@ const filterTaskWithSearchBar = useCallback(() => {
                     {task.title}
                   </TableCell>
                   <TableCell>
-                    {task?.project?.emoji}{" "}
-                    {task?.project?.name && (
-                      <span className="ml-1" title={task.project.name}>
-                        {task.project.name.length > 16
-                          ? `${task.project.name.slice(0, 16)}...`
-                          : task.project.name}
-                      </span>
-                    )}
+                    {/*{task?.project?.emoji}{" "}*/}
+                    <div className="flex items-center gap-1">
+                      <Badge className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary text-center flex items-center">
+                        {task?.project?.name[0]}
+                      </Badge>
+                      {task?.project?.name && (
+                        <span className="ml-1" title={task.project.name}>
+                          {task.project.name.length > 16
+                            ? `${task.project.name.slice(0, 16)}...`
+                            : task.project.name}
+                        </span>
+                      )}
+                    </div>
                   </TableCell>
                   <TableCell className="align-middle">
                     <div className="flex items-center gap-2">

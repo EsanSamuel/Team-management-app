@@ -87,6 +87,7 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 import Link from "next/link";
 import { Toaster } from "./ui/sonner";
 import { toast } from "sonner";
+import { Badge } from "./ui/badge";
 
 interface IProps {
   user: User;
@@ -501,8 +502,12 @@ export function AppSidebar({ user, workspace }: IProps) {
                   >
                     <Link
                       href={`/dashboard/${activeWorkspace.id}/project/${item.id}`}
+                      className="flex items-center gap-1"
                     >
-                      <p>{item?.emoji}</p>
+                      {/*<p>{item?.emoji}</p>*/}
+                      <Badge className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary text-center flex items-center">
+                        {item?.name[0]}
+                      </Badge>
                       <span>{item.name}</span>
                     </Link>
                   </SidebarMenuButton>
