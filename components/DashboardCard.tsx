@@ -6,6 +6,7 @@ import { Project, User } from "@/lib/generated/prisma";
 import { getWorkSpaceProjects } from "@/lib/actions/project.service";
 import { format } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Badge } from "./ui/badge";
 
 const DashboardCard = ({
   workspaceProjects,
@@ -31,14 +32,9 @@ const DashboardCard = ({
       <CardHeader className="flex gap-2 p-0 mb-1 border-b border-gray-100 overflow-x-auto overflow-hidden">
         {["Recent Projects" /*"Recent Task", "Recent Members"*/].map(
           (tab, idx) => (
-            <Button
-              key={idx}
-              variant="ghost"
-              className="text-[12px] text-gray-600 px-4 py-2 rounded-md hover:bg-gray-50 data-[active=true]:bg-gray-100 data-[active=true]:text-gray-900"
-              data-active={idx === 0} // Highlight the first by default; control this with state later
-            >
-              {tab}
-            </Button>
+            <h1 key={idx} className="text-[15px] text-gray-800 font--bold">
+              {tab} ({workspaceProjects.length})
+            </h1>
           )
         )}
       </CardHeader>
@@ -51,8 +47,11 @@ const DashboardCard = ({
             className="cursor-pointer hover:bg-gray-50 transition rounded-lg p-3 border border-gray-100"
           >
             <div className="flex justify-between items-center">
-              <div className="flex gap-3 items-start">
-                <span className="text-lg">{project.emoji}</span>
+              <div className="flex gap-3 items-center">
+                {/** <span className="text-lg">{project.emoji}</span> */}
+                <Badge className="h-[100%] min-w-5 rounded-10 px-4 font-bold py-2 text-[14px] justify-center bg-sidebar-primary text-center flex items-center">
+                  {project?.name[0]}
+                </Badge>
                 <div className="flex flex-col">
                   <h2 className="text-sm font-medium text-gray-800">
                     {project.name}
