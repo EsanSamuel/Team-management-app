@@ -174,7 +174,9 @@ const Karban = ({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuLabel>Priority</DropdownMenuLabel>
+                <DropdownMenuLabel className="text-muted-foreground text-xs">
+                  Priority
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {["Low", "Medium", "High"].map((priority, index) => (
                   <DropdownMenuItem
@@ -207,14 +209,16 @@ const Karban = ({
 
             <DropdownMenu>
               <DropdownMenuTrigger className="">
-                <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2">
+                <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2 ">
                   <Person />
                   Assigned To{" "}
                   <ChevronsUpDown size={12} className="text-gray-600" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuLabel>Assignees</DropdownMenuLabel>
+                <DropdownMenuLabel className="text-muted-foreground text-xs">
+                  Assignees
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {members.map((member) => (
                   <DropdownMenuItem

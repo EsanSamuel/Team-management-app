@@ -242,7 +242,9 @@ const TaskCard = ({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuLabel>Status</DropdownMenuLabel>
+                <DropdownMenuLabel className="text-muted-foreground text-xs">
+                  Status
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
 
                 {["Backlog", "Todo", "In Progress", "In Review", "Done"].map(
@@ -296,7 +298,9 @@ const TaskCard = ({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuLabel>Priority</DropdownMenuLabel>
+                <DropdownMenuLabel className="text-muted-foreground text-xs">
+                  Priority
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {["Low", "Medium", "High"].map((priority, index) => (
                   <DropdownMenuItem
@@ -336,7 +340,9 @@ const TaskCard = ({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuLabel>Assignees</DropdownMenuLabel>
+                <DropdownMenuLabel className="text-muted-foreground text-xs">
+                  Assignees
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {members.map((member) => (
                   <DropdownMenuItem
@@ -374,13 +380,15 @@ const TaskCard = ({
 
             <DropdownMenu>
               <DropdownMenuTrigger className="">
-                <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2">
+                <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2 ">
                   <Folder /> Projects{" "}
                   <ChevronsUpDown size={12} className="text-gray-600" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuLabel>Projects</DropdownMenuLabel>
+                <DropdownMenuLabel className="text-muted-foreground text-xs">
+                  Projects
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {projects.map((project) => (
                   <DropdownMenuItem
@@ -393,7 +401,12 @@ const TaskCard = ({
                       })
                     }
                   >
-                    {project?.emoji} {project?.name}
+                    <div className="flex items-center gap-1">
+                      <Badge className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary text-center flex items-center">
+                        {project?.name[0]}
+                      </Badge>{" "}
+                      {project?.name}
+                    </div>
                   </DropdownMenuItem>
                 ))}
                 <DropdownMenuSeparator />

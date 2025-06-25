@@ -25,6 +25,8 @@ export function Navbar() {
   const showPath = () => {
     if (pathname === "/dashboard") {
       return "";
+    } else if (/^\/dashboard\/[^\/]+$/.test(pathname)) {
+      return "Home";
     } else if (pathname.includes("/settings")) {
       return "Settings";
     } else if (pathname.includes("/project/")) {
@@ -33,7 +35,7 @@ export function Navbar() {
       return "Members";
     } else if (pathname.includes("/Tasks")) {
       return "Tasks";
-    }  else if (pathname.includes("/TaskContent")) {
+    } else if (pathname.includes("/TaskContent")) {
       return "Task";
     }
   };
