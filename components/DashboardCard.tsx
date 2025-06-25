@@ -50,7 +50,7 @@ const DashboardCard = ({
             <div className="flex justify-between items-center">
               <div className="flex gap-3 items-center">
                 {/** <span className="text-lg">{project.emoji}</span> */}
-                <Badge className="h-[100%] min-w-5 rounded-10 px-4 font-bold py-2 text-[14px] justify-center bg-sidebar-primary text-center flex items-center">
+                <Badge className="bg-sidebar-primary text-[15px] text-white w-[50px] h-[50px] flex aspect-square size-10 items-center justify-center rounded-lg">
                   {project?.name[0]}
                 </Badge>
                 <div className="flex flex-col">
