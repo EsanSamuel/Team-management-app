@@ -176,7 +176,7 @@ const Authform = ({
                   />
                 </div>
                 <Button type="submit" className="w-full" onClick={handleAuth}>
-                  Login
+                  {authState === "LOGIN" ? "Login" : "Sign Up"}
                 </Button>
               </form>
               <div className="text-center text-sm flex items-center justify-center gap-1">

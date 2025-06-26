@@ -76,6 +76,7 @@ export const authOptions: AuthOptions = {
               username: user?.name!,
               email: user.email!,
               profilePicture: user.image!,
+              hashedPassword: "google-oauth",
             },
           });
         }
