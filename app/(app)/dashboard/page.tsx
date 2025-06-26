@@ -71,10 +71,10 @@ const Page = () => {
     <div className="flex items-center justify-center min-h-screen px-4">
       <div className="flex flex-col gap-4 text-center max-w-md w-full">
         <CaptionsOff size={30} className="mx-auto text-gray-600" />
-        <h1 className="text-gray-600 text-lg font-semibold">
+        <h1 className="text-gray-600 dark:text-gray-100 text-lg font-semibold">
           No Workspace Selected!
         </h1>
-        <p className="text-gray-400 text-sm">
+        <p className="text-gray-400 dark:text-gray-300 text-sm">
           {userWorkspaces.length > 0
             ? "Select a workspace or create new workspace!"
             : "You have no workspace, click the button below to create new workspace!"}
