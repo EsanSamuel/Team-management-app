@@ -7,7 +7,7 @@ import { getWorkSpaceProjects } from "@/lib/actions/project.service";
 import { format } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
-import { Calendar, Dot } from "lucide-react";
+import { Calendar, Dot, ListChecks } from "lucide-react";
 
 const DashboardCard = ({
   workspaceProjects,
@@ -58,14 +58,20 @@ const DashboardCard = ({
                     {project.name}
                   </h2>
                   <div className="flex items-center gap-1 text-xs text-gray-500">
+                    {/* Date Group */}
                     <div className="flex items-center gap-1">
                       <Calendar className="text-muted-foreground" size={12} />
                       <p>
                         {format(new Date(project?.createdAt), "MMMM do, yyyy")}
                       </p>
                     </div>
+
+                    {/* Dot as separator */}
+                    <Dot className="text-gray-400" />
+
+                    {/* Task Group */}
                     <div className="flex items-center gap-1">
-                      <Dot />
+                      <ListChecks size={12} />
                       <p>{project?.Task?.length} tasks</p>
                     </div>
                   </div>

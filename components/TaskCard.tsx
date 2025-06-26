@@ -157,7 +157,7 @@ const TaskCard = ({
       [
         task.title.toLowerCase(),
         task.Status.toLowerCase(),
-        task.Duedate.toLowerCase(),
+        new Date(task.Duedate).toDateString().toLowerCase(),
         task.assignee.username.toLowerCase(),
         task.priority.toLowerCase(),
       ].some((field) => field.includes(searchTasks.toLowerCase()));

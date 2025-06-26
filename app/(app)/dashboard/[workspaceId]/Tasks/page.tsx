@@ -58,8 +58,12 @@ const Page = () => {
   }, [workspaceId]);
 
   const create_Task = async () => {
-    await createTask({ ...task, workspaceId });
-    toast.success("Task created!");
+    try {
+      await createTask({ ...task, workspaceId });
+      toast.success("Task created!");
+    } catch (error) {
+      toast.error("Task not created!");
+    }
   };
 
   return (
@@ -74,8 +78,8 @@ const Page = () => {
         <Dialog>
           <form className="overflow-y-auto">
             <DialogTrigger asChild>
-              <Button className="xl:w- w-full">
-                <Plus className="size-3 mr-2" />
+              <Button className="xl:w- w-full items-center">
+                <Plus className="size-3" />
                 New Task
               </Button>
             </DialogTrigger>

@@ -126,8 +126,8 @@ const DashboardPage = ({
           <Dialog>
             <form>
               <DialogTrigger asChild>
-                <Button className="xl:w- w-full mt-3">
-                  <div className="flex  items-center justify-center bg-transparent">
+                <Button className="xl:w- w-full mt-3 items-center flex">
+                  <div className="">
                     <Plus className="size-3" />
                   </div>
                   New Project

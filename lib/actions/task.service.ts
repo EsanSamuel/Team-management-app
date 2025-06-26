@@ -28,7 +28,7 @@ export const createTask = async ({
 
     if (!user?.id) {
       console.error("User is undefined in create_workspace");
-      return
+      return;
     }
 
     const task = await prisma.task.create({
@@ -37,7 +37,7 @@ export const createTask = async ({
         description,
         Status,
         priority,
-        Duedate,
+        Duedate: new Date(Duedate),
         assignee: {
           connect: {
             id: assignedTo,
@@ -80,7 +80,7 @@ export const getTasks = async (
         workspace: true,
       },
       orderBy: {
-        createdAt: "desc",
+        Duedate: "asc",
       },
     });
     console.log("Tasks:", tasks);
@@ -127,7 +127,7 @@ export const getAllTasksInWorkspace = async (
         workspace: true,
       },
       orderBy: {
-        createdAt: "desc",
+        Duedate: "asc",
       },
     });
     console.log("Tasks:", tasks);

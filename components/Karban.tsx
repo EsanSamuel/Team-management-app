@@ -119,7 +119,7 @@ const Karban = ({
       [
         task.title.toLowerCase(),
         task.Status.toLowerCase(),
-        task.Duedate.toLowerCase(),
+        new Date(task.Duedate).toDateString().toLowerCase(),
         task.assignee.username.toLowerCase(),
         task.priority.toLowerCase(),
       ].some((field) => field.includes(searchTasks));
@@ -317,7 +317,7 @@ const Karban = ({
                         : "bg-yellow-100 text-yellow-600"
                     }`}
                   >
-                    {task.Duedate}
+                    {task.Duedate.toDateString()}
                   </span>
                 </div>
                 <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1 truncate">
@@ -370,7 +370,7 @@ const Karban = ({
                         : "bg-yellow-100 text-yellow-600"
                     }`}
                   >
-                    {task.Duedate}
+                    {task.Duedate.toDateString()}
                   </span>
                 </div>
                 <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1 truncate">
@@ -423,7 +423,7 @@ const Karban = ({
                         : "bg-yellow-100 text-yellow-600"
                     }`}
                   >
-                    {task.Duedate}
+                    {task.Duedate.toDateString()}
                   </span>
                 </div>
                 <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1 truncate">
@@ -476,7 +476,7 @@ const Karban = ({
                         : "bg-yellow-100 text-yellow-600"
                     }`}
                   >
-                    {task.Duedate}
+                    {task.Duedate.toDateString()}
                   </span>
                 </div>
                 <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1 truncate">
@@ -525,7 +525,7 @@ const Karban = ({
                   <span
                     className={`text-[11px] px-2 py-0.5 rounded-full bg-green-100 text-green-600 `}
                   >
-                    {task.Duedate}
+                    {task.Duedate.toDateString()}
                   </span>
                 </div>
                 <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1 truncate">

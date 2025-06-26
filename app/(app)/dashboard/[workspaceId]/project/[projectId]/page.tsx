@@ -105,8 +105,16 @@ const Page = () => {
   }, [user?.id, workspaceId]);
 
   const create_Task = async () => {
-    await createTask({ ...task, projectId: projectId as string, workspaceId });
-    toast.success("Task has been created!");
+    try {
+      await createTask({
+        ...task,
+        projectId: projectId as string,
+        workspaceId,
+      });
+      toast.success("Task has been created!");
+    } catch (error) {
+      toast.error("Task not created!");
+    }
   };
 
   const getDoneTaskCount = tasks.filter(
@@ -137,8 +145,8 @@ const Page = () => {
         <Dialog>
           <form className="">
             <DialogTrigger asChild>
-              <Button className="xl:w- w-full mt-3">
-                <div className="flex  items-center justify-center bg-transparent">
+              <Button className="xl:w- w-full mt-3 flex items-center">
+                <div className="">
                   <Plus className="size-3" />
                 </div>
                 New Task
