@@ -158,7 +158,6 @@ export function AppSidebar({ user, workspace }: IProps) {
     };
     getProjects();
     getMembers(activeWorkspace?.id as any).then(setMembers as Member | any);
-    console.log(members);
   }, [activeWorkspace?.id]);
 
   useEffect(() => {
@@ -171,7 +170,7 @@ export function AppSidebar({ user, workspace }: IProps) {
     ) {
       router.push(`/dashboard/${activeWorkspace?.id}`);
     }
-  }, [router, activeWorkspace?.id, pathname, members]);
+  }, [router, activeWorkspace?.id, pathname, members, user.id]);
 
   if (!activeWorkspace) {
     return null;

@@ -26,7 +26,7 @@ import { getUser } from "@/lib/actions/user.service";
 import { Member, User, Workspace } from "@/lib/generated/prisma";
 import { useRouter } from "next/navigation";
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   const [workspaceprops, setWorkspace] = React.useState({
     name: "",
@@ -145,4 +145,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

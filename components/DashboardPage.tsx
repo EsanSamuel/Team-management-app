@@ -88,7 +88,7 @@ const DashboardPage = ({
       toast.message("You are not a member of this workspace!");
       router.push(`/dashboard`);
     }
-  }, [router, workspaceId, members]);
+  }, [router, workspaceId, members, user.id]);
 
   const getDoneTaskCount = tasks.filter(
     (task) => task.Status === "Done"
