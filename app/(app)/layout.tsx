@@ -27,8 +27,8 @@ export default async function Layout({
         <div className="flex flex-row w-full">
           <AppSidebar user={user!} workspace={userWorkspace as any} />
           <main className="w-[100vw] ">
-            <div className="flex p-2 w-[100%] border-b ">
-              <div className="flex gap-2 items-center ">
+            <div className="flex p-2 w-[100%] border-b top-0 z-50 bg-white sticky ">
+              <div className="flex gap-2 items-center w-full ">
                 <SidebarTrigger className="gap-1" />
                 <Separator orientation="vertical" className="h-5 mr-1" />
                 <Navbar />
