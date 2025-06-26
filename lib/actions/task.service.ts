@@ -19,7 +19,7 @@ export const createTask = async ({
   Status: string;
   projectId: string;
   priority: string;
-  Duedate: string;
+  Duedate: Date | string;
   assignedTo: string;
   workspaceId: any;
 }) => {
@@ -155,7 +155,7 @@ export const editTask = async ({
   Status: string;
   projectId: string;
   priority: string;
-  Duedate: string;
+  Duedate: string | Date;
   assignedTo: string;
   workspaceId: any;
 }) => {
@@ -169,7 +169,7 @@ export const editTask = async ({
         description,
         Status,
         priority,
-        Duedate,
+        Duedate: new Date(Duedate),
         project: {
           connect: {
             id: projectId,

@@ -185,7 +185,7 @@ const Page = () => {
                     onChange={(e) =>
                       setTaskValues({ ...taskValues, Duedate: e.target.value })
                     }
-                    value={taskValues.Duedate}
+                    value={taskValues.Duedate as string}
                   />
                 </div>
                 <div className="grid gap-2">
@@ -282,7 +282,9 @@ const Page = () => {
             </h1>
             <h1 className="text-gray-600 text-[12px]">
               Due date{" "}
-              <span className="ml-4 text-orange-500">{task?.Duedate}</span>
+              <span className="ml-4 text-orange-500">
+                {task?.Duedate.toDateString()}
+              </span>
             </h1>
             <h1 className="text-gray-600 text-[12px] flex items-center gap-4">
               Status
