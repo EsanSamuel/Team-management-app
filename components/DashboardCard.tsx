@@ -104,7 +104,7 @@ const DashboardCard = ({
       </CardContent>
       <CardFooter className="px-0">
         <Button
-          className="w-full dark:bg-input/30 dark:text-white"
+          className="w-full dark:bg-input/30 dark:text-white bg-input/50 text-gray-700 border-[1px]"
           onClick={() => setShowAll(!showAll)}
         >
           {showAll === false ? "Show All " : "Show less"}
