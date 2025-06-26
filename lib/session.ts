@@ -37,6 +37,11 @@ export const authOptions: AuthOptions = {
           return null;
         }
 
+        if (user.hashedPassword === "google-oauth") {
+          console.log("OAuth user cannot use credentials login");
+          return null;
+        }
+
         const isPasswordCorrect = await bcrypt.compare(
           credentials.password,
           user?.hashedPassword!
