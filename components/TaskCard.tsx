@@ -236,7 +236,7 @@ const TaskCard = ({
 
             <DropdownMenu>
               <DropdownMenuTrigger className="">
-                <Button className="bg-white dark:bg-input/30 dark:text-gray-400 border text-[12px] text-gray-800 flex items-center gap-2">
+                <Button className="bg-white dark:bg-input/30 dark:text-gray-300 border text-[12px] text-gray-800 flex items-center gap-2">
                   <ListChecks />
                   Status <ChevronsUpDown size={7} className="text-gray-600" />
                 </Button>
@@ -292,7 +292,7 @@ const TaskCard = ({
 
             <DropdownMenu>
               <DropdownMenuTrigger className="">
-                <Button className="bg-white dark:bg-input/30 dark:text-gray-400 border text-[12px] text-gray-800 flex items-center gap-2">
+                <Button className="bg-white dark:bg-input/30 dark:text-gray-300 border text-[12px] text-gray-800 flex items-center gap-2">
                   <ArrowRightLeft /> Priority{" "}
                   <ChevronsUpDown size={12} className="text-gray-600" />
                 </Button>
@@ -333,7 +333,7 @@ const TaskCard = ({
 
             <DropdownMenu>
               <DropdownMenuTrigger className="" asChild>
-                <Button className="bg-white dark:bg-input/30 dark:text-gray-400 border text-[12px] text-gray-800 flex items-center gap-2">
+                <Button className="bg-white dark:bg-input/30 dark:text-gray-300 border text-[12px] text-gray-800 flex items-center gap-2">
                   <Person />
                   Assigned To{" "}
                   <ChevronsUpDown size={12} className="text-gray-600" />
@@ -380,7 +380,7 @@ const TaskCard = ({
 
             <DropdownMenu>
               <DropdownMenuTrigger className="">
-                <Button className="bg-white dark:bg-input/30 dark:text-gray-400 border text-[12px] text-gray-800 flex items-center gap-2 ">
+                <Button className="bg-white dark:bg-input/30 dark:text-gray-300 border text-[12px] text-gray-800 flex items-center gap-2 ">
                   <Folder /> Projects{" "}
                   <ChevronsUpDown size={12} className="text-gray-600" />
                 </Button>
