@@ -57,16 +57,17 @@ const DashboardCard = ({
                   <h2 className="text-sm font-medium text-gray-800">
                     {project.name}
                   </h2>
-                  <div className="text-xs text-gray-500 flex items-center gap-1">
-                    <Calendar
-                      className=" text-muted-foreground text-xs"
-                      size={12}
-                    />
-                    <p>{format(new Date(project?.createdAt), "MMMM do, yyyy")}</p>
-                    <span className=" flex gap-1 items-center">
-                      {" "}<Dot />
+                  <div className="flex items-center gap-1 text-xs text-gray-500">
+                    <div className="flex items-center gap-1">
+                      <Calendar className="text-muted-foreground" size={12} />
+                      <p>
+                        {format(new Date(project?.createdAt), "MMMM do, yyyy")}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Dot />
                       <p>{project?.Task?.length} tasks</p>
-                    </span>
+                    </div>
                   </div>
                 </div>
               </div>
