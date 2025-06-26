@@ -250,7 +250,7 @@ const DashboardPage = ({
                   <div className="flex justify-between text-[13px] text-muted-foreground">
                     <span className="flex items-center gap-1">
                       Completed Tasks{" "}
-                      <span className="text-green-400 flex items-center gap-1 dark:text-gray-100">
+                      <span className="text-green-400 flex items-center gap-1">
                         <ChevronUp size={13} /> {getDoneTaskCount}
                       </span>
                     </span>

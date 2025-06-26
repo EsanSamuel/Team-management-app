@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader } from "./ui/card";
+import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
 import { Button } from "./ui/button";
 import { usePathname, useRouter } from "next/navigation";
 import { Project, Task, User } from "@/lib/generated/prisma";
@@ -17,6 +17,7 @@ const DashboardCard = ({
   const router = useRouter();
   const pathname = usePathname();
   const [workspaceId, setWorkspaceId] = useState("");
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     if (pathname.includes("/")) {
@@ -28,6 +29,11 @@ const DashboardCard = ({
   const routeToProject = (id: string) => {
     router.push(`/dashboard/${workspaceId}/project/${id}`);
   };
+
+  const getProjects = (): (Project & { user: User; Task: Task[] })[] => {
+    return showAll ? workspaceProjects : workspaceProjects.slice(0, 4);
+  };
+
   return (
     <Card className="w-full rounded-xl px-3 py-3 shadow-sm border light:border-gray-200  shadow-none">
       <CardHeader className="flex gap-2 p-0 mb-1 border-b light:border-gray-100 overflow-x-auto overflow-hidden">
@@ -44,7 +50,7 @@ const DashboardCard = ({
       </CardHeader>
 
       <CardContent className="flex flex-col gap-5 p-0">
-        {workspaceProjects?.map((project) => (
+        {getProjects()?.map((project: any) => (
           <div
             key={project?.id}
             onClick={() => routeToProject(project.id)}
@@ -96,6 +102,14 @@ const DashboardCard = ({
           </div>
         ))}
       </CardContent>
+      <CardFooter className="px-0">
+        <Button
+          className="w-full dark:bg-input/30 dark:text-white"
+          onClick={() => setShowAll(!showAll)}
+        >
+          {showAll === false ? "Show All " : "Show less"}
+        </Button>
+      </CardFooter>
     </Card>
   );
 };
