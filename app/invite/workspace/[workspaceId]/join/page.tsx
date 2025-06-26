@@ -59,11 +59,11 @@ const Page = () => {
         {!showAuthModal ? (
           <Card className="p-6 bg-white shadow-lg xl:w-[420px] w-full rounded-2xl text-center flex flex-col gap-4 border border-gray-100">
             <h1 className="text-xl font-semibold text-gray-800">
-              👋 You&apos;re Invited to Join SyncCorp!
+              👋 You&apos;re Invited to Join Sync corp!
             </h1>
             <p className="text-gray-500 text-sm leading-relaxed">
               {status !== "authenticated"
-                ? "To access this workspace, please log into your SyncCorp account or sign up to create one."
+                ? "To access this workspace, please log into your Sync corp account or sign up to create one."
                 : `You've been invited to join the ${workspace?.name} workspace on SyncCorp.`}
             </p>
 
