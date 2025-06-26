@@ -47,7 +47,8 @@ export const authOptions: AuthOptions = {
           return null;
         }
 
-        return user;
+        const { hashedPassword, ...safeUser } = user;
+        return safeUser;
       },
     }),
   ],
