@@ -47,7 +47,7 @@ import { Member, Project, User, Workspace } from "@/lib/generated/prisma";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { signOut } from "next-auth/react";
-import { redirect, usePathname, useRouter } from "next/navigation";
+import { redirect, useParams, usePathname, useRouter } from "next/navigation";
 import { Separator } from "./ui/separator";
 import React, { useEffect, useState } from "react";
 import {
@@ -82,6 +82,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   AddUserToWorkspace,
   authorizeRole,
+  getMembers,
 } from "@/lib/actions/member.service";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import Link from "next/link";
@@ -100,8 +101,9 @@ export function AppSidebar({ user, workspace }: IProps) {
   const [workspaceId, setWorkspaceId] = useState("");
   const [workspaceProjects, setWorkspaceProjects] = useState<Project[]>([]);
   const { isMobile } = useSidebar();
+  const userKey = `workspace:${user.id}`;
   const [activeWorkspace, setActiveWorkspace] = useLocalStorage(
-    "workspace",
+    userKey,
     workspace[0]
   );
   const [isAdmin, setIsAdmin] = useState(false);
@@ -114,6 +116,7 @@ export function AppSidebar({ user, workspace }: IProps) {
     name: "",
     description: "",
   });
+  const [members, setMembers] = useState<Member[]>([]);
   const {
     register,
     handleSubmit,
@@ -154,13 +157,21 @@ export function AppSidebar({ user, workspace }: IProps) {
       }
     };
     getProjects();
+    getMembers(activeWorkspace?.id as any).then(setMembers as Member | any);
+    console.log(members);
   }, [activeWorkspace?.id]);
 
   useEffect(() => {
-    if (pathname === "/dashboard") {
+    if (
+      pathname === "/dashboard" &&
+      activeWorkspace?.id &&
+      user?.id &&
+      members.length > 0 &&
+      members.some((member) => member.userId === user.id)
+    ) {
       router.push(`/dashboard/${activeWorkspace?.id}`);
     }
-  }, [router, activeWorkspace.id, pathname]);
+  }, [router, activeWorkspace?.id, pathname, members]);
 
   if (!activeWorkspace) {
     return null;
@@ -486,34 +497,40 @@ export function AppSidebar({ user, workspace }: IProps) {
             )}
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
-              {workspaceProjects?.map((item) => (
-                <SidebarMenuItem
-                  key={item.id}
-                  onClick={() =>
-                    router.push(
-                      `/dashboard/${activeWorkspace.id}/project/${item.id}`
-                    )
-                  }
-                >
-                  <SidebarMenuButton
-                    asChild
-                    className="text-[13px] text-gray-600"
+            {workspaceProjects.length > 0 && workspaceProjects ? (
+              <SidebarMenu>
+                {workspaceProjects?.map((item) => (
+                  <SidebarMenuItem
+                    key={item.id}
+                    onClick={() =>
+                      router.push(
+                        `/dashboard/${activeWorkspace.id}/project/${item.id}`
+                      )
+                    }
                   >
-                    <Link
-                      href={`/dashboard/${activeWorkspace.id}/project/${item.id}`}
-                      className="flex items-center gap-1"
+                    <SidebarMenuButton
+                      asChild
+                      className="text-[13px] text-gray-600"
                     >
-                      {/*<p>{item?.emoji}</p>*/}
-                      <Badge className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary text-center flex items-center">
-                        {item?.name[0]}
-                      </Badge>
-                      <span>{item.name}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
+                      <Link
+                        href={`/dashboard/${activeWorkspace.id}/project/${item.id}`}
+                        className="flex items-center gap-1"
+                      >
+                        {/*<p>{item?.emoji}</p>*/}
+                        <Badge className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary text-center flex items-center">
+                          {item?.name[0]}
+                        </Badge>
+                        <span>{item.name}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            ) : (
+              <SidebarMenu className="text-center text-gray-600 font-light text-[12px]">
+                No projects created!
+              </SidebarMenu>
+            )}
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>

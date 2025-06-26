@@ -1,6 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import React, { useEffect, useState } from "react";
@@ -10,10 +16,15 @@ import { FieldValues, Form, SubmitHandler, useForm } from "react-hook-form";
 import { registerUser } from "@/lib/actions/user.service";
 import { redirect, useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 
 type IAuthState = "LOGIN" | "SIGNUP";
 
-const Authform = () => {
+const Authform = ({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<"div">) => {
   const router = useRouter();
   const { status } = useSession();
   const {
@@ -63,7 +74,7 @@ const Authform = () => {
           router.push("/dashboard");
         } else {
           console.log("signIn failed", res);
-          toast.error("Sign in failed!")
+
         }
       } else if (authState === "LOGIN") {
         const res = await signIn("credentials", {
@@ -77,12 +88,11 @@ const Authform = () => {
           router.push("/dashboard");
         } else {
           console.log("signIn failed", res);
-          toast.error("Login failed!")
         }
       }
     } catch (error) {
       console.log("Signing Up failed");
-      toast.error("Signing in failed!")
+      toast.error("Signing in failed!");
     }
   };
 
@@ -90,73 +100,103 @@ const Authform = () => {
     await signIn("google");
   };
   return (
-    <Card className="p-5  bg-white xl:w-[400px] w-full rounded-[10px]">
-      <h1 className="text-center font-bold">
-        {authState === "SIGNUP" ? "Sign Up" : "Login"}
-      </h1>
-      <p className="text-gray-600 text-[12px] text-center">
-        {authState === "SIGNUP"
-          ? "Create an account with your email or google account."
-          : "Login to your account with your email or google account."}
-      </p>
-      <Button
-        className="bg-white border-[1px] text-black hover:bg-neutral-50 text-[13px] flex items-center"
-        onClick={handleGoogleAuth}
-      >
-        <FcGoogle size={16} /> Continue with Google
-      </Button>
-      <div className="flex items-center -6">
-        <div className="flex-grow h-px bg-gray-300"></div>
-        <span className="px-4 text-gray-500 text-sm">or continue with</span>
-        <div className="flex-grow h-px bg-gray-300"></div>
+    <div className={cn("flex flex-col gap-6", className)} {...props}>
+      <Card>
+        <CardHeader className="text-center">
+          <CardTitle className="text-xl">
+            {authState === "SIGNUP" ? "Create an account" : "Welcome back"}
+          </CardTitle>
+          <CardDescription>
+            {authState === "LOGIN"
+              ? "Login with your Email or Google account"
+              : "Create an account with your Email or Google account"}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div>
+            <div className="grid gap-6">
+              <div className="flex flex-col gap-4">
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={handleGoogleAuth}
+                >
+                  <FcGoogle />
+                  Login with Google
+                </Button>
+              </div>
+              <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
+                <span className="relative z-10 bg-background px-2 text-muted-foreground">
+                  Or continue with
+                </span>
+              </div>
+              <form className="grid gap-6" onSubmit={handleSubmit(handleAuth)}>
+                {authState === "SIGNUP" && (
+                  <div className="grid gap-2">
+                    <Label htmlFor="email">Username</Label>
+                    <Input
+                      id="username"
+                      type="text"
+                      placeholder="John Doe"
+                      required
+                      {...register("username")}
+                    />
+                  </div>
+                )}
+                <div className="grid gap-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="m@example.com"
+                    required
+                    {...register("email")}
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <div className="flex items-center">
+                    <Label htmlFor="password">Password</Label>
+                    <a
+                      href="#"
+                      className="ml-auto text-sm underline-offset-4 hover:underline"
+                    >
+                      Forgot your password?
+                    </a>
+                  </div>
+                  <Input
+                    id="password"
+                    type="password"
+                    required
+                    {...register("password")}
+                  />
+                </div>
+                <Button type="submit" className="w-full" onClick={handleAuth}>
+                  Login
+                </Button>
+              </form>
+              <div className="text-center text-sm flex items-center justify-center gap-1">
+                {authState === "LOGIN" ? (
+                  <p>Don&apos;t have an account?</p>
+                ) : (
+                  <p>Already have an account</p>
+                )}
+                <a
+                  href="#"
+                  className="underline underline-offset-4"
+                  onClick={toogleAuthState}
+                >
+                  {authState === "SIGNUP" ? "Login" : " Sign up"}
+                </a>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+      <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  ">
+        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
+        and <a href="#">Privacy Policy</a>.
       </div>
-      <form onSubmit={handleSubmit(handleAuth)} className="flex flex-col gap-4">
-        {authState === "SIGNUP" && (
-          <label className="flex flex-col gap-1">
-            <Input
-              className="w-full h-[50px] border-[1px] placeholder:text-[13px]"
-              placeholder="Enter Username"
-              type="text"
-              {...register("username")}
-            />
-          </label>
-        )}
-        <label className="flex flex-col gap-1">
-          <Input
-            className="w-full h-[50px] placeholder:text-[13px]"
-            placeholder="Enter Email"
-            type="email"
-            {...register("email")}
-          />
-        </label>
-        <label className="flex flex-col gap-1">
-          <Input
-            className="w-full h-[50px] placeholder:text-[13px]"
-            placeholder="Enter Password"
-            type="password"
-            {...register("password")}
-          />
-        </label>
-        <Button className="" type="submit">
-          {authState === "SIGNUP" ? "Sign Up" : "Login"}
-        </Button>
-      </form>
-      {authState === "SIGNUP" ? (
-        <p className="text-[12px] text-center">
-          Already have an account?{" "}
-          <span className="underline cursor-pointer" onClick={toogleAuthState}>
-            Login
-          </span>
-        </p>
-      ) : (
-        <p className="text-[12px] text-center">
-          Don&apos;t have an account?{" "}
-          <span className="underline cursor-pointer" onClick={toogleAuthState}>
-            SignUp
-          </span>
-        </p>
-      )}
-    </Card>
+    </div>
   );
 };
 

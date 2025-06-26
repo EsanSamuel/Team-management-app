@@ -29,12 +29,13 @@ import {
 } from "@/lib/actions/project.service";
 import DashboardCard from "./DashboardCard";
 import { Card } from "./ui/card";
-import { Project, Task, User } from "@/lib/generated/prisma";
+import { Member, Project, Task, User } from "@/lib/generated/prisma";
 import { getAllTasksInWorkspace } from "@/lib/actions/task.service";
-import { authorizeRole } from "@/lib/actions/member.service";
+import { authorizeRole, getMembers } from "@/lib/actions/member.service";
 import { toast } from "sonner";
 import { useWorkspace } from "@/context/workspaceContext";
 import { ClipLoader, FadeLoader } from "react-spinners";
+import { useRouter } from "next/navigation";
 
 const override: CSSProperties = {
   display: "block",
@@ -49,11 +50,13 @@ const DashboardPage = ({
   workspaceId: string;
   user: User;
 }) => {
+  const router = useRouter();
   const [project, setProject] = useState({
     emoji: "",
     name: "",
     description: "",
   });
+  const [members, setMembers] = useState<Member[]>([]);
   const [projects, setProjects] = useState<(Project & { user: User })[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -72,7 +75,20 @@ const DashboardPage = ({
   useEffect(() => {
     getWorkSpaceProjects(workspaceId as string).then(setProjects);
     getAllTasksInWorkspace(workspaceId as string).then(setTasks);
+    getMembers(workspaceId as string).then(setMembers as any);
   }, [workspaceId]);
+
+  useEffect(() => {
+    if (
+      workspaceId &&
+      user?.id &&
+      members.length > 0 &&
+      !members.some((member) => member.userId === user.id)
+    ) {
+      toast.message("You are not a member of this workspace!");
+      router.push(`/dashboard`);
+    }
+  }, [router, workspaceId, members]);
 
   const getDoneTaskCount = tasks.filter(
     (task) => task.Status === "Done"
@@ -254,16 +270,7 @@ const DashboardPage = ({
         ) : (
           <div className="flex items-center justify-center h-full mt-20  ">
             {" "}
-            <div className="w-2 h-2">
-              <FadeLoader
-                color="oklch(0.55 0.02 264)"
-                cssOverride={override}
-                aria-label="Loading Spinner"
-                data-testid="loader"
-                className="w-3 h-3"
-       
-              />
-            </div>
+            <h1 className="text-center mt-10 text-gray-600">No Projects</h1>
           </div>
         )}
       </>

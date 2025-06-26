@@ -64,7 +64,7 @@ const Page = () => {
       alert("You are not eligible for this page");
       return router.push(`/dashboard/${workspaceId}`);
     }
-  },  [checkingIsAdmin, isAdmin, router, workspaceId]);
+  }, [checkingIsAdmin, isAdmin, router, workspaceId]);
 
   useEffect(() => {
     if (workspace) {
@@ -77,12 +77,16 @@ const Page = () => {
 
   const editWorkspace = async () => {
     await edit_workspace({ ...form, workspaceId });
-    toast.success("Workspace updated!")
+    toast.success("Workspace updated!");
   };
 
   const deleteWorkspace = async () => {
-    await delete_Workspace(workspaceId);
-    toast.success("Workspace deleted!")
+    if (user?.id) {
+      await delete_Workspace(workspaceId);
+      toast.success("Workspace deleted!");
+      localStorage.removeItem(`workspace:${user?.id}`);
+      router.push("/dashboard");
+    }
   };
 
   return (

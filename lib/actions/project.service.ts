@@ -25,8 +25,7 @@ export const create_Project = async ({
 
     if (!user?.id) {
       console.error("User is undefined in create_workspace");
-      return
-
+      return;
     }
 
     const new_project = await prisma?.project?.create({
@@ -64,6 +63,7 @@ export const getWorkSpaceProjects = async (
       include: {
         user: true,
         workspace: true,
+        Task: true,
       },
       orderBy: {
         createdAt: "desc",
