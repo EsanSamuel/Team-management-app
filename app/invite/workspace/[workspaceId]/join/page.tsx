@@ -57,11 +57,11 @@ const Page = () => {
           Sync Corp.
         </a>
         {!showAuthModal ? (
-          <Card className="p-6 bg-white shadow-lg xl:w-[420px] w-full rounded-2xl text-center flex flex-col gap-4 border border-gray-100">
-            <h1 className="text-xl font-semibold text-gray-800">
+          <Card className="p-6 light:bg-white shadow-lg xl:w-[420px] w-full rounded-2xl text-center flex flex-col gap-4 border light:border-gray-100">
+            <h1 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
               👋 You&apos;re Invited to Join Sync corp!
             </h1>
-            <p className="text-gray-500 text-sm leading-relaxed">
+            <p className="text-gray-500 dark:text-gray-300 text-sm leading-relaxed">
               {status !== "authenticated"
                 ? "To access this workspace, please log into your Sync corp account or sign up to create one."
                 : `You've been invited to join the ${workspace?.name} workspace on SyncCorp.`}
@@ -70,7 +70,7 @@ const Page = () => {
             {status !== "authenticated" ? (
               <div className="flex gap-3 w-full mt-4">
                 <Button
-                  className="flex-1 bg-primary text-white hover:bg-primary/90 transition duration-200"
+                  className="flex-1 bg-primary text-white dark:bg-input/30 hover:bg-primary/90 transition duration-200"
                   onClick={() => setShowAuthModal(true)}
                 >
                   Sign Up

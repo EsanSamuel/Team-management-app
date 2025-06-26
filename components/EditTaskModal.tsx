@@ -78,7 +78,7 @@ const EditTaskModal = ({
     <DialogContent className="sm:max-w-[425px]">
       <DialogHeader>
         <DialogTitle>Edit Task</DialogTitle>
-        <DialogDescription className="text-sm">
+        <DialogDescription className="text-[12px]">
           Edit this task to your fittings.
         </DialogDescription>
       </DialogHeader>

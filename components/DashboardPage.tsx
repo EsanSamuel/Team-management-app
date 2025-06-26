@@ -214,7 +214,7 @@ const DashboardPage = ({
                     </span>
                     <Activity size={14} />
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-800 mt-1">
+                  <h2 className="text-2xl font-bold text-gray-800 mt-1 dark:text-gray-100">
                     {projects.length}
                   </h2>
                 </Card>
@@ -228,7 +228,7 @@ const DashboardPage = ({
                     </span>
                     <Activity size={14} />
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-800 mt-1">
+                  <h2 className="text-2xl font-bold text-gray-800 mt-1 dark:text-gray-100">
                     {tasks.length}
                   </h2>
                 </Card>
@@ -242,7 +242,7 @@ const DashboardPage = ({
                     </span>
                     <Activity size={14} />
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-800 mt-1">
+                  <h2 className="text-2xl font-bold text-gray-800 mt-1 dark:text-gray-100">
                     {getAssignedTasksCount}
                   </h2>
                 </Card>
@@ -250,13 +250,13 @@ const DashboardPage = ({
                   <div className="flex justify-between text-[13px] text-muted-foreground">
                     <span className="flex items-center gap-1">
                       Completed Tasks{" "}
-                      <span className="text-green-400 flex items-center gap-1">
+                      <span className="text-green-400 flex items-center gap-1 dark:text-gray-100">
                         <ChevronUp size={13} /> {getDoneTaskCount}
                       </span>
                     </span>
                     <Activity size={14} />
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-800 mt-1">
+                  <h2 className="text-2xl font-bold text-gray-800 mt-1 dark:text-gray-100">
                     {getDoneTaskCount}
                   </h2>
                 </Card>

@@ -29,11 +29,14 @@ const DashboardCard = ({
     router.push(`/dashboard/${workspaceId}/project/${id}`);
   };
   return (
-    <Card className="w-full rounded-xl px-3 py-3 shadow-sm border border-gray-200 bg-white shadow-none">
-      <CardHeader className="flex gap-2 p-0 mb-1 border-b border-gray-100 overflow-x-auto overflow-hidden">
+    <Card className="w-full rounded-xl px-3 py-3 shadow-sm border light:border-gray-200  shadow-none">
+      <CardHeader className="flex gap-2 p-0 mb-1 border-b light:border-gray-100 overflow-x-auto overflow-hidden">
         {["Recent Projects" /*"Recent Task", "Recent Members"*/].map(
           (tab, idx) => (
-            <h1 key={idx} className="text-[15px] text-gray-800 font--bold">
+            <h1
+              key={idx}
+              className="text-[15px] text-gray-800 dark:text-gray-100 font--bold"
+            >
               {tab} ({workspaceProjects.length})
             </h1>
           )
@@ -45,19 +48,22 @@ const DashboardCard = ({
           <div
             key={project?.id}
             onClick={() => routeToProject(project.id)}
-            className="cursor-pointer hover:bg-gray-50 transition rounded-lg p-3 border border-gray-100"
+            className="cursor-pointer light:hover:bg-gray-50 transition rounded-lg p-3 border light:border-gray-100"
           >
             <div className="flex justify-between items-center">
               <div className="flex gap-3 items-center">
                 {/** <span className="text-lg">{project.emoji}</span> */}
-                <Badge className="bg-sidebar-primary text-[15px] text-white w-[50px] h-[50px] flex aspect-square size-10 items-center justify-center rounded-lg">
+                <Badge
+                  className="bg-sidebar-primary text-[15px] text-white w-[50px] h-[50px] flex aspect-square size-10
+                 items-center justify-center rounded-lg dark:bg-white dark:text-black"
+                >
                   {project?.name[0]}
                 </Badge>
                 <div className="flex flex-col">
-                  <h2 className="text-sm font-medium text-gray-800">
+                  <h2 className="text-sm font-medium text-gray-800 dark:text-gray-100">
                     {project.name}
                   </h2>
-                  <div className="flex items-center gap-1 text-xs text-gray-500">
+                  <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
                     {/* Date Group */}
                     <div className="flex items-center gap-1">
                       <Calendar className="text-muted-foreground" size={12} />
@@ -78,7 +84,9 @@ const DashboardCard = ({
                 </div>
               </div>
               <div className="xl:flex items-center gap-2 xl:block hidden">
-                <span className="text-xs text-gray-600">Created by</span>
+                <span className="text-xs text-gray-600 dark:text-gray-400">
+                  Created by
+                </span>
                 <Avatar title={project?.user?.username} className="h-7 w-7">
                   <AvatarImage src={project?.user?.profilePicture!} />
                   <AvatarFallback>{project?.user?.username[0]}</AvatarFallback>

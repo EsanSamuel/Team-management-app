@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { usePathname } from "next/navigation";
 import { Bell } from "lucide-react";
+import { ModeToggle } from "./ModeToggle";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -61,7 +62,7 @@ export function Navbar() {
       </div>
 
       <div>
-        <Bell size={16} className="text-gray-600" />
+        <ModeToggle />
       </div>
     </div>
   );

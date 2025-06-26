@@ -276,7 +276,7 @@ export function AppSidebar({ user, workspace }: IProps) {
                       size="lg"
                       className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                     >
-                      <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+                      <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg dark:bg-white dark:text-black">
                         {/*<GalleryVerticalEnd className="size-4" />*/}
                         {activeWorkspace.name[0]}
                       </div>
@@ -284,7 +284,7 @@ export function AppSidebar({ user, workspace }: IProps) {
                         <span className="truncate font-medium">
                           {activeWorkspace.name}
                         </span>
-                        <span className="truncate text-xs text-gray-600">
+                        <span className="truncate text-xs text-gray-600 dark:text-gray-400">
                           Free
                         </span>
                       </div>
@@ -406,7 +406,7 @@ export function AppSidebar({ user, workspace }: IProps) {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
-                    className="text-[13px] text-gray-600"
+                    className="text-[13px] text-gray-600 dark:text-gray-100"
                   >
                     <Link href={`/dashboard/${activeWorkspace.id}/${item.url}`}>
                       <item.icon />
@@ -427,7 +427,10 @@ export function AppSidebar({ user, workspace }: IProps) {
               <Dialog>
                 <form>
                   <DialogTrigger asChild>
-                    <CirclePlus size={13} className="text-gray-500" />
+                    <CirclePlus
+                      size={13}
+                      className="text-gray-500 dark:text-gray-300"
+                    />
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
@@ -516,17 +519,17 @@ export function AppSidebar({ user, workspace }: IProps) {
                         className="flex items-center gap-1"
                       >
                         {/*<p>{item?.emoji}</p>*/}
-                        <Badge className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary text-center flex items-center">
+                        <Badge className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary text-center flex items-center dark:bg-white dark:text-black">
                           {item?.name[0]}
                         </Badge>
-                        <span>{item.name}</span>
+                        <span className="dark:text-gray-100">{item.name}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
               </SidebarMenu>
             ) : (
-              <SidebarMenu className="text-center text-gray-600 font-light text-[12px]">
+              <SidebarMenu className="text-center text-gray-600 dark:text-gray-300 font-light text-[12px]">
                 No projects created!
               </SidebarMenu>
             )}

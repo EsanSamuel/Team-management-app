@@ -79,7 +79,9 @@ const Page = () => {
       <div className="flex mb-5 justify-between">
         <div className="flex flex-col gap-1">
           <h1 className="font-semibold text-[16px]">Tasks</h1>
-          <p className="text-gray-500 text-[12px]">View all tasks details!</p>
+          <p className="text-gray-500 text-[12px] dark:text-gray-400">
+            View all tasks details!
+          </p>
         </div>
         <Dialog>
           <form className="overflow-y-auto">
@@ -92,7 +94,7 @@ const Page = () => {
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
                 <DialogTitle>Edit Task</DialogTitle>
-                <DialogDescription className="text-sm">
+                <DialogDescription className="text-[12px]">
                   Edit this task to your fittings.
                 </DialogDescription>
               </DialogHeader>
@@ -251,27 +253,31 @@ const Page = () => {
       <div className="flex gap-2 text-[13px] items-center mb-5">
         <div className="flex gap-2">
           {/*{task?.project?.emoji}*/}
-          <Badge className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary text-center flex items-center">
+          <Badge className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary text-center flex items-center dark:bg-white dark:text-black">
             {task?.project?.name[0]}
           </Badge>
-          <h1 className="text-gray-700">{task?.project?.name} </h1>
+          <h1 className="text-gray-700 dark:text-gray-300">
+            {task?.project?.name}{" "}
+          </h1>
         </div>
         <ChevronRight size={12} /> <span className="">{task?.title}</span>
       </div>
       <Separator />
       <div className="mt-5 grid xl:grid-cols-2 grid-cols-1 gap-5 w-full">
-        <div className="bg-gray-100 p-3 rounded-[10px]">
+        <div className="bg-gray-100  dark:bg-input/30 p-3 rounded-[10px]">
           <div className="flex justify-between items-center w-full">
             <>
-              <h1 className="text-gray-800 text-[13px] font-bold">Overview</h1>
+              <h1 className="text-gray-800 text-[13px] dark:text-gray-300 font-bold">
+                Overview
+              </h1>
             </>
           </div>
           <Separator className="my-2" />
 
           <div className="flex flex-col gap-3">
-            <h1 className="text-gray-600 text-[12px] flex gap-4">
+            <h1 className="text-gray-600 text-[12px] flex gap-4 dark:text-gray-100 ">
               Assignee{" "}
-              <span className="flex gap-1 items-center text-gray-800">
+              <span className="flex gap-1 items-center text-gray-800 dark:text-gray-100 ">
                 <Avatar className="h-5 w-5">
                   <AvatarImage src={task?.assignee?.profilePicture!} />
 
@@ -280,13 +286,13 @@ const Page = () => {
                 {task?.assignee?.username}
               </span>
             </h1>
-            <h1 className="text-gray-600 text-[12px]">
+            <h1 className="text-gray-600 text-[12px] dark:text-gray-100 ">
               Due date{" "}
               <span className="ml-4 text-orange-500">
                 {task?.Duedate.toDateString()}
               </span>
             </h1>
-            <h1 className="text-gray-600 text-[12px] flex items-center gap-4">
+            <h1 className="text-gray-600 text-[12px] flex items-center gap-4 dark:text-gray-100 ">
               Status
               <Badge
                 className={`ml-4 ${
@@ -306,7 +312,7 @@ const Page = () => {
         <div className="p-3 rounded-[10px] border xl:min-h-auto min-h-[200px]">
           <div className="flex justify-between items-center w-full">
             <>
-              <h1 className="text-gray-800 text-[13px] font-bold">
+              <h1 className="text-gray-800 dark:text-gray-300 text-[13px] font-bold">
                 Description
               </h1>
             </>
@@ -315,7 +321,9 @@ const Page = () => {
 
           {task?.description && (
             <div className="mb-5">
-              <h1 className="text-[13px] text-gray-600">{task?.description}</h1>
+              <h1 className="text-[13px] text-gray-600 dark:text-gray-100 ">
+                {task?.description}
+              </h1>
             </div>
           )}
         </div>

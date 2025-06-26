@@ -188,35 +188,35 @@ const TaskCard = ({
   const TaskStatus = (index: number) => {
     if (filterTaskWithSearchBar()[index].Status === "Backlog") {
       return (
-        <Badge className="bg-gray-100 text-gray-500 hover:bg-gray-100 px-2 flex gap-1 items-center text-[12px]">
+        <Badge className="bg-gray-100 text-gray-500 dark:bg-gray-500 dark:text-white hover:bg-gray-100 px-2 flex gap-1 items-center text-[12px]">
           <CircleHelp />
           {filterTaskWithSearchBar()[index].Status.toUpperCase()}
         </Badge>
       );
     } else if (filterTaskWithSearchBar()[index].Status === "Todo") {
       return (
-        <Badge className="bg-blue-100 text-blue-500 hover:bg-blue-100 px-2 flex gap-1 items-center text-[12px]">
+        <Badge className="bg-blue-100 text-blue-500 dark:bg-blue-500 dark:text-white hover:bg-blue-100 px-2 flex gap-1 items-center text-[12px]">
           <Circle />
           {filterTaskWithSearchBar()[index].Status.toUpperCase()}
         </Badge>
       );
     } else if (filterTaskWithSearchBar()[index].Status === "In Progress") {
       return (
-        <Badge className="bg-yellow-100 text-yellow-500 hover:bg-yellow-100 px-2 flex gap-1 items-center text-[12px]">
+        <Badge className="bg-yellow-100 text-yellow-500 hover:bg-yellow-100 dark:bg-yellow-500  dark:text-white px-2 flex gap-1 items-center text-[12px]">
           <Timer />
           {filterTaskWithSearchBar()[index].Status.toUpperCase()}
         </Badge>
       );
     } else if (filterTaskWithSearchBar()[index].Status === "In Review") {
       return (
-        <Badge className="bg-purple-100 text-purple-500 hover:bg-purple-100 px-2 flex gap-1 items-center text-[12px]">
+        <Badge className="bg-purple-100 text-purple-500 hover:bg-purple-100 dark:bg-purple-500 dark:text-white px-2 flex gap-1 items-center text-[12px]">
           <ScanEye />
           {filterTaskWithSearchBar()[index].Status.toUpperCase()}
         </Badge>
       );
     } else if (filterTaskWithSearchBar()[index].Status === "Done") {
       return (
-        <Badge className="bg-green-100 text-green-500 hover:bg-green-100 px-2 flex gap-1 items-center text-[12px]">
+        <Badge className="bg-green-100 text-green-500 hover:bg-green-100 dark:bg-green-500 dark:text-white px-2 flex gap-1 items-center text-[12px]">
           <CircleCheck />
           {filterTaskWithSearchBar()[index].Status.toUpperCase()}
         </Badge>
@@ -225,7 +225,7 @@ const TaskCard = ({
   };
   return (
     <div className="mt-5">
-      <div className="flex xl:justify-between flex-col md:flex-row gap-3 w-full">
+      <div className="flex xl:justify-between flex-col md:flex-row gap-3 w-full dark:text-gray-100">
         <div className=" overflow-x-auto overflow-hidden">
           <div className="flex flex-wrap md:flex-nowrap gap-2 text-gray-600 w-full">
             <Input
@@ -236,7 +236,7 @@ const TaskCard = ({
 
             <DropdownMenu>
               <DropdownMenuTrigger className="">
-                <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2">
+                <Button className="bg-white dark:bg-input/30 dark:text-gray-400 border text-[12px] text-gray-800 flex items-center gap-2">
                   <ListChecks />
                   Status <ChevronsUpDown size={7} className="text-gray-600" />
                 </Button>
@@ -292,7 +292,7 @@ const TaskCard = ({
 
             <DropdownMenu>
               <DropdownMenuTrigger className="">
-                <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2">
+                <Button className="bg-white dark:bg-input/30 dark:text-gray-400 border text-[12px] text-gray-800 flex items-center gap-2">
                   <ArrowRightLeft /> Priority{" "}
                   <ChevronsUpDown size={12} className="text-gray-600" />
                 </Button>
@@ -333,7 +333,7 @@ const TaskCard = ({
 
             <DropdownMenu>
               <DropdownMenuTrigger className="" asChild>
-                <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2">
+                <Button className="bg-white dark:bg-input/30 dark:text-gray-400 border text-[12px] text-gray-800 flex items-center gap-2">
                   <Person />
                   Assigned To{" "}
                   <ChevronsUpDown size={12} className="text-gray-600" />
@@ -380,7 +380,7 @@ const TaskCard = ({
 
             <DropdownMenu>
               <DropdownMenuTrigger className="">
-                <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2 ">
+                <Button className="bg-white dark:bg-input/30 dark:text-gray-400 border text-[12px] text-gray-800 flex items-center gap-2 ">
                   <Folder /> Projects{" "}
                   <ChevronsUpDown size={12} className="text-gray-600" />
                 </Button>
@@ -402,7 +402,7 @@ const TaskCard = ({
                     }
                   >
                     <div className="flex items-center gap-1">
-                      <Badge className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary text-center flex items-center">
+                      <Badge className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary text-center flex items-center dark:bg-white dark:text-black">
                         {project?.name[0]}
                       </Badge>{" "}
                       {project?.name}
@@ -445,7 +445,7 @@ const TaskCard = ({
       <div className="w-full mt-5 text-gray-600">
         <div className="rounded-md border text-gray-600">
           <Table>
-            <TableHeader className="text-gray-600 text-[13px]">
+            <TableHeader className="text-gray-600 dark:text-gray-100 text-[13px]">
               <TableRow>
                 <TableHead>
                   <Checkbox
@@ -454,31 +454,31 @@ const TaskCard = ({
                     aria-label="Select all"
                   />
                 </TableHead>
-                <TableHead className="text-gray-600 text-[13px] flex gap-2 items-center">
+                <TableHead className="text-gray-600 dark:text-gray-400 text-[13px] flex gap-2 items-center">
                   Task name <ArrowUpDown size={13} />
                 </TableHead>
-                <TableHead className="text-gray-600 text-[13px] ">
+                <TableHead className="text-gray-600  dark:text-gray-400 text-[13px] ">
                   <div className="flex gap-2 items-center">
                     {" "}
                     Project <ArrowUpDown size={13} />
                   </div>
                 </TableHead>
-                <TableHead className="text-gray-600 text-[13px] ">
+                <TableHead className="text-gray-600 dark:text-gray-400 text-[13px] ">
                   <div className="flex gap-2 items-center">
                     Assigned To <ArrowUpDown size={13} />
                   </div>
                 </TableHead>
-                <TableHead className="text-gray-600 text-[13px]">
+                <TableHead className="text-gray-600 dark:text-gray-400 text-[13px]">
                   <div className="flex gap-2 items-center">
                     Due Date <ArrowUpDown size={13} />
                   </div>
                 </TableHead>
-                <TableHead className="text-gray-600 text-[13px]">
+                <TableHead className="text-gray-600 dark:text-gray-400 text-[13px]">
                   <div className="flex gap-2 items-center">
                     Status <ArrowUpDown size={13} />
                   </div>
                 </TableHead>
-                <TableHead className="text-gray-600 text-[13px]">
+                <TableHead className="text-gray-600 dark:text-gray-400 text-[13px]">
                   <div className="flex gap-2 items-center">
                     Priority <ArrowUpDown size={13} />
                   </div>
@@ -496,19 +496,22 @@ const TaskCard = ({
                     />
                   </TableCell>
                   <TableCell className="flex gap-3 items-center">
-                    <Button className="bg-white border text-[12px] text-gray-600 flex items-center gap-2">
+                    <Button className="bg-white dark:bg-input/30 dark:text-gray-300 border text-[12px]  text-gray-600 flex items-center gap-2">
                       Task-{index + 1}
                     </Button>
-                    {task.title}
+                    <span className=" dark:text-gray-100"> {task.title}</span>
                   </TableCell>
                   <TableCell>
                     {/*{task?.project?.emoji}{" "}*/}
                     <div className="flex items-center gap-1">
-                      <Badge className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary text-center flex items-center">
+                      <Badge className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary text-center flex items-center dark:bg-white dark:text-black">
                         {task?.project?.name[0]}
                       </Badge>
                       {task?.project?.name && (
-                        <span className="ml-1" title={task.project.name}>
+                        <span
+                          className="ml-1 dark:text-gray-100"
+                          title={task.project.name}
+                        >
                           {task.project.name.length > 16
                             ? `${task.project.name.slice(0, 16)}...`
                             : task.project.name}
@@ -527,13 +530,13 @@ const TaskCard = ({
                           {task.assignee.username[0]}
                         </AvatarFallback>
                       </Avatar>
-                      <span className="text-[13px]">
+                      <span className="text-[13px] dark:text-gray-100">
                         {task.assignee.username}
                       </span>
                     </div>
                   </TableCell>
 
-                  <TableCell>
+                  <TableCell className="dark:text-gray-100">
                     {" "}
                     {format(new Date(task?.Duedate), "MMMM do, yyyy")}
                   </TableCell>
@@ -558,7 +561,10 @@ const TaskCard = ({
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
+                        <Button
+                          variant="ghost"
+                          className="h-8 w-8 p-0 dark:text-gray-300"
+                        >
                           <span className="sr-only">Open menu</span>
                           <MoreHorizontal />
                         </Button>
@@ -606,7 +612,7 @@ const TaskCard = ({
                           <AlertDialogTrigger asChild>
                             <Button
                               variant="outline"
-                              className="bg-red-400 hover:bg-red-500 hover:text-white text-white mt-1 flex gap-2 items-center"
+                              className="bg-red-400 hover:bg-red-500 dark:bg-red-400 dark:hover:bg-red-500 hover:text-white text-white mt-1 flex gap-2 items-center"
                             >
                               <Trash2 /> Delete Task
                             </Button>
@@ -625,7 +631,7 @@ const TaskCard = ({
                             <AlertDialogFooter>
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
                               <AlertDialogAction
-                                className="bg-red-400"
+                                className="bg-red-400 dark:text-white"
                                 onClick={() => {
                                   delete_Task(task?.id);
                                   toast.success("Task removed!");

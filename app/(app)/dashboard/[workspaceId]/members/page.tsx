@@ -88,11 +88,13 @@ const Page = () => {
   return (
     <div className="xl:px-20 md:px-10 px-5 py-5">
       <div className="flex gap-3 items-center xl:px-[15%] ">
-        <div className="bg-sidebar-primary text-[25px] text-white w-[50px] h-[50px] flex aspect-square size-10 items-center justify-center rounded-lg">
+        <div className="bg-sidebar-primary text-[25px] text-white w-[50px] h-[50px] flex aspect-square size-10 items-center justify-center rounded-lg dark:bg-white dark:text-black">
           {workspace?.name[0]}
         </div>
         <div className="flex flex-col">
-          <h1 className="text-[17px] text-gray-700">{workspace?.name}</h1>
+          <h1 className="text-[17px] text-gray-700 dark:text-gray-100">
+            {workspace?.name}
+          </h1>
           <p className="text-[12px] text-gray-400">Free</p>
         </div>
       </div>
@@ -117,7 +119,7 @@ const Page = () => {
             <div className="flex gap-2 mt-2">
               <Input
                 value={`https://synccorp.vercel.app/invite/workspace/${workspaceId}/join`}
-                className="text-gray-700 text-[13px]"
+                className="text-gray-700 dark:text-gray-300 text-[13px]"
                 readOnly
               />
               {!copied ? (
@@ -131,7 +133,7 @@ const Page = () => {
               )}
             </div>
           ) : (
-            <h1 className="mt-5 text-center text-[13px] text-gray-700">
+            <h1 className="mt-5 text-center text-[13px] text-gray-700 dark:text-gray-300 ">
               Only admins can invite members.
             </h1>
           )}
@@ -147,7 +149,7 @@ const Page = () => {
                   <AvatarFallback>{member?.user?.username[0]}</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col ">
-                  <h1 className="text-[13px] text-gray-800">
+                  <h1 className="text-[13px] text-gray-800 dark:text-gray-100">
                     {member?.user?.username}
                   </h1>
                   <>

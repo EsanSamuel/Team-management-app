@@ -6,6 +6,7 @@ import Provider from "@/components/Provider";
 import { Toaster } from "sonner";
 import { getUser } from "@/lib/actions/user.service";
 import { redirect } from "next/navigation";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -42,7 +43,14 @@ export default function RootLayout({
       >
         <Provider>
           <Toaster />
-          {children}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
         </Provider>
       </body>
     </html>

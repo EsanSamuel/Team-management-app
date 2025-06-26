@@ -86,7 +86,7 @@ const Page = () => {
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
                 <DialogTitle>Create Task</DialogTitle>
-                <DialogDescription className="text-sm">
+                <DialogDescription className="text-[12px]">
                   Organize and manage tasks
                 </DialogDescription>
               </DialogHeader>

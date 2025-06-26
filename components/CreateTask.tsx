@@ -63,7 +63,7 @@ const CreateTask = ({
     <DialogContent className="sm:max-w-[425px]">
       <DialogHeader>
         <DialogTitle>Create Task in &quot;{status}&quot;</DialogTitle>
-        <DialogDescription className="text-sm">
+        <DialogDescription className="text-[12px]">
           Organize and manage tasks
         </DialogDescription>
       </DialogHeader>

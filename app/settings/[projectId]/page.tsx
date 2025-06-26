@@ -126,7 +126,7 @@ export default function EditProjectPage() {
             <AlertDialogTrigger asChild>
               <Button
                 variant="outline"
-                className="bg-red-400 hover:bg-red-500 hover:text-white text-white"
+                className="bg-red-400 hover:bg-red-500 dark:bg-red-400 dark:hover:bg-red-500 hover:text-white text-white"
               >
                 Delete
               </Button>
@@ -142,7 +142,7 @@ export default function EditProjectPage() {
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction
-                  className="bg-red-400"
+                  className="bg-red-400 dark:text-white"
                   onClick={handleDelete}
                 >
                   Delete

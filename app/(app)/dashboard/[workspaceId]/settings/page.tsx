@@ -92,24 +92,33 @@ const Page = () => {
   return (
     <div className="xl:px-[15%] md:px-10 px-5 py-5">
       <div className="flex gap-3 items-center ">
-        <div className="bg-sidebar-primary text-[25px] text-white w-[50px] h-[50px] flex aspect-square size-10 items-center justify-center rounded-lg">
+        <div
+          className="bg-sidebar-primary text-[25px] text-white w-[50px] h-[50px] 
+        flex aspect-square size-10 items-center justify-center dark:bg-white dark:text-black rounded-lg"
+        >
           {workspace?.name[0]}
         </div>
         <div className="flex flex-col">
-          <h1 className="text-[17px] text-gray-700">{workspace?.name}</h1>
+          <h1 className="text-[17px] text-gray-700 dark:text-gray-100">
+            {workspace?.name}
+          </h1>
           <p className="text-[12px] text-gray-400">Free</p>
         </div>
       </div>
       <Separator className="my-5" />
       <div className="">
-        <h1 className=" font-bold text-gray-700">Workspace settings</h1>
-        <p className="font-bold text-gray-700 mt-5 text-[14px]">
+        <h1 className=" font-bold text-gray-700 dark:text-gray-100">
+          Workspace settings
+        </h1>
+        <p className="font-bold text-gray-700 dark:text-gray-300 mt-5 text-[14px]">
           Edit Workspace
         </p>
         <Separator className="my-5" />
         <form className="flex flex-col gap-4">
           <label className="flex flex-col gap-1">
-            <h1 className="text-gray-800 text-[12px]">Workspace name</h1>
+            <h1 className="text-gray-800 text-[12px] dark:text-gray-100">
+              Workspace name
+            </h1>
             <Input
               className="w-full h-[40px] border-[1px] placeholder:text-[13px]"
               placeholder="Enter Username"
@@ -119,7 +128,9 @@ const Page = () => {
             />
           </label>
           <label className="flex flex-col gap-1">
-            <h1 className="text-gray-800 text-[12px]">Workspace description</h1>
+            <h1 className="text-gray-800 text-[12px] dark:text-gray-100">
+              Workspace description
+            </h1>
             <Textarea
               className="w-full h-[100px] border-[1px] placeholder:text-[13px]"
               value={form.description}
@@ -136,9 +147,11 @@ const Page = () => {
         </form>
 
         <div className="mt-5">
-          <h1 className=" font-bold text-gray-700">Delele Workspace</h1>
+          <h1 className=" font-bold text-gray-700 dark:text-gray-100">
+            Delele Workspace
+          </h1>
           <Separator className="my-2" />
-          <p className="text-[12px] text-gray-600">
+          <p className="text-[12px] text-gray-600 dark:text-gray-400">
             Permanently delete this workspace and all associated projects and
             tasks. This action cannot be undone.
           </p>
@@ -147,7 +160,7 @@ const Page = () => {
               <AlertDialogTrigger asChild>
                 <Button
                   variant="outline"
-                  className="bg-red-400 hover:bg-red-500 hover:text-white text-white"
+                  className="bg-red-400 hover:bg-red-500 hover:text-white text-white dark:bg-red-400 dark:hover:bg-red-500"
                 >
                   Delete workspace
                 </Button>
@@ -163,7 +176,7 @@ const Page = () => {
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction
-                    className="bg-red-400"
+                    className="bg-red-400 dark:text-white"
                     onClick={deleteWorkspace}
                   >
                     Delete

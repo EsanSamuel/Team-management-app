@@ -157,7 +157,7 @@ const Karban = ({
 
   return (
     <>
-      <div className="flex xl:justify-between flex-col md:flex-row gap-3 w-full">
+      <div className="flex xl:justify-between flex-col md:flex-row gap-3 w-full mt-5">
         <div className="overflow-x-auto overflow-hidden">
           <div className="flex flex-wrap md:flex-nowrap gap-2 text-gray-600">
             <Input
@@ -168,7 +168,7 @@ const Karban = ({
 
             <DropdownMenu>
               <DropdownMenuTrigger className="">
-                <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2">
+                <Button className="bg-white dark:bg-input/30 dark:text-gray-400  border text-[12px] text-gray-800 flex items-center gap-2">
                   <ArrowRightLeft /> Priority{" "}
                   <ChevronsUpDown size={12} className="text-gray-600" />
                 </Button>
@@ -209,7 +209,7 @@ const Karban = ({
 
             <DropdownMenu>
               <DropdownMenuTrigger className="">
-                <Button className="bg-white border text-[12px] text-gray-800 flex items-center gap-2 ">
+                <Button className="bg-white border dark:bg-input/30 dark:text-gray-400 text-[12px] text-gray-800 flex items-center gap-2 ">
                   <Person />
                   Assigned To{" "}
                   <ChevronsUpDown size={12} className="text-gray-600" />
@@ -294,7 +294,7 @@ const Karban = ({
             {filteredBacklog.map((task, index) => (
               <div
                 key={index}
-                className="bg-white rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
+                className="bg-white  rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
               >
                 <h2 className="font-medium text-sm text-gray-800 truncate">
                   {task.title}
@@ -327,7 +327,7 @@ const Karban = ({
             ))}
           </div>
 
-          <div className="bg-gray-100 rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
+          <div className="bg-gray-100  rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
                 <Circle className="h-4 w-4 text-blue-500" /> Todo
@@ -347,7 +347,7 @@ const Karban = ({
             {filteredTodo.map((task, index) => (
               <div
                 key={index}
-                className="bg-white rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
+                className="bg-white dark:bg-input/30 rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
               >
                 <h2 className="font-medium text-sm text-gray-800 truncate">
                   {task.title}

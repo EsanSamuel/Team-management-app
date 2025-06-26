@@ -129,10 +129,10 @@ const Page = () => {
       <div className="flex xl:justify-between flex-col xl:flex-row w-full mb-6">
         <div className="flex items-center gap-2">
           {/*      <span className="text-xl">{project?.emoji}</span> */}
-          <Badge className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary text-center flex items-center">
+          <Badge className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary text-center flex items-center dark:bg-white dark:text-black">
             {project?.name[0]}
           </Badge>
-          <h1 className="text-lg font-semibold text-gray-800 flex gap-3 items-center">
+          <h1 className="text-lg font-semibold text-gray-800 dark:text-gray-100 flex gap-3 items-center">
             {project?.name}{" "}
             <button>
               <Pencil
@@ -155,7 +155,7 @@ const Page = () => {
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
                 <DialogTitle>Create Task</DialogTitle>
-                <DialogDescription className="text-sm">
+                <DialogDescription className="text-[12px]">
                   Organize and manage tasks
                 </DialogDescription>
               </DialogHeader>
@@ -274,7 +274,7 @@ const Page = () => {
       </div>
 
       <div className="overflow-x-auto overflow-hidden">
-        <div className="grid grid-cols-3 min-w-[700px] gap-5">
+        <div className="grid grid-cols-3 min-w-[700px] gap-5 ">
           <Card className="p-4 border-dashed shadow-none">
             <div className="flex justify-between text-sm text-muted-foreground">
               <span className="flex items-center gap-1">
@@ -285,7 +285,7 @@ const Page = () => {
               </span>
               <Activity size={14} />
             </div>
-            <h2 className="text-2xl font-bold text-gray-800 mt-1">
+            <h2 className="text-2xl font-bold text-gray-800 mt-1 dark:text-gray-100">
               {tasks.length}
             </h2>
           </Card>
@@ -299,7 +299,7 @@ const Page = () => {
               </span>
               <Activity size={14} />
             </div>
-            <h2 className="text-2xl font-bold text-gray-800 mt-1">
+            <h2 className="text-2xl font-bold text-gray-800 mt-1 dark:text-gray-100">
               {getOverdiewTask}
             </h2>
           </Card>
@@ -313,7 +313,7 @@ const Page = () => {
               </span>
               <Activity size={14} />
             </div>
-            <h2 className="text-2xl font-bold text-gray-800 mt-1">
+            <h2 className="text-2xl font-bold text-gray-800 mt-1 dark:text-gray-100">
               {getDoneTaskCount}
             </h2>
           </Card>
