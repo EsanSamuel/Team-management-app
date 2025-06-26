@@ -63,18 +63,21 @@ const Authform = ({
       if (authState === "SIGNUP") {
         const register = await registerUser({ username, email, password });
         console.log(register);
+
         const res = await signIn("credentials", {
           email,
           password,
           redirect: false,
+          callbackUrl: "/dashboard",
         });
-        toast.success("Account created successful!");
-        if (res?.ok) {
-          console.log("signIn successful!");
-          router.push("/dashboard");
-        } else {
-          console.log("signIn failed", res);
 
+        if (res?.error) {
+          console.log("Sign in failed", res);
+          toast.error("Invalid credentials.");
+        } else {
+          console.log("Sign up successful!");
+          toast.success("Signed up successfully!");
+          router.push(res?.url || "/dashboard");
         }
       } else if (authState === "LOGIN") {
         const res = await signIn("credentials", {
@@ -82,17 +85,19 @@ const Authform = ({
           password,
           redirect: false,
         });
-        toast.success("Sign in successful!");
-        if (res?.ok) {
-          console.log("signIn successful!");
-          router.push("/dashboard");
+
+        if (res?.error) {
+          console.log("Sign in failed", res);
+          toast.error("Invalid credentials.");
         } else {
-          console.log("signIn failed", res);
+          console.log("Sign in successful!");
+          toast.success("Signed in successfully!");
+          router.push(res?.url || "/dashboard");
         }
       }
     } catch (error) {
-      console.log("Signing Up failed");
-      toast.error("Signing in failed!");
+      console.log("Auth request failed", error);
+      toast.error("Something went wrong. Please try again.");
     }
   };
 
