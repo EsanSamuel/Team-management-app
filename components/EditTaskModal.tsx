@@ -54,7 +54,7 @@ const EditTaskModal = ({
     getTask(taskId as string).then(setTask as any);
     getWorkSpaceProjects(workspaceId as string).then(setProjects);
     getMembers(workspaceId as string).then(setMembers as any);
-  }, [taskId,workspaceId]);
+  }, [taskId, workspaceId]);
 
   useEffect(() => {
     if (task) {
@@ -169,7 +169,7 @@ const EditTaskModal = ({
             onChange={(e) =>
               setTaskValues({ ...taskValues, Duedate: e.target.value })
             }
-            value={taskValues.Duedate}
+            value={taskValues.Duedate as string}
           />
         </div>
         <div className="grid gap-2">
