@@ -274,7 +274,7 @@ const Karban = ({
 
       <div className="overflow-x-auto overflow-hidden ">
         <div className="grid xl:grid-cols-4 grid-cols-5 xl:min-w-auto min-w-[1300px] gap-6 mt-5">
-          <div className="bg-gray-100 rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
+          <div className="bg-gray-100 dark:bg-muted rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
                 <CircleHelp className="h-4 w-4" /> Backlog{" "}
