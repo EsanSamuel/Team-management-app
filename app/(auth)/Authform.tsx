@@ -64,20 +64,22 @@ const Authform = ({
         const register = await registerUser({ username, email, password });
         console.log(register);
 
-        const res = await signIn("credentials", {
-          email,
-          password,
-          redirect: false,
-          callbackUrl: "/dashboard",
-        });
+        if (register) {
+          const res = await signIn("credentials", {
+            email,
+            password,
+            redirect: false,
+            callbackUrl: "/dashboard",
+          });
 
-        if (res?.error) {
-          console.log("Sign in failed", res);
-          toast.error("Invalid credentials.");
-        } else {
-          console.log("Sign up successful!");
-          toast.success("Signed up successfully!");
-          router.push(res?.url || "/dashboard");
+          if (res?.error) {
+            console.log("Sign in failed", res);
+            toast.error("Invalid credentials.");
+          } else {
+            console.log("Sign up successful!");
+            toast.success("Signed up successfully!");
+            router.push(res?.url || "/dashboard");
+          }
         }
       } else if (authState === "LOGIN") {
         const res = await signIn("credentials", {
