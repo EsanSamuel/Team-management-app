@@ -18,7 +18,7 @@ export const create_Project = async ({
   description,
   emoji,
   workspaceId,
-}: IProject): Promise<void> => {
+}: IProject) => {
   try {
     const user = await getUser();
     console.log(name, description, user?.id, workspaceId);
@@ -44,9 +44,13 @@ export const create_Project = async ({
         name,
         description,
       },
+      include: {
+        workspace: true,
+      },
     });
 
     console.log(new_project);
+    return new_project;
   } catch (error) {
     console.log(error);
   }

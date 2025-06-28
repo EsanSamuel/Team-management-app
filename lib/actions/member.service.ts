@@ -8,13 +8,13 @@ import { getUser } from "./user.service";
 export const AddUserToWorkspace = async (
   workspaceId: string,
   role: "ADMIN" | "OWNER" | "MEMBER"
-): Promise<void> => {
+) => {
   try {
     const user = await getUser();
 
     if (!user?.id) {
       console.error("User is undefined in create_workspace");
-      return
+      return;
     }
     const member = await prisma.member.create({
       data: {
@@ -32,6 +32,7 @@ export const AddUserToWorkspace = async (
       },
     });
     console.log(member);
+    return member;
   } catch (error) {
     console.log(error);
   }
@@ -85,6 +86,7 @@ export const editRole = async (memberId: string, role: "ADMIN" | "MEMBER") => {
         role: role,
       },
     });
+    return editRole;
   } catch (error) {
     console.log(error);
   }

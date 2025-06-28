@@ -32,6 +32,8 @@ import { getMembers } from "@/lib/actions/member.service";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getWorkSpaceProjects } from "@/lib/actions/project.service";
 import { toast } from "sonner";
+import { notificationWhenAssignedTask } from "@/lib/actions/notification.service";
+import { getUser } from "@/lib/actions/user.service";
 
 const Page = () => {
   const { workspaceId } = useParams();
@@ -50,17 +52,32 @@ const Page = () => {
   const [view, setView] = useState("Table");
   const [members, setMembers] = useState<(Member & { user: User })[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     getAllTasksInWorkspace(workspaceId as string).then(setTasks);
     getMembers(workspaceId as string).then(setMembers as any);
     getWorkSpaceProjects(workspaceId as string).then(setProjects);
+    getUser().then(setUser as any);
   }, [workspaceId]);
 
   const create_Task = async () => {
     try {
-      await createTask({ ...task, workspaceId });
+      const create_task = await createTask({ ...task, workspaceId });
       toast.success("Task created!");
+      if (create_task) {
+        const notification = await notificationWhenAssignedTask({
+          taskId: create_task.id,
+          senderId: user?.id,
+          receiverId: create_task.assigneeId,
+          content: `You have been assigned a task - ${create_task.title}. Project: ${create_task.project.name}. Workspace: ${create_task.workspace.name}`,
+        });
+        if (notification) {
+          console.log(
+            `New notification: ${notification?.receiver?.username} have been assigned a task - ${create_task.title}`
+          );
+        }
+      }
     } catch (error) {
       toast.error("Task not created!");
     }

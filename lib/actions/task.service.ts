@@ -59,8 +59,13 @@ export const createTask = async ({
           },
         },
       },
+      include: {
+        project: true,
+        workspace: true,
+      },
     });
     console.log(task);
+    return task;
   } catch (error) {
     console.log(error);
   }
@@ -188,6 +193,7 @@ export const editTask = async ({
       },
     });
     console.log(task);
+    return task;
   } catch (error) {
     console.log(error);
   }

@@ -3,6 +3,7 @@ import Authform from "@/components/AuthComponent";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { AddUserToWorkspace, getMembers } from "@/lib/actions/member.service";
+import { notificationWhenAddedToWorkspace } from "@/lib/actions/notification.service";
 import { getUser } from "@/lib/actions/user.service";
 import { getWorkSpaceById } from "@/lib/actions/workspace.service";
 import { Member, User, Workspace } from "@/lib/generated/prisma";
@@ -39,6 +40,19 @@ const Page = () => {
         toast.success("You have been added to this workspace");
         router.push(`/dashboard/${workspaceId}`);
         console.log(member);
+        if (member) {
+          const notification = await notificationWhenAddedToWorkspace({
+            workspaceId: workspaceId as any,
+            senderId: user?.id,
+            receiverId: user?.id,
+            content: `You have joined the ${workspace?.name} workspace as a member`,
+          });
+          if (notification) {
+            console.log(
+              `New notification: You have joined the ${workspace?.name} workspace as a member`
+            );
+          }
+        }
       } else {
         toast.error("You are already in this workspace");
       }

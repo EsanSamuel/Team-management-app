@@ -24,6 +24,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
+import { notificationWhenRoleChanged } from "@/lib/actions/notification.service";
 
 const Page = () => {
   const { workspaceId } = useParams();
@@ -64,8 +65,19 @@ const Page = () => {
     getWorkSpaceMembers();
   }, [workspaceId]);
 
-  const updateUserRole = async (memberId: string, role: "ADMIN" | "MEMBER") => {
-    await editRole(memberId, role);
+  const updateUserRole = async (
+    memberId: string,
+    role: "ADMIN" | "MEMBER",
+    userId?: string
+  ) => {
+    const updateRole = await editRole(memberId, role);
+    if (updateRole) {
+      const notification = await notificationWhenRoleChanged({
+        senderId: user?.id,
+        receiverId: userId,
+        content: `Your role has been changed to ${role} in ${workspace?.name} workspace`,
+      });
+    }
     toast(`User has been updated to ${role}`);
   };
 
@@ -177,7 +189,9 @@ const Page = () => {
                       ADMIN
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      onClick={() => updateUserRole(member.id, "MEMBER")}
+                      onClick={() =>
+                        updateUserRole(member.id, "MEMBER", member?.userId)
+                      }
                     >
                       MEMBER
                     </DropdownMenuItem>

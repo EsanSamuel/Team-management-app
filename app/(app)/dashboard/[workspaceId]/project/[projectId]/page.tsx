@@ -62,6 +62,7 @@ import {
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { getUser } from "@/lib/actions/user.service";
 import { toast } from "sonner";
+import { notificationWhenAssignedTask } from "@/lib/actions/notification.service";
 
 const Page = () => {
   const { workspaceId, projectId } = useParams();
@@ -106,12 +107,25 @@ const Page = () => {
 
   const create_Task = async () => {
     try {
-      await createTask({
+      const create_task = await createTask({
         ...task,
         projectId: projectId as string,
         workspaceId,
       });
       toast.success("Task has been created!");
+      if (create_task) {
+        const notification = await notificationWhenAssignedTask({
+          taskId: create_task.id,
+          senderId: user?.id,
+          receiverId: create_task.assigneeId,
+          content: `You have been assigned a task - ${create_task.title}. Project: ${create_task.project.name}. Workspace: ${create_task.workspace.name}`,
+        });
+        if (notification) {
+          console.log(
+            `New notification: ${notification?.receiver?.username} have been assigned a task - ${create_task.title}`
+          );
+        }
+      }
     } catch (error) {
       toast.error("Task not created!");
     }

@@ -1,6 +1,7 @@
 "use client";
 import {
   AudioWaveform,
+  BellDot,
   BookOpen,
   Bot,
   Calendar,
@@ -197,6 +198,11 @@ export function AppSidebar({ user, workspace }: IProps) {
       title: "Settings",
       url: "/settings",
       icon: Settings,
+    },
+    {
+      title: "Notifications",
+      url: "/notifications",
+      icon: BellDot,
     },
   ].filter(Boolean) as {
     title: string;

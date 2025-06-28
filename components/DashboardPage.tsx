@@ -36,6 +36,7 @@ import { toast } from "sonner";
 import { useWorkspace } from "@/context/workspaceContext";
 import { ClipLoader, FadeLoader } from "react-spinners";
 import { useRouter } from "next/navigation";
+import { notificationWhenNewProjectIsAdded } from "@/lib/actions/notification.service";
 
 const override: CSSProperties = {
   display: "block",
@@ -67,6 +68,13 @@ const DashboardPage = ({
       const new_project = await create_Project({ ...project, workspaceId });
       toast.success("Project has been created!");
       console.log(new_project);
+      /* if (new_project) {
+        const notification = await notificationWhenNewProjectIsAdded({
+          content: `New Project has been added to ${new_project.workspace.name}`,
+          receiverId: "",
+          projectId: new_project.id,
+        });
+      }*/
     } catch (error) {
       console.log(error);
     }
