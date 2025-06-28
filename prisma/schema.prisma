@@ -30,6 +30,8 @@ model User {
   CreatedTask  Task[]    @relation("creator")
   AssignedTask Task[]    @relation("assignee")
   Member       Member[]
+  Comment      Comment[]
+  Reply        Reply[]
 }
 
 model Workspace {
@@ -98,4 +100,35 @@ model Task {
   assignee  User      @relation("assignee", fields: [assigneeId], references: [id])
   project   Project   @relation(fields: [projectId], references: [id])
   workspace Workspace @relation(fields: [workspaceId], references: [id])
+  Comment   Comment[]
+  Reply     Reply[]
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  taskId    String   @db.ObjectId
+  userId    String   @db.ObjectId
+  content   String
+  images    String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User    @relation(fields: [userId], references: [id])
+  task  Task    @relation(fields: [taskId], references: [id])
+  Reply Reply[]
+}
+
+model Reply {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  taskId    String   @db.ObjectId
+  userId    String   @db.ObjectId
+  content   String
+  images    String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  commentId String   @db.ObjectId
+
+  user    User    @relation(fields: [userId], references: [id])
+  task    Task    @relation(fields: [taskId], references: [id])
+  comment Comment @relation(fields: [commentId], references: [id])
 }

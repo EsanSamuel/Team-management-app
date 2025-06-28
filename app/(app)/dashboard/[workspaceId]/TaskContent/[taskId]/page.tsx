@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { editTask, getTask } from "@/lib/actions/task.service";
-import { Member, Project, Task, User } from "@/lib/generated/prisma";
+import { Comment, Member, Project, Task, User } from "@/lib/generated/prisma";
 import { ChevronRight, Edit, Pencil } from "lucide-react";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -31,6 +31,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { getWorkSpaceProjects } from "@/lib/actions/project.service";
 import { getMembers } from "@/lib/actions/member.service";
 import { toast } from "sonner";
+import { createComment, getComments } from "@/lib/actions/comment.service";
+import Image from "next/image";
+import Discussion from "@/components/Discussion";
 
 const Page = () => {
   const { taskId, workspaceId } = useParams();
@@ -48,11 +51,17 @@ const Page = () => {
   });
   const [projects, setProjects] = useState<Project[]>([]);
   const [members, setMembers] = useState<(Member & { user: User })[]>([]);
+  const [comment, setComment] = useState("");
+  const [images, setImages] = useState<string[]>([]);
+  const [allComments, setAllComments] = useState<(Comment & { user: User })[]>(
+    []
+  );
 
   useEffect(() => {
     getTask(taskId as string).then(setTask as any);
     getWorkSpaceProjects(workspaceId as string).then(setProjects);
     getMembers(workspaceId as string).then(setMembers as any);
+    getComments(taskId as string).then(setAllComments as any);
   }, [taskId, workspaceId]);
 
   useEffect(() => {
@@ -74,6 +83,45 @@ const Page = () => {
     toast.success("Task edited!");
   };
 
+  const handleImages = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const validImages: string[] = [];
+    const fileReaders: FileReader[] = [];
+
+    Array.from(files).forEach((file) => {
+      if (!file.type.includes("image")) {
+        toast.error("Only image files allowed!");
+        return;
+      }
+
+      const reader = new FileReader();
+      fileReaders.push(reader);
+      reader.onload = () => {
+        if (reader.result) {
+          validImages.push(reader.result as string);
+        }
+
+        if (validImages.length === fileReaders.length) {
+          setImages((prevImages) => [...prevImages, ...validImages]);
+        }
+      };
+
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleComments = async () => {
+    try {
+      await createComment({ content: comment, images, taskId });
+      toast.success("Comment created!");
+    } catch (error) {
+      console.log(error);
+      toast.success("Something went wrong!");
+    }
+  };
+
   return (
     <div className="xl:p-10 p-3">
       <div className="flex mb-5 justify-between">
@@ -86,8 +134,8 @@ const Page = () => {
         <Dialog>
           <form className="overflow-y-auto">
             <DialogTrigger asChild>
-              <Button>
-                <Pencil className="size-3 mr-2" />
+              <Button className="items-center">
+                <Pencil className="size-3 " />
                 Edit Task
               </Button>
             </DialogTrigger>
@@ -327,6 +375,83 @@ const Page = () => {
             </div>
           )}
         </div>
+      </div>
+
+      <div className="mt-10">
+        <div className="flex xl:justify-between md:items-center flex-col md:flex-row gap-2 w-full">
+          <div className="flex flex-col gap-1">
+            <h1 className="text-gray-600 dark:text-gray-200 text-sm">
+              Discussions
+            </h1>
+            <p className="text-[12px] text-gray-500 dark:text-gray-400">
+              View all discussions about this task
+            </p>
+          </div>
+          <Dialog>
+            <form>
+              <DialogTrigger asChild>
+                <Button className="xl:w- w-full">Add Comment</Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Add Comment</DialogTitle>
+                  <DialogDescription className="text-[12px]">
+                    Make a comment to this task.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4">
+                  <div className="grid gap-3">
+                    <Label htmlFor="name-1">Comment</Label>
+                    <Input
+                      id="name-1"
+                      name="comment"
+                      onChange={(e) => setComment(e.target.value)}
+                    />
+                  </div>
+                  <div className="grid gap-3">
+                    <Label htmlFor="username-1">
+                      Images{" "}
+                      <span className="font-light text-[11px]">Optional</span>
+                    </Label>
+                    <Input
+                      id="username-1"
+                      type="file"
+                      onChange={handleImages}
+                      multiple
+                    />
+
+                    {images.length > 0 && (
+                      <div className="grid grid-cols-2 gap-2">
+                        {images.map((image, idx) => (
+                          <Image
+                            src={image}
+                            key={idx}
+                            alt="images"
+                            width={400}
+                            height={400}
+                            className="h-[120px] rounded-[10px]"
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button variant="outline">Cancel</Button>
+                  </DialogClose>
+                  <Button type="submit" onClick={handleComments}>
+                    Comment
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </form>
+          </Dialog>
+        </div>
+      </div>
+
+      <div className="">
+        <Discussion comments={allComments} taskId={taskId as any} />
       </div>
     </div>
   );

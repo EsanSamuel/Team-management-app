@@ -257,7 +257,7 @@ export function AppSidebar({ user, workspace }: IProps) {
                 <button className="bg-black text-white rounded-full p-1">
                   <Zap />
                 </button>{" "}
-                <span className="text-base font-semibold">Acme Inc.</span>
+                <span className="text-base font-semibold">Sync Corp.</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
