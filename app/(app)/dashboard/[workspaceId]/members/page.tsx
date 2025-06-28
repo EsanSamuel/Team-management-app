@@ -72,7 +72,7 @@ const Page = () => {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(
-        `http://localhost:3000/invite/workspace/${workspaceId}/join`
+        `https://synccorp.vercel.app/invite/workspace/${workspaceId}/join`
       );
       setCopied(true);
     } catch (error) {
