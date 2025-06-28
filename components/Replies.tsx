@@ -126,10 +126,9 @@ const Replies = ({
               {reply.images.length > 0 ? (
                 <div className="grid grid-cols-2 gap-2 mt-3 xl:max-w-[500px] w-full">
                   {reply?.images.map((image, idx) => (
-                    <a href={image}>
+                    <a href={image} key={idx}>
                       <Image
                         src={image}
-                        key={idx}
                         alt="images"
                         width={400}
                         height={400}

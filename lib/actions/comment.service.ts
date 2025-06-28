@@ -25,7 +25,7 @@ export const createComment = async ({
       return;
     }
 
-    let imageUrls = [];
+    const imageUrls = [];
 
     if (Array.isArray(images)) {
       for (const image of images) {
@@ -146,7 +146,7 @@ export const createReply = async ({
       return;
     }
 
-    let imageUrls = [];
+    const imageUrls = [];
 
     if (Array.isArray(images)) {
       for (const image of images) {
