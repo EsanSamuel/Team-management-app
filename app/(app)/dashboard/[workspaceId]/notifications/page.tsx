@@ -48,7 +48,7 @@ const Notification = () => {
     if (user) {
       getNotifications(user.id).then(setNotifications as any);
     }
-  }, [user?.id]);
+  }, [user, user?.id]);
 
   const markAllAs_Read = async () => {
     try {

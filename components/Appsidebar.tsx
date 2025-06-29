@@ -253,9 +253,7 @@ export function AppSidebar({ user, workspace }: IProps) {
   };
 
   useEffect(() => {
-    if (user) {
-      getNotifications(user.id).then(setNotifications as any);
-    }
+    getNotifications(user.id).then(setNotifications as any);
   }, [user?.id]);
 
   const unReadNotifications = notifications.filter(
