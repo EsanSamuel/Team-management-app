@@ -75,6 +75,7 @@ const DashboardPage = ({
           projectId: new_project.id,
         });
       }*/
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }

@@ -202,9 +202,42 @@ export const getNotifications = async (receiverId: string) => {
       where: {
         receiverId,
       },
+      orderBy: {
+        sentAt: "desc",
+      },
     });
     console.log(notification);
     return notification;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const markAsRead = async (notificationId: string) => {
+  try {
+    await prisma.notification.update({
+      where: {
+        id: notificationId,
+      },
+      data: {
+        isRead: true,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const markAllAsRead = async (receiverId: string) => {
+  try {
+    await prisma.notification.updateMany({
+      where: {
+        receiverId,
+      },
+      data: {
+        isRead: true,
+      },
+    });
   } catch (error) {
     console.log(error);
   }

@@ -184,7 +184,9 @@ const Page = () => {
                     <DropdownMenuLabel>Change member role</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
-                      onClick={() => updateUserRole(member.id, "ADMIN")}
+                      onClick={() =>
+                        updateUserRole(member.id, "ADMIN", member?.userId)
+                      }
                     >
                       ADMIN
                     </DropdownMenuItem>

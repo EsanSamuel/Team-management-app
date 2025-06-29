@@ -2,7 +2,11 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { getNotifications } from "@/lib/actions/notification.service";
+import {
+  getNotifications,
+  markAllAsRead,
+  markAsRead,
+} from "@/lib/actions/notification.service";
 import { getUser } from "@/lib/actions/user.service";
 import {
   Notification as Notifications,
@@ -11,7 +15,7 @@ import {
   User,
   Workspace,
 } from "@/lib/generated/prisma";
-import { Dot, SquareDot } from "lucide-react";
+import { CheckCheck, Dot, SquareDot } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import {
   AlertDialog,
@@ -25,6 +29,9 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { format, formatDistanceToNowStrict } from "date-fns";
+import { Toaster } from "@/components/ui/sonner";
+import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
 
 const Notification = () => {
   const [user, setUser] = useState<User>();
@@ -43,16 +50,43 @@ const Notification = () => {
     }
   }, [user?.id]);
 
+  const markAllAs_Read = async () => {
+    try {
+      await markAllAsRead(user?.id as string);
+      toast.success("All notifications are mark as read!");
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const unReadNotifications = notifications.filter(
+    (notification) => notification.isRead === false
+  );
+
   return (
     <div className="xl:p-10 p-3">
       <div className="flex mb-5 xl:justify-between flex-col gap-2 md:flex-row md:items-center">
         <div className="flex flex-col gap-1">
-          <h1 className="font-semibold text-[16px]">Notifications</h1>
+          <h1 className="font-semibold text-[16px] flex gap-2 items-center">
+            Notifications{" "}
+            {unReadNotifications.length > 0 && (
+              <Badge
+                className="h-5 min-w-5 rounded-full px-1 tabular-nums"
+                variant="destructive"
+              >
+                {unReadNotifications.length}
+              </Badge>
+            )}
+          </h1>
           <p className="text-gray-500 text-[12px] dark:text-gray-400">
             See all notifications here.
           </p>
         </div>
-        <Button>Mark all as read</Button>
+        <Button onClick={markAllAs_Read} className="flex items-center">
+          <CheckCheck />
+          Mark all as read
+        </Button>
       </div>
 
       <div className="flex flex-col gap-2">
@@ -61,8 +95,12 @@ const Notification = () => {
             <div className="flex justify-between items-center">
               <div className="flex gap-2">
                 <Checkbox
-                  //checked={}
-                  //onCheckedChange={() => toggleRow(task.id)}
+                  checked={notification.isRead === true}
+                  onCheckedChange={() => {
+                    markAsRead(notification.id);
+                    toast.success("Notification mark as read!");
+                    window.location.reload();
+                  }}
                   aria-label="Select row"
                 />
                 <div className="flex flex-col gap-0">
@@ -89,14 +127,17 @@ const Notification = () => {
               </div>
               <AlertDialog>
                 <AlertDialogTrigger>
-                  <Button className="bg-input/30 border text-gray-600 dark:text-gray-300">
+                  <Button
+                    className="bg-input/30 border text-gray-600 dark:text-gray-300"
+                    onClick={() => markAsRead(notification.id)}
+                  >
                     View
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
                     <AlertDialogTitle>Notification </AlertDialogTitle>
-                    <AlertDialogDescription>
+                    <AlertDialogDescription className="text-[13px]">
                       {notification?.content}
                       <p className="mt-2 font-light text-gray-600 dark:text-gray-400 text-[10px] flex gap-1 items-center ">
                         Sent{" "}

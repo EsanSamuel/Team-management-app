@@ -90,6 +90,7 @@ import Link from "next/link";
 import { Toaster } from "./ui/sonner";
 import { toast } from "sonner";
 import { Badge } from "./ui/badge";
+import { getNotifications } from "@/lib/actions/notification.service";
 
 interface IProps {
   user: User;
@@ -118,6 +119,7 @@ export function AppSidebar({ user, workspace }: IProps) {
     description: "",
   });
   const [members, setMembers] = useState<Member[]>([]);
+  const [notifications, setNotifications] = useState<any[]>([]);
   const {
     register,
     handleSubmit,
@@ -249,6 +251,16 @@ export function AppSidebar({ user, workspace }: IProps) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      getNotifications(user.id).then(setNotifications as any);
+    }
+  }, [user?.id]);
+
+  const unReadNotifications = notifications.filter(
+    (notification) => notification.isRead === false
+  );
 
   return (
     <Sidebar>
@@ -412,11 +424,25 @@ export function AppSidebar({ user, workspace }: IProps) {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
-                    className="text-[13px] text-gray-600 dark:text-gray-100"
+                    className={`text-[13px] text-gray-600 dark:text-gray-100 `}
                   >
                     <Link href={`/dashboard/${activeWorkspace.id}/${item.url}`}>
                       <item.icon />
-                      <span>{item.title}</span>
+                      {item.title === "Notifications" ? (
+                        <span className="flex justify-between items-center w-full">
+                          {item.title}
+                          {unReadNotifications.length > 0 && (
+                            <Badge
+                              className="h-5 min-w-5 rounded-full px-1 tabular-nums"
+                              variant="destructive"
+                            >
+                              {unReadNotifications.length}
+                            </Badge>
+                          )}
+                        </span>
+                      ) : (
+                        <span>{item.title}</span>
+                      )}
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

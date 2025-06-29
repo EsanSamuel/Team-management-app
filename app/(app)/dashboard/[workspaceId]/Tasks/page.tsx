@@ -70,7 +70,7 @@ const Page = () => {
           taskId: create_task.id,
           senderId: user?.id,
           receiverId: create_task.assigneeId,
-          content: `You have been assigned a task - ${create_task.title}. Project: ${create_task.project.name}. Workspace: ${create_task.workspace.name}`,
+          content: `You have been assigned a task - "${create_task.title}". Project: ${create_task.project.name}. Workspace: ${create_task.workspace.name}`,
         });
         if (notification) {
           console.log(
@@ -78,6 +78,7 @@ const Page = () => {
           );
         }
       }
+      window.location.reload();
     } catch (error) {
       toast.error("Task not created!");
     }
