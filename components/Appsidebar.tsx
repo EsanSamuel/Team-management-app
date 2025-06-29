@@ -175,6 +175,10 @@ export function AppSidebar({ user, workspace }: IProps) {
     }
   }, [router, activeWorkspace?.id, pathname, members, user.id]);
 
+  useEffect(() => {
+    getNotifications(user.id).then(setNotifications as any);
+  }, [user?.id]);
+
   if (!activeWorkspace) {
     return null;
   }
@@ -251,10 +255,6 @@ export function AppSidebar({ user, workspace }: IProps) {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    getNotifications(user.id).then(setNotifications as any);
-  }, [user?.id]);
 
   const unReadNotifications = notifications.filter(
     (notification) => notification.isRead === false
