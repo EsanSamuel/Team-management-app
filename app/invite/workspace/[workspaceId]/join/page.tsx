@@ -40,7 +40,7 @@ const Page = () => {
         toast.success("You have been added to this workspace");
         router.push(`/dashboard/${workspaceId}`);
         console.log(member);
-        if (member) {
+       
           const notification = await notificationWhenAddedToWorkspace({
             workspaceId: workspaceId as any,
             senderId: user?.id,
@@ -52,7 +52,7 @@ const Page = () => {
               `New notification: You have joined the ${workspace?.name} workspace as a member`
             );
           }
-        }
+        
       } else {
         toast.error("You are already in this workspace");
       }
