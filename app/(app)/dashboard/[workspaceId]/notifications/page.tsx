@@ -32,8 +32,11 @@ import { format, formatDistanceToNowStrict } from "date-fns";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
+import { useParams, useRouter } from "next/navigation";
 
 const Notification = () => {
+  const { workspaceId } = useParams();
+  const router = useRouter();
   const [user, setUser] = useState<User>();
   const [notifications, setNotifications] = useState<
     (Notifications & { user: User } & { task: Task } & {
@@ -63,6 +66,14 @@ const Notification = () => {
   const unReadNotifications = notifications.filter(
     (notification) => notification.isRead === false
   );
+
+  const viewTask = (notification: Notifications) => {
+    if (notification?.taskId) {
+      router.push(
+        `/dashboard/${workspaceId}/TaskContent/${notification.taskId}`
+      );
+    }
+  };
 
   return (
     <div className="xl:p-10 p-3">
@@ -150,7 +161,14 @@ const Notification = () => {
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction>Continue</AlertDialogAction>
+                    {notification.taskId && (
+                      <AlertDialogAction
+                        className=""
+                        onClick={() => viewTask(notification)}
+                      >
+                        View Task
+                      </AlertDialogAction>
+                    )}
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
