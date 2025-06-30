@@ -171,6 +171,7 @@ const Notification = () => {
                         onClick={() => view(notification)}
                       >
                         {notification.workspaceId && "View Workspace"}
+                        {notification.taskId && "View Task"}
                       </AlertDialogAction>
                     )}
                   </AlertDialogFooter>
