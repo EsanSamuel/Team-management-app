@@ -473,21 +473,6 @@ export function AppSidebar({ user, workspace }: IProps) {
                     <div className="grid gap-4">
                       <div className="grid gap-3">
                         <Label htmlFor="name-1" className="text-[12px]">
-                          Project Emoji
-                        </Label>
-                        <Input
-                          id="name-1"
-                          name="name"
-                          onChange={(e) =>
-                            setProject((prev) => ({
-                              ...prev,
-                              emoji: e.target.value,
-                            }))
-                          }
-                        />
-                      </div>
-                      <div className="grid gap-3">
-                        <Label htmlFor="name-1" className="text-[12px]">
                           Project title
                         </Label>
                         <Input
@@ -514,7 +499,12 @@ export function AppSidebar({ user, workspace }: IProps) {
                           }
                         />
                       </div>
+                      <DialogDescription className="text-[10px]">
+                        Get your members onboard with a few words about your
+                        workspace project.
+                      </DialogDescription>
                     </div>
+
                     <DialogFooter>
                       <DialogClose asChild>
                         <Button variant="outline">Cancel</Button>

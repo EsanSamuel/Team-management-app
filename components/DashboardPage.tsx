@@ -175,21 +175,6 @@ const DashboardPage = ({
                 <div className="grid gap-4">
                   <div className="grid gap-3">
                     <Label htmlFor="name-1" className="text-[12px]">
-                      Project Emoji
-                    </Label>
-                    <Input
-                      id="name-1"
-                      name="name"
-                      onChange={(e) =>
-                        setProject((prev) => ({
-                          ...prev,
-                          emoji: e.target.value,
-                        }))
-                      }
-                    />
-                  </div>
-                  <div className="grid gap-3">
-                    <Label htmlFor="name-1" className="text-[12px]">
                       Project title
                     </Label>
                     <Input
@@ -216,6 +201,10 @@ const DashboardPage = ({
                       }
                     />
                   </div>
+                  <DialogDescription className="text-[10px]">
+                    Get your members onboard with a few words about your
+                    workspace
+                  </DialogDescription>
                 </div>
                 <DialogFooter>
                   <DialogClose asChild>
