@@ -61,7 +61,7 @@ const DashboardPage = ({
   const [projects, setProjects] = useState<(Project & { user: User })[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isAdmin, setIsAdmin] = useState(false);
-  const { loader } = useWorkspace();
+  const [isLoading, setIsLoading] = useState(false);
 
   const create_workspace_project = async () => {
     try {
@@ -82,9 +82,32 @@ const DashboardPage = ({
   };
 
   useEffect(() => {
-    getWorkSpaceProjects(workspaceId as string).then(setProjects);
-    getAllTasksInWorkspace(workspaceId as string).then(setTasks);
-    getMembers(workspaceId as string).then(setMembers as any);
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        console.log("Fetching workspace data for:", workspaceId);
+
+        const [projects, tasks, members] = await Promise.all([
+          getWorkSpaceProjects(workspaceId as string),
+          getAllTasksInWorkspace(workspaceId as string),
+          getMembers(workspaceId as string),
+        ]);
+
+        setProjects(projects);
+        setTasks(tasks);
+        setMembers(members as any);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (workspaceId) {
+      fetchData();
+    } else {
+      console.warn("workspaceId is not defined yet");
+    }
   }, [workspaceId]);
 
   useEffect(() => {
@@ -209,7 +232,7 @@ const DashboardPage = ({
       </div>
 
       <>
-        {projects.length !== 0 ? (
+        {!isLoading ? (
           <>
             <div className="overflow-x-auto overflow-hidden">
               <div className="grid grid-cols-4 gap-3 min-w-[900px] w-max xl:w-full mt-7">
@@ -273,13 +296,21 @@ const DashboardPage = ({
             </div>
 
             <div className="mt-5">
-              <DashboardCard workspaceProjects={projects as any} />
+              {!isLoading && projects.length !== 0 ? (
+                <DashboardCard workspaceProjects={projects as any} />
+              ) : (
+                <h1 className="text-center sm:mt-10 mt-5 text-gray-600 dark:text-gray-400">
+                  No Projects yet.
+                </h1>
+              )}
             </div>
           </>
         ) : (
           <div className="flex items-center justify-center h-full mt-20  ">
             {" "}
-            <h1 className="text-center mt-10 text-gray-600">No Projects</h1>
+            <h1 className="text-center sm:mt-10  mt-5 text-gray-600 dark:text-gray-400">
+              Loading...
+            </h1>
           </div>
         )}
       </>

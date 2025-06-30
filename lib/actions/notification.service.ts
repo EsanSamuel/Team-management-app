@@ -57,7 +57,7 @@ export const notificationWhenAssignedTask = async ({
   }
 };
 
-export const notificationWhenAddedToWorkspace = async ({
+export const notificationWhenAddedOrRemovedToWorkspace = async ({
   workspaceId,
   senderId,
   receiverId,
@@ -69,22 +69,20 @@ export const notificationWhenAddedToWorkspace = async ({
   content: string;
 }) => {
   try {
-    const user = await getUser();
-
-    if (!user?.id) {
-      console.error("User is undefined in create_workspace");
+    if (!senderId || !receiverId || !workspaceId) {
+      console.error("Missing IDs:", { senderId, receiverId, workspaceId });
       return;
     }
     const notification = await prisma.notification.create({
       data: {
         workspace: {
           connect: {
-            id: workspaceId as string,
+            id: workspaceId,
           },
         },
         receiver: {
           connect: {
-            id: receiverId as string,
+            id: receiverId,
           },
         },
         content,

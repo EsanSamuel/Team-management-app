@@ -67,11 +67,13 @@ const Notification = () => {
     (notification) => notification.isRead === false
   );
 
-  const viewTask = (notification: Notifications) => {
+  const view = (notification: Notifications) => {
     if (notification?.taskId) {
       router.push(
         `/dashboard/${workspaceId}/TaskContent/${notification.taskId}`
       );
+    } else if (notification?.workspaceId) {
+      router.push(`/dashboard/${workspaceId}`);
     }
   };
 
@@ -161,12 +163,14 @@ const Notification = () => {
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    {notification.taskId && (
+                    {(notification.taskId ||
+                      (notification.workspaceId &&
+                        !notification.content?.includes("removed"))) && (
                       <AlertDialogAction
                         className=""
-                        onClick={() => viewTask(notification)}
+                        onClick={() => view(notification)}
                       >
-                        View Task
+                        {notification.workspaceId && "View Workspace"}
                       </AlertDialogAction>
                     )}
                   </AlertDialogFooter>

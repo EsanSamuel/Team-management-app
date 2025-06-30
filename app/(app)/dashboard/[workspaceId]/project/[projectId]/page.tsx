@@ -84,12 +84,38 @@ const Page = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
-    getProject(projectId as string).then(setProject);
-    getMembers(workspaceId as string).then(setMembers as any);
-    getTasks(projectId as string).then(setTasks as any);
-    getUser().then(setUser as any);
-  }, [projectId, workspaceId]);
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        console.log("Fetching workspace data for:", workspaceId);
+
+        const [prorject, members, tasks, user] = await Promise.all([
+          getProject(projectId as string),
+          getMembers(workspaceId as string),
+          getTasks(projectId as string),
+          getUser(),
+        ]);
+
+        setProject(project);
+        setTasks(tasks as any);
+        setMembers(members as any);
+        setUser(user as any);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (workspaceId) {
+      fetchData();
+    } else {
+      console.warn("workspaceId is not defined yet");
+    }
+  }, [workspaceId]);
 
   useEffect(() => {
     const checkAdmin = async () => {
@@ -152,199 +178,232 @@ const Page = () => {
             <button>
               <Pencil
                 size={13}
-                onClick={() => router.push(`/settings/${projectId}`)}
+                onClick={() =>
+                  router.push(
+                    `/settings/${projectId}?workspaceId=${workspaceId}`
+                  )
+                }
               />
             </button>
           </h1>
         </div>
-        <Dialog>
-          <form className="">
-            <DialogTrigger asChild>
-              <Button className="xl:w- w-full mt-3 flex items-center">
-                <div className="">
-                  <Plus className="size-3" />
-                </div>
-                New Task
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Create Task</DialogTitle>
-                <DialogDescription className="text-[12px]">
-                  Organize and manage tasks
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="title">Task title</Label>
-                  <Input
-                    autoFocus
-                    id="title"
-                    onChange={(e) =>
-                      setTask({ ...task, title: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="desc">Description</Label>
-                  <Textarea
-                    id="desc"
-                    onChange={(e) =>
-                      setTask({ ...task, description: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="grid gap-2 w-full">
-                  <Label>Assigned To</Label>
-                  <Select
-                    onValueChange={(value) =>
-                      setTask({ ...task, assignedTo: value })
-                    }
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="w-full">
-                      {members.map((member) => (
-                        <SelectItem key={member.user.id} value={member.user.id}>
-                          <div className="flex items-center gap-2">
-                            <Avatar className="h-5 w-5">
-                              <AvatarImage src={member.user.profilePicture!} />
-                              <AvatarFallback>
-                                {member.user.username[0]}
-                              </AvatarFallback>
-                            </Avatar>
-                            <span>{member.user.username}</span>
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="grid gap-2">
-                  <Label>Due Date</Label>
-                  <Input
-                    type="date"
-                    onChange={(e) =>
-                      setTask({ ...task, Duedate: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label>Status</Label>
-                  <Select
-                    onValueChange={(value) =>
-                      setTask({ ...task, Status: value })
-                    }
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {[
-                        "Backlog",
-                        "Todo",
-                        "In Progress",
-                        "In Review",
-                        "Done",
-                      ].map((status) => (
-                        <SelectItem key={status} value={status}>
-                          {status}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="grid gap-2">
-                  <Label>Priority</Label>
-                  <Select
-                    onValueChange={(value) =>
-                      setTask({ ...task, priority: value })
-                    }
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {["Low", "Medium", "High"].map((level) => (
-                        <SelectItem key={level} value={level}>
-                          {level}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <DialogFooter>
-                <DialogClose asChild>
-                  <Button variant="outline">Cancel</Button>
-                </DialogClose>
-                <Button type="submit" onClick={create_Task}>
-                  Create
+        {!isLoading && (
+          <Dialog>
+            <form className="">
+              <DialogTrigger asChild>
+                <Button className="xl:w- w-full mt-3 flex items-center">
+                  <div className="">
+                    <Plus className="size-3" />
+                  </div>
+                  New Task
                 </Button>
-              </DialogFooter>
-            </DialogContent>
-          </form>
-        </Dialog>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Create Task</DialogTitle>
+                  <DialogDescription className="text-[12px]">
+                    Organize and manage tasks
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="title">Task title</Label>
+                    <Input
+                      autoFocus
+                      id="title"
+                      onChange={(e) =>
+                        setTask({ ...task, title: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="desc">Description</Label>
+                    <Textarea
+                      id="desc"
+                      onChange={(e) =>
+                        setTask({ ...task, description: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="grid gap-2 w-full">
+                    <Label>Assigned To</Label>
+                    <Select
+                      onValueChange={(value) =>
+                        setTask({ ...task, assignedTo: value })
+                      }
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="w-full">
+                        {members.map((member) => (
+                          <SelectItem
+                            key={member.user.id}
+                            value={member.user.id}
+                          >
+                            <div className="flex items-center gap-2">
+                              <Avatar className="h-5 w-5">
+                                <AvatarImage
+                                  src={member.user.profilePicture!}
+                                />
+                                <AvatarFallback>
+                                  {member.user.username[0]}
+                                </AvatarFallback>
+                              </Avatar>
+                              <span>{member.user.username}</span>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="grid gap-2">
+                    <Label>Due Date</Label>
+                    <Input
+                      type="date"
+                      onChange={(e) =>
+                        setTask({ ...task, Duedate: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label>Status</Label>
+                    <Select
+                      onValueChange={(value) =>
+                        setTask({ ...task, Status: value })
+                      }
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {[
+                          "Backlog",
+                          "Todo",
+                          "In Progress",
+                          "In Review",
+                          "Done",
+                        ].map((status) => (
+                          <SelectItem key={status} value={status}>
+                            {status}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="grid gap-2">
+                    <Label>Priority</Label>
+                    <Select
+                      onValueChange={(value) =>
+                        setTask({ ...task, priority: value })
+                      }
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {["Low", "Medium", "High"].map((level) => (
+                          <SelectItem key={level} value={level}>
+                            {level}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button variant="outline">Cancel</Button>
+                  </DialogClose>
+                  <Button type="submit" onClick={create_Task}>
+                    Create
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </form>
+          </Dialog>
+        )}
       </div>
 
-      <div className="overflow-x-auto overflow-hidden">
-        <div className="grid grid-cols-3 min-w-[700px] gap-5 ">
-          <Card className="p-4 border-dashed shadow-none">
-            <div className="flex justify-between text-sm text-muted-foreground">
-              <span className="flex items-center gap-1">
-                Total Tasks{" "}
-                <span className="text-green-400 flex items-center gap-1">
-                  <ChevronUp size={13} /> {tasks.length}
-                </span>
-              </span>
-              <Activity size={14} />
+      {!isLoading ? (
+        <>
+          <div className="overflow-x-auto overflow-hidden">
+            <div className="grid grid-cols-3 min-w-[700px] gap-5 ">
+              <Card className="p-4 border-dashed shadow-none">
+                <div className="flex justify-between text-sm text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    Total Tasks{" "}
+                    <span className="text-green-400 flex items-center gap-1">
+                      <ChevronUp size={13} /> {tasks.length}
+                    </span>
+                  </span>
+                  <Activity size={14} />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-800 mt-1 dark:text-gray-100">
+                  {tasks.length}
+                </h2>
+              </Card>
+              <Card className="p-4 border-dashed shadow-none">
+                <div className="flex justify-between text-sm text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    Overdue Tasks{" "}
+                    <span className="text-red-400 flex items-center gap-1">
+                      <ChevronDown size={13} /> {getOverdiewTask}
+                    </span>
+                  </span>
+                  <Activity size={14} />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-800 mt-1 dark:text-gray-100">
+                  {getOverdiewTask}
+                </h2>
+              </Card>
+              <Card className="p-4 border-dashed shadow-none">
+                <div className="flex justify-between text-sm text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    Completed Tasks{" "}
+                    <span className="text-green-400 flex items-center gap-1">
+                      <ChevronUp size={13} /> {getDoneTaskCount}
+                    </span>
+                  </span>
+                  <Activity size={14} />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-800 mt-1 dark:text-gray-100">
+                  {getDoneTaskCount}
+                </h2>
+              </Card>
             </div>
-            <h2 className="text-2xl font-bold text-gray-800 mt-1 dark:text-gray-100">
-              {tasks.length}
-            </h2>
-          </Card>
-          <Card className="p-4 border-dashed shadow-none">
-            <div className="flex justify-between text-sm text-muted-foreground">
-              <span className="flex items-center gap-1">
-                Overdue Tasks{" "}
-                <span className="text-red-400 flex items-center gap-1">
-                  <ChevronDown size={13} /> {getOverdiewTask}
-                </span>
-              </span>
-              <Activity size={14} />
+          </div>
+          <Separator className="my-6" />
+
+          {tasks.length !== 0 && !isLoading ? (
+            <>
+              {view === "Table" && (
+                <TaskCard
+                  tasks={tasks}
+                  workspaceId={workspaceId as any}
+                  setView={setView}
+                />
+              )}
+
+              {view === "Karban" && <Karban tasks={tasks as any} />}
+            </>
+          ) : (
+            <div className="flex items-center justify-center h-full mt-20  ">
+              {" "}
+              <h1 className="text-center sm:mt-10  mt-5 text-gray-600 dark:text-gray-400">
+                No Tasks yet.
+              </h1>
             </div>
-            <h2 className="text-2xl font-bold text-gray-800 mt-1 dark:text-gray-100">
-              {getOverdiewTask}
-            </h2>
-          </Card>
-          <Card className="p-4 border-dashed shadow-none">
-            <div className="flex justify-between text-sm text-muted-foreground">
-              <span className="flex items-center gap-1">
-                Completed Tasks{" "}
-                <span className="text-green-400 flex items-center gap-1">
-                  <ChevronUp size={13} /> {getDoneTaskCount}
-                </span>
-              </span>
-              <Activity size={14} />
-            </div>
-            <h2 className="text-2xl font-bold text-gray-800 mt-1 dark:text-gray-100">
-              {getDoneTaskCount}
-            </h2>
-          </Card>
+          )}
+        </>
+      ) : (
+        <div className="flex items-center justify-center h-full mt-20  ">
+          {" "}
+          <h1 className="text-center sm:mt-10  mt-5 text-gray-600 dark:text-gray-400">
+            Loading...
+          </h1>
         </div>
-      </div>
-      <Separator className="my-6" />
-
-      {view === "Table" && (
-        <TaskCard
-          tasks={tasks}
-          workspaceId={workspaceId as any}
-          setView={setView}
-        />
       )}
-
-      {view === "Karban" && <Karban tasks={tasks as any} />}
     </div>
   );
 };

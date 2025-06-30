@@ -24,7 +24,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
-import { notificationWhenRoleChanged } from "@/lib/actions/notification.service";
+import {
+  notificationWhenAddedOrRemovedToWorkspace,
+  notificationWhenRoleChanged,
+} from "@/lib/actions/notification.service";
 
 const Page = () => {
   const { workspaceId } = useParams();
@@ -92,9 +95,29 @@ const Page = () => {
     }
   };
 
-  const removeMember = async (memberId: string) => {
+  const notify = async (receiverId: string) => {
+    try {
+      const notification = await notificationWhenAddedOrRemovedToWorkspace({
+        workspaceId: workspaceId as any,
+        senderId: user?.id,
+        receiverId: receiverId,
+        content: `You have been removed from workspace: ${workspace?.name} by ${user?.username}.`,
+      });
+      if (notification) {
+        console.log(
+          `You have been removed from workspace ${workspace?.name} by ${user?.username}.`
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const removeMember = async (memberId: string, userId: string) => {
     await remove_Member(memberId);
     toast.success("User has been removed from this workspace!");
+
+    notify(userId);
   };
 
   return (
@@ -201,7 +224,7 @@ const Page = () => {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       className="text-red-400 hover:text-red-500"
-                      onClick={() => removeMember(member.id)}
+                      onClick={() => removeMember(member.id, member?.userId)}
                     >
                       Remove {member?.user?.username}
                     </DropdownMenuItem>

@@ -11,7 +11,7 @@ import {
   edit_Project,
   getProject,
 } from "@/lib/actions/project.service";
-import { useParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { Project } from "@/lib/generated/prisma";
 import {
   AlertDialog,
@@ -27,7 +27,10 @@ import {
 import { toast } from "sonner";
 
 export default function EditProjectPage() {
+  const router = useRouter();
   const { projectId } = useParams();
+  const searchParams = useSearchParams();
+  const workspaceId = searchParams.get("workspaceId");
   const [project, setProject] = useState<Project>();
   const [form, setForm] = useState({
     emoji: "",
@@ -59,6 +62,7 @@ export default function EditProjectPage() {
   const handleDelete = async () => {
     await delete_Project(projectId);
     toast.success("Project deleted!");
+    router.push(`/dashboard/${workspaceId}`);
   };
 
   return (
@@ -66,7 +70,10 @@ export default function EditProjectPage() {
       <Card className="w-full max-w-2xl p-6 space-y-8 rounded-2xl shadow-md">
         {/* Header */}
         <div className="flex items-center gap-4">
-          <button className="text-sm text-muted-foreground hover:text-foreground">
+          <button
+            className="text-sm text-muted-foreground hover:text-foreground"
+            onClick={() => router.push(`/dashboard/${workspaceId}`)}
+          >
             &larr; Back
           </button>
           <h2 className="text-xl font-semibold truncate">
