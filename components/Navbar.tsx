@@ -39,6 +39,8 @@ export function Navbar() {
       return "Tasks";
     } else if (pathname.includes("/TaskContent")) {
       return "Task";
+    } else if (pathname.includes("/notifications")) {
+      return "Notifications";
     }
   };
   return (
