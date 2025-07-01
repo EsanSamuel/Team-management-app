@@ -109,11 +109,11 @@ export const notificationWhenAddedOrRemovedToWorkspace = async ({
 
 export const notificationWhenNewProjectIsAdded = async ({
   content,
-  receiverId,
+  users,
   projectId,
 }: {
   content: string;
-  receiverId: string;
+  users: any[];
   projectId: string;
 }) => {
   try {
@@ -123,6 +123,7 @@ export const notificationWhenNewProjectIsAdded = async ({
       console.error("User is undefined");
       return;
     }
+    console.log("Members:", users);
     const notification = await prisma.notification.create({
       data: {
         sender: {
@@ -131,17 +132,23 @@ export const notificationWhenNewProjectIsAdded = async ({
           },
         },
         content,
-        receiver: {
-          connect: {
-            id: receiverId,
-          },
-        },
+
         project: {
           connect: {
             id: projectId,
           },
         },
       },
+      include: {
+        notificationUsers: true,
+      },
+    });
+
+    await prisma.notificationUser.createMany({
+      data: users.map((member) => ({
+        userId: member.userId,
+        notificationId: notification.id,
+      })),
     });
     console.log(notification);
     return notification;
@@ -194,20 +201,161 @@ export const notificationWhenRoleChanged = async ({
   }
 };
 
-export const getNotifications = async (receiverId: string) => {
+export const notificationWhenCommentisAddedToTask = async ({
+  content,
+  users,
+  taskId,
+  commentId,
+}: {
+  content: string;
+  taskId: any;
+  users: any[];
+  commentId: string;
+}) => {
   try {
-    const notification = await prisma.notification.findMany({
-      where: {
-        receiverId,
+    const user = await getUser();
+
+    if (!user?.id) {
+      console.error("User is undefined");
+      return;
+    }
+    console.log("Members:", users);
+    const notification = await prisma.notification.create({
+      data: {
+        sender: {
+          connect: {
+            id: user?.id,
+          },
+        },
+        content,
+        task: {
+          connect: {
+            id: taskId,
+          },
+        },
+        comment: {
+          connect: {
+            id: commentId,
+          },
+        },
       },
-      orderBy: {
-        sentAt: "desc",
+      include: {
+        notificationUsers: true,
       },
+    });
+
+    await prisma.notificationUser.createMany({
+      data: users.map((member) => ({
+        userId: member.userId,
+        notificationId: notification.id,
+      })),
     });
     console.log(notification);
     return notification;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const notificationToMembersWhenSomeoneJoinsWorkspace = async ({
+  workspaceId,
+  users,
+  content,
+}: {
+  workspaceId?: string;
+  users: any[];
+  content: string;
+}) => {
+  try {
+    const user = await getUser();
+
+    if (!user?.id) {
+      console.error("User is undefined");
+      return;
+    }
+
+    const members = users.filter((user) => user.userId !== user.id);
+    const notification = await prisma.notification.create({
+      data: {
+        sender: {
+          connect: {
+            id: user?.id,
+          },
+        },
+        workspace: {
+          connect: {
+            id: workspaceId,
+          },
+        },
+
+        content,
+      },
+      include: {
+        workspace: true,
+      },
+    });
+
+    await prisma.notificationUser.createMany({
+      data: users.map((member) => ({
+        userId: member.userId,
+        notificationId: notification.id,
+      })),
+    });
+    console.log(notification);
+    return notification;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getNotifications = async () => {
+  try {
+    const user = await getUser();
+    if (!user?.id) {
+      console.error("User is undefined");
+      return [];
+    }
+
+    const allNotifications = await prisma.notification.findMany({
+      orderBy: {
+        sentAt: "desc",
+      },
+      include: {
+        notificationUsers: true,
+      },
+    });
+    console.log(allNotifications);
+
+    const notifications = await prisma.notification.findMany({
+      where: {
+        OR: [
+          {
+            receiverId: user.id,
+          },
+          {
+            notificationUsers: {
+              some: {
+                userId: user.id,
+              },
+            },
+          },
+        ],
+      },
+      orderBy: {
+        sentAt: "desc",
+      },
+      include: {
+        notificationUsers: true,
+        workspace: true,
+      },
+    });
+
+    console.log("Count", notifications.length);
+    console.log("Notifications:", notifications);
+    return notifications;
+  } catch (error) {
+    console.error("Failed to fetch notifications:", error);
+    return [];
   }
 };
 

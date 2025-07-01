@@ -68,13 +68,15 @@ const DashboardPage = ({
       const new_project = await create_Project({ ...project, workspaceId });
       toast.success("Project has been created!");
       console.log(new_project);
-      /* if (new_project) {
+      if (new_project) {
         const notification = await notificationWhenNewProjectIsAdded({
-          content: `New Project has been added to ${new_project.workspace.name}`,
-          receiverId: "",
+          content: `New Project: "${new_project.name}" has been added to ${new_project.workspace.name} `,
+          users: members,
           projectId: new_project.id,
         });
-      }*/
+        console.log(notification);
+      }
+
       window.location.reload();
     } catch (error) {
       console.log(error);

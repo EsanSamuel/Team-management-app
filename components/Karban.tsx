@@ -276,7 +276,7 @@ const Karban = ({
         <div className="grid xl:grid-cols-4 grid-cols-5 xl:min-w-auto min-w-[1300px] gap-6 mt-5">
           <div className="bg-gray-100 dark:bg-muted rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
             <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+              <div className="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
                 <CircleHelp className="h-4 w-4" /> Backlog{" "}
                 <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
                   {filteredBacklog.length}
@@ -294,13 +294,13 @@ const Karban = ({
             {filteredBacklog.map((task, index) => (
               <div
                 key={index}
-                className="bg-white  rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
+                className="bg-white dark:bg-[#09090b] dark:border rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
               >
-                <h2 className="font-medium text-sm text-gray-800 truncate">
+                <h2 className="font-medium text-sm text-gray-800 dark:text-gray-400 truncate">
                   {task.title}
                 </h2>
                 <Separator className="my-2" />
-                <div className="flex items-center justify-between text-xs text-gray-600">
+                <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-300">
                   <div className="flex items-center gap-2">
                     <Avatar className="h-6 w-6">
                       <AvatarImage src={task.assignee.profilePicture!} />
@@ -320,16 +320,19 @@ const Karban = ({
                     {task.Duedate.toDateString()}
                   </span>
                 </div>
-                <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1 truncate">
-                  {task.project.emoji} {task.project.name}
+                <div className="mt-4 text-xs text-muted-foreground flex items-center gap-1 truncate">
+                  <Badge className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary text-center flex items-center dark:bg-white dark:text-black">
+                    {task?.project?.name[0]}
+                  </Badge>{" "}
+                  {task.project.name}
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="bg-gray-100  rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
+          <div className="bg-gray-100 dark:bg-muted rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
             <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+              <div className="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
                 <Circle className="h-4 w-4 text-blue-500" /> Todo
                 <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
                   {filteredTodo.length}
@@ -347,13 +350,13 @@ const Karban = ({
             {filteredTodo.map((task, index) => (
               <div
                 key={index}
-                className="bg-white dark:bg-input/30 rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
+                className="bg-white dark:bg-[#09090b] rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
               >
-                <h2 className="font-medium text-sm text-gray-800 truncate">
+                <h2 className="font-medium text-sm text-gray-800 dark:text-gray-400 truncate">
                   {task.title}
                 </h2>
                 <Separator className="my-2" />
-                <div className="flex items-center justify-between text-xs text-gray-600">
+                <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-300">
                   <div className="flex items-center gap-2">
                     <Avatar className="h-6 w-6">
                       <AvatarImage src={task.assignee.profilePicture!} />
@@ -373,16 +376,19 @@ const Karban = ({
                     {task.Duedate.toDateString()}
                   </span>
                 </div>
-                <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1 truncate">
-                  {task.project.emoji} {task.project.name}
+                <div className="mt-4 text-xs text-muted-foreground flex items-center gap-1 truncate">
+                  <Badge className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary text-center flex items-center dark:bg-white dark:text-black">
+                    {task?.project?.name[0]}
+                  </Badge>{" "}
+                  {task.project.name}
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="bg-gray-100 rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
+          <div className="bg-gray-100 dark:bg-muted rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
             <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+              <div className="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
                 <Timer className="h-4 w-4 text-yellow-500" /> Progress
                 <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
                   {filteredProgress.length}
@@ -400,13 +406,13 @@ const Karban = ({
             {filteredProgress.map((task, index) => (
               <div
                 key={index}
-                className="bg-white rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
+                className="bg-white dark:bg-[#09090b] rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
               >
-                <h2 className="font-medium text-sm text-gray-800 truncate">
+                <h2 className="font-medium text-sm text-gray-800 truncate dark:text-gray-400">
                   {task.title}
                 </h2>
                 <Separator className="my-2" />
-                <div className="flex items-center justify-between text-xs text-gray-600">
+                <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-300">
                   <div className="flex items-center gap-2">
                     <Avatar className="h-6 w-6">
                       <AvatarImage src={task.assignee.profilePicture!} />
@@ -426,16 +432,19 @@ const Karban = ({
                     {task.Duedate.toDateString()}
                   </span>
                 </div>
-                <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1 truncate">
-                  {task.project.emoji} {task.project.name}
+                <div className="mt-4 text-xs text-muted-foreground flex items-center gap-1 truncate">
+                  <Badge className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary text-center flex items-center dark:bg-white dark:text-black">
+                    {task?.project?.name[0]}
+                  </Badge>{" "}
+                  {task.project.name}
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="bg-gray-100 rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
+          <div className="bg-gray-100 dark:bg-muted rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
             <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+              <div className="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
                 <ScanEye className="h-4 w-4 text-purple-500" /> Review
                 <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
                   {filteredReview.length}
@@ -453,13 +462,13 @@ const Karban = ({
             {filteredReview.map((task, index) => (
               <div
                 key={index}
-                className="bg-white rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
+                className="bg-white dark:bg-[#09090b] rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
               >
-                <h2 className="font-medium text-sm text-gray-800 truncate">
+                <h2 className="font-medium text-sm text-gray-800 dark:text-gray-400 truncate">
                   {task.title}
                 </h2>
                 <Separator className="my-2" />
-                <div className="flex items-center justify-between text-xs text-gray-600">
+                <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-300">
                   <div className="flex items-center gap-2">
                     <Avatar className="h-6 w-6">
                       <AvatarImage src={task.assignee.profilePicture!} />
@@ -479,16 +488,19 @@ const Karban = ({
                     {task.Duedate.toDateString()}
                   </span>
                 </div>
-                <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1 truncate">
-                  {task.project.emoji} {task.project.name}
+                <div className="mt-4 text-xs text-muted-foreground flex items-center gap-1 truncate">
+                  <Badge className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary text-center flex items-center dark:bg-white dark:text-black">
+                    {task?.project?.name[0]}
+                  </Badge>
+                  {task.project.name}
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="bg-gray-100 rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
+          <div className="bg-gray-100 dark:bg-muted rounded-xl p-2 h-[70vh] overflow-y-auto shadow-sm">
             <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+              <div className="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
                 <CircleCheck className="h-4 w-4 text-green-500" /> Done
                 <Badge className="bg-muted text-muted-foreground text-xs px-2 rounded-full">
                   {filteredDone.length}
@@ -506,13 +518,13 @@ const Karban = ({
             {filteredDone.map((task, index) => (
               <div
                 key={index}
-                className="bg-white rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
+                className="bg-white dark:bg-[#09090b] rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 mb-3"
               >
-                <h2 className="font-medium text-sm text-gray-800 truncate">
+                <h2 className="font-medium text-sm text-gray-800 dark:text-gray-400 truncate">
                   {task.title}
                 </h2>
                 <Separator className="my-2" />
-                <div className="flex items-center justify-between text-xs text-gray-600">
+                <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-300">
                   <div className="flex items-center gap-2">
                     <Avatar className="h-6 w-6">
                       <AvatarImage src={task.assignee.profilePicture!} />
@@ -528,8 +540,11 @@ const Karban = ({
                     {task.Duedate.toDateString()}
                   </span>
                 </div>
-                <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1 truncate">
-                  {task.project.emoji} {task.project.name}
+                <div className="mt-4 text-xs text-muted-foreground flex items-center gap-1 truncate">
+                  <Badge className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary text-center flex items-center dark:bg-white dark:text-black">
+                    {task?.project?.name[0]}
+                  </Badge>{" "}
+                  {task.project.name}
                 </div>
               </div>
             ))}

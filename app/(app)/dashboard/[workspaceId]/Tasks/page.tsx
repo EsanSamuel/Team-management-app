@@ -34,6 +34,7 @@ import { getWorkSpaceProjects } from "@/lib/actions/project.service";
 import { toast } from "sonner";
 import { notificationWhenAssignedTask } from "@/lib/actions/notification.service";
 import { getUser } from "@/lib/actions/user.service";
+import { Badge } from "@/components/ui/badge";
 
 const Page = () => {
   const { workspaceId } = useParams();
@@ -173,7 +174,12 @@ const Page = () => {
                             className="w-full"
                           >
                             <div className="flex items-center gap-2">
-                              {project.emoji}
+                              <Badge
+                                className="h-5 min-w-5 rounded-10 px-1 justify-center bg-sidebar-primary
+                               text-center flex items-center dark:bg-white dark:text-black"
+                              >
+                                {project?.name[0]}
+                              </Badge>{" "}
                               <h1 className="text-[12px]">{project.name}</h1>
                             </div>
                           </SelectItem>

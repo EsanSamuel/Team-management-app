@@ -30,6 +30,9 @@ export const AddUserToWorkspace = async (
         },
         role,
       },
+      include: {
+        user: true,
+      },
     });
     console.log(member);
     return member;

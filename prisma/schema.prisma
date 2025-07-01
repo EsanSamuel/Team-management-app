@@ -24,16 +24,20 @@ model User {
   hashedPassword String?
   Workspace      Workspace[]
 
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  Project      Project[]
-  CreatedTask  Task[]         @relation("creator")
-  AssignedTask Task[]         @relation("assignee")
-  Member       Member[]
-  Comment      Comment[]
-  Reply        Reply[]
-  Notification Notification[] @relation("receiver")
-  notification Notification[] @relation("sender")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  Project       Project[]
+  CreatedTask   Task[]         @relation("creator")
+  AssignedTask  Task[]         @relation("assignee")
+  Member        Member[]
+  Comment       Comment[]
+  Reply         Reply[]
+  Notifications Notification[] @relation("receiver")
+  notification  Notification[] @relation("sender")
+
+  Notification      Notification?      @relation(fields: [notificationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  notificationId    String?            @db.ObjectId
+  notificationUsers NotificationUser[]
 }
 
 model Workspace {
@@ -118,9 +122,10 @@ model Comment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user  User    @relation(fields: [userId], references: [id])
-  task  Task    @relation(fields: [taskId], references: [id])
-  Reply Reply[]
+  user         User           @relation(fields: [userId], references: [id])
+  task         Task           @relation(fields: [taskId], references: [id])
+  Reply        Reply[]
+  Notification Notification[]
 }
 
 model Reply {
@@ -133,9 +138,10 @@ model Reply {
   updatedAt DateTime @updatedAt
   commentId String   @db.ObjectId
 
-  user    User    @relation(fields: [userId], references: [id])
-  task    Task    @relation(fields: [taskId], references: [id])
-  comment Comment @relation(fields: [commentId], references: [id])
+  user         User           @relation(fields: [userId], references: [id])
+  task         Task           @relation(fields: [taskId], references: [id])
+  comment      Comment        @relation(fields: [commentId], references: [id])
+  Notification Notification[]
 }
 
 model Notification {
@@ -145,6 +151,8 @@ model Notification {
   taskId      String?  @db.ObjectId
   projectId   String?  @db.ObjectId
   workspaceId String?  @db.ObjectId
+  commentId   String?  @db.ObjectId
+  replyId     String?  @db.ObjectId
   content     String
   isRead      Boolean  @default(false)
   sentAt      DateTime @default(now())
@@ -154,4 +162,20 @@ model Notification {
   project   Project?   @relation(fields: [projectId], references: [id])
   sender    User       @relation("sender", fields: [senderId], references: [id])
   workspace Workspace? @relation(fields: [workspaceId], references: [id])
+  comment   Comment?   @relation(fields: [commentId], references: [id])
+  reply     Reply?     @relation(fields: [replyId], references: [id])
+  userIds   String[]   @db.ObjectId
+
+  User              User[]
+  notificationUsers NotificationUser[]
+}
+
+model NotificationUser {
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  user           User         @relation(fields: [userId], references: [id])
+  userId         String       @db.ObjectId
+  notification   Notification @relation(fields: [notificationId], references: [id])
+  notificationId String       @db.ObjectId
+
+  @@unique([userId, notificationId]) // Prevent duplicates
 }

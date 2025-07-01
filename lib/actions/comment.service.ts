@@ -50,6 +50,10 @@ export const createComment = async ({
         images: imageUrls,
         content,
       },
+      include: {
+        user: true,
+        task:true
+      },
     });
     console.log(comment);
     return comment;

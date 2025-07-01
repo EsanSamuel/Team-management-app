@@ -49,7 +49,7 @@ const Notification = () => {
 
   useEffect(() => {
     if (user) {
-      getNotifications(user.id).then(setNotifications as any);
+      getNotifications().then(setNotifications as any);
     }
   }, [user, user?.id]);
 
@@ -74,6 +74,10 @@ const Notification = () => {
       );
     } else if (notification?.workspaceId) {
       router.push(`/dashboard/${workspaceId}`);
+    } else if (notification.projectId) {
+      router.push(
+        `/dashboard/${workspaceId}/project/${notification.projectId}`
+      );
     }
   };
 
@@ -172,6 +176,7 @@ const Notification = () => {
                       >
                         {notification.workspaceId && "View Workspace"}
                         {notification.taskId && "View Task"}
+                        {notification.projectId && "View Project"}
                       </AlertDialogAction>
                     )}
                   </AlertDialogFooter>

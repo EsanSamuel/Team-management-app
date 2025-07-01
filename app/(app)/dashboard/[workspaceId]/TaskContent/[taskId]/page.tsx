@@ -34,6 +34,7 @@ import { toast } from "sonner";
 import { createComment, getComments } from "@/lib/actions/comment.service";
 import Image from "next/image";
 import Discussion from "@/components/Discussion";
+import { notificationWhenCommentisAddedToTask } from "@/lib/actions/notification.service";
 
 const Page = () => {
   const { taskId, workspaceId } = useParams();
@@ -114,8 +115,25 @@ const Page = () => {
 
   const handleComments = async () => {
     try {
-      await createComment({ content: comment, images, taskId });
+      const create_comment = await createComment({
+        content: comment,
+        images,
+        taskId,
+      });
       toast.success("Comment created!");
+      if (create_comment) {
+        const notification = await notificationWhenCommentisAddedToTask({
+          content: `${create_comment.user.username} added a comment to task - "${create_comment.task.title}". Comment: "${create_comment.content}"`,
+          users: members,
+          taskId: taskId,
+          commentId: create_comment.id,
+        });
+        if (notification) {
+          console.log(
+            `${create_comment.user.username} added a comment to task - "${create_comment.task.title}": "${create_comment.content}"`
+          );
+        }
+      }
     } catch (error) {
       console.log(error);
       toast.success("Something went wrong!");
