@@ -104,7 +104,13 @@ const Authform = ({
   };
 
   const handleGoogleAuth = async () => {
-    await signIn("google");
+    try {
+      await signIn("google");
+      toast.success("Sign in successful!");
+    } catch (error) {
+      console.log("Signing in with google error:", error);
+      toast.error("Sign in failed!");
+    }
   };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
