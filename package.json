@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "postbuild": "cp -r node_modules/.prisma .next/standalone/node_modules/.prisma && cp -r node_modules/@prisma .next/standalone/node_modules/@prisma"
   },
   "dependencies": {
     "@prisma/client": "^6.9.0",
