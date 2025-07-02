@@ -52,7 +52,7 @@ export const createComment = async ({
       },
       include: {
         user: true,
-        task:true
+        task: true,
       },
     });
     console.log(comment);
@@ -105,9 +105,15 @@ export const getReplies = async (commentId: string) => {
       },
       include: {
         user: true,
+        comment: {
+          include: {
+            user: true,
+          },
+        },
       },
+
       orderBy: {
-        createdAt: "desc",
+        createdAt: "asc",
       },
     });
     return comments;
@@ -179,6 +185,14 @@ export const createReply = async ({
         },
         images: imageUrls,
         content,
+      },
+      include: {
+        comment: {
+          include: {
+            user: true,
+          },
+        },
+        user: true,
       },
     });
     console.log(comment);

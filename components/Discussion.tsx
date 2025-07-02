@@ -36,6 +36,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { notificationwhenSomeoneRepliesToYourComment } from "@/lib/actions/notification.service";
 
 const Discussion = ({
   comments,
@@ -78,10 +79,42 @@ const Discussion = ({
     });
   };
 
+  const notify = async (
+    commentId: string,
+    receiverId: string,
+    user: User,
+    reply: string
+  ) => {
+    try {
+      const notification = await notificationwhenSomeoneRepliesToYourComment({
+        receiverId: receiverId,
+        commentId: commentId,
+        senderId: user.id,
+        content: `Your comment have been replied to by ${user?.username}. Reply: "${reply}"`,
+      });
+      if (notification) {
+        console.log(
+          `Your comment has been replied to by ${user?.username}. Reply: "${reply}"`
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleReply = async (commentId: string) => {
     try {
-      await createReply({ content: reply, images, commentId, taskId });
+      const Reply = await createReply({
+        content: reply,
+        images,
+        commentId,
+        taskId,
+      });
       toast.success("Reply created!");
+      if (Reply) {
+        notify(commentId, Reply.comment.userId, Reply.user, reply);
+      }
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }
@@ -91,6 +124,7 @@ const Discussion = ({
     try {
       await editComment({ content: edit, commentId });
       toast.success("Comment edited!");
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }

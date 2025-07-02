@@ -35,6 +35,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { notificationwhenSomeoneRepliesYou } from "@/lib/actions/notification.service";
+import { getUser } from "@/lib/actions/user.service";
 
 const Replies = ({
   commentId,
@@ -45,11 +47,15 @@ const Replies = ({
 }) => {
   const [reply, setReply] = useState("");
   const [images, setImages] = useState<string[]>([]);
-  const [replies, setReplies] = useState<(Reply & { user: User })[]>([]);
+  const [replies, setReplies] = useState<
+    (Reply & { user: User } & { comment: Comment & { user: User } })[]
+  >([]);
   const [edit, setEdit] = useState("");
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     getReplies(commentId).then(setReplies as any);
+    getUser().then(setUser as User | any);
   }, [commentId]);
 
   const handleImages = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,10 +87,43 @@ const Replies = ({
     });
   };
 
-  const handleReply = async () => {
+  const notify = async (
+    replyId: string,
+    receiverId: string,
+    reply: string,
+    userId: string
+  ) => {
     try {
-      await createReply({ content: reply, images, commentId, taskId });
-      toast.success("Reply created!");
+      const notification = await notificationwhenSomeoneRepliesYou({
+        receiverId: receiverId,
+        replyId: replyId,
+        senderId: userId,
+        content: `You have been replied to by ${user?.username}. Reply: "${reply}"`,
+      });
+      if (notification) {
+        console.log(
+          `Your comment has been replied to by ${user?.username}. Reply: "${reply}"`
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleReply = async (replyId: string, replyUserId: string) => {
+    try {
+      const create_Reply = await createReply({
+        content: reply,
+        images,
+        commentId,
+        taskId,
+      });
+      if (create_Reply) {
+        notify(replyId, replyUserId, create_Reply.content, create_Reply.userId);
+        console.log(replyId, replyUserId, create_Reply.content);
+        toast.success("Reply created!");
+        window.location.reload();
+      }
     } catch (error) {
       console.group(error);
     }
@@ -94,6 +133,7 @@ const Replies = ({
     try {
       await editReply({ content: edit, replyId });
       toast.success("Comment edited!");
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }
@@ -120,7 +160,7 @@ const Replies = ({
               </span>
             </h1>
             <div>
-              <p className="text-gray-500 dark:text-gray-400 text-[13px]">
+              <p className={`text-gray-500 dark:text-gray-400 text-[13px] }`}>
                 {reply.content}
               </p>
               {reply.images.length > 0 ? (
@@ -167,6 +207,7 @@ const Replies = ({
                           id="name-1"
                           name="comment"
                           onChange={(e) => setReply(e.target.value)}
+                          defaultValue={`@${reply.user.username}.`}
                         />
                       </div>
                       <div className="grid gap-3">
@@ -203,7 +244,10 @@ const Replies = ({
                       <DialogClose asChild>
                         <Button variant="outline">Cancel</Button>
                       </DialogClose>
-                      <Button type="submit" onClick={handleReply}>
+                      <Button
+                        type="submit"
+                        onClick={() => handleReply(reply.id, reply.userId)}
+                      >
                         Reply
                       </Button>
                     </DialogFooter>

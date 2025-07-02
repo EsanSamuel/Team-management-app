@@ -359,6 +359,97 @@ export const getNotifications = async () => {
   }
 };
 
+export const notificationwhenSomeoneRepliesToYourComment = async ({
+  receiverId,
+  content,
+  senderId,
+  commentId,
+}: {
+  receiverId: string | any;
+  content: string;
+  senderId: string | any;
+  commentId: string;
+}) => {
+  try {
+    const notification = await prisma.notification.create({
+      data: {
+        receiver: {
+          connect: {
+            id: receiverId as string,
+          },
+        },
+        content,
+        sender: {
+          connect: {
+            id: senderId,
+          },
+        },
+        comment: {
+          connect: {
+            id: commentId,
+          },
+        },
+      },
+      include: {
+        project: true,
+        sender: true,
+        receiver: true,
+        comment: true,
+        reply: true,
+      },
+    });
+    console.log(notification);
+  } catch (error) {
+    console.error("Failed to fetch notifications:", error);
+    return [];
+  }
+};
+
+export const notificationwhenSomeoneRepliesYou = async ({
+  receiverId,
+  content,
+  senderId,
+  replyId,
+}: {
+  receiverId: string | any;
+  content: string;
+  senderId: string | any;
+  replyId: string;
+}) => {
+  try {
+    const notification = await prisma.notification.create({
+      data: {
+        receiver: {
+          connect: {
+            id: receiverId as string,
+          },
+        },
+        content,
+        sender: {
+          connect: {
+            id: senderId,
+          },
+        },
+        reply: {
+          connect: {
+            id: replyId,
+          },
+        },
+      },
+      include: {
+        project: true,
+        sender: true,
+        receiver: true,
+        reply: true,
+      },
+    });
+    console.log(notification);
+  } catch (error) {
+    console.error("Failed to fetch notifications:", error);
+    return [];
+  }
+};
+
 export const markAsRead = async (notificationId: string) => {
   try {
     await prisma.notification.update({

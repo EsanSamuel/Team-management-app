@@ -82,6 +82,7 @@ const Page = () => {
   const edit_Task = async () => {
     await editTask({ ...taskValues, workspaceId, taskId });
     toast.success("Task edited!");
+    window.location.reload();
   };
 
   const handleImages = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -134,6 +135,7 @@ const Page = () => {
           );
         }
       }
+      window.location.reload();
     } catch (error) {
       console.log(error);
       toast.success("Something went wrong!");
