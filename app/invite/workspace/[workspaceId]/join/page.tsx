@@ -113,7 +113,7 @@ const Page = () => {
             <p className="text-gray-500 dark:text-gray-300 text-sm leading-relaxed">
               {status !== "authenticated"
                 ? "To access this workspace, please log into your Sync corp account or sign up to create one."
-                : `You've been invited to join the ${workspace?.name} workspace on SyncCorp.`}
+                : `You've been invited to join the ${workspace?.name} workspace on Sync Corp.`}
             </p>
 
             {status !== "authenticated" ? (
