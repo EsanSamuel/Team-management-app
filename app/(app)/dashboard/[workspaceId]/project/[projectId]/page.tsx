@@ -92,7 +92,7 @@ const Page = () => {
         setIsLoading(true);
         console.log("Fetching workspace data for:", workspaceId);
 
-        const [prorject, members, tasks, user] = await Promise.all([
+        const [project, members, tasks, user] = await Promise.all([
           getProject(projectId as string),
           getMembers(workspaceId as string),
           getTasks(projectId as string),

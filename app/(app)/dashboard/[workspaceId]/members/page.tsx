@@ -27,6 +27,7 @@ import { toast } from "sonner";
 import {
   notificationWhenAddedOrRemovedToWorkspace,
   notificationWhenRoleChanged,
+  notificationToMembersWhenSomeoneJoinsWorkspace,
 } from "@/lib/actions/notification.service";
 
 const Page = () => {
@@ -113,11 +114,32 @@ const Page = () => {
     }
   };
 
-  const removeMember = async (memberId: string, userId: string) => {
+  const notifyMembers = async (user: User) => {
+    try {
+      console.log("User:", user);
+      const notification = await notificationToMembersWhenSomeoneJoinsWorkspace(
+        {
+          workspaceId: workspaceId as any,
+          users: members,
+          content: `${user?.username} has been removed from workspace: ${workspace?.name}`,
+        }
+      );
+      if (notification) {
+        console.log(
+          `${user?.username} has been removed from workspace: ${workspace?.name}`
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const removeMember = async (memberId: string, userId: string, user?: any) => {
     await remove_Member(memberId);
     toast.success("User has been removed from this workspace!");
 
     notify(userId);
+    notifyMembers(user);
   };
 
   return (
@@ -224,7 +246,9 @@ const Page = () => {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       className="text-red-400 hover:text-red-500"
-                      onClick={() => removeMember(member.id, member?.userId)}
+                      onClick={() =>
+                        removeMember(member.id, member?.userId, member?.user)
+                      }
                     >
                       Remove {member?.user?.username}
                     </DropdownMenuItem>
