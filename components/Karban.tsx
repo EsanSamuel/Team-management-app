@@ -42,10 +42,12 @@ const Karban = ({
   tasks,
   workspaceId,
   setView,
+  view
 }: {
   tasks: any[];
   workspaceId?: string;
   setView?: any;
+  view?: any
 }) => {
   const [filteredBacklog, setFilteredBacklog] = useState<
     (Task & { assignee: User } & { project: Project })[]
@@ -256,7 +258,7 @@ const Karban = ({
           </div>
         </div>
 
-        <Select onValueChange={(value) => setView(value)}>
+        <Select onValueChange={(value) => setView(value)} value={view}>
           <SelectTrigger className="xl:w-auto sm:max-w-[150px] xl:ml-0">
             <SelectValue
               placeholder="View As"
