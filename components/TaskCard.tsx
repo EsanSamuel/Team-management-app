@@ -91,10 +91,12 @@ const TaskCard = ({
   tasks,
   workspaceId,
   setView,
+  view
 }: {
   tasks: any[];
   workspaceId?: string;
   setView?: any;
+  view?: string
 }) => {
   const router = useRouter();
   const [selected, setSelected] = React.useState<string[]>([]);
@@ -427,7 +429,7 @@ const TaskCard = ({
           {/*<Button onClick={filterByDueDate}>Filter By Due date</Button>*/}
         </div>
 
-        <Select onValueChange={(value) => setView(value)}>
+        <Select onValueChange={(value) => setView(value)} value={view}>
           <SelectTrigger className="xl:w-auto sm:max-w-[150px] xl:ml-0">
             <SelectValue
               placeholder="View As"
