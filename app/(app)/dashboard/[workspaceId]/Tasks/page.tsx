@@ -299,6 +299,7 @@ const Page = () => {
                   tasks={tasks}
                   workspaceId={workspaceId as any}
                   setView={setView}
+                  view={view}
                 />
               )}
               {view === "Karban" && (
@@ -306,6 +307,7 @@ const Page = () => {
                   tasks={tasks as any}
                   workspaceId={workspaceId as any}
                   setView={setView}
+                  view={view}
                 />
               )}
             </>
