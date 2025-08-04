@@ -382,10 +382,11 @@ const Page = () => {
                   tasks={tasks}
                   workspaceId={workspaceId as any}
                   setView={setView}
+                  view={view}
                 />
               )}
 
-              {view === "Karban" && <Karban tasks={tasks as any} />}
+              {view === "Karban" && <Karban tasks={tasks as any} view={view}/>}
             </>
           ) : (
             <div className="flex items-center justify-center h-full mt-20  ">
