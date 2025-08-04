@@ -310,7 +310,7 @@ const Karban = ({
                         {task.assignee.username[0]}
                       </AvatarFallback>
                     </Avatar>
-                    <span className="truncate w-10">{task.assignee.username}</span>
+                    <span className="truncate w-16">{task.assignee.username}</span>
                   </div>
                   <span
                     className={`text-[11px] px-2 py-0.5 rounded-full ${
@@ -366,7 +366,7 @@ const Karban = ({
                         {task.assignee.username[0]}
                       </AvatarFallback>
                     </Avatar>
-                    <span>{task.assignee.username}</span>
+                    <span className="truncate w-16">{task.assignee.username}</span>
                   </div>
                   <span
                     className={`text-[11px] px-2 py-0.5 rounded-full ${
@@ -422,7 +422,7 @@ const Karban = ({
                         {task.assignee.username[0]}
                       </AvatarFallback>
                     </Avatar>
-                    <span>{task.assignee.username}</span>
+                    <span className="truncate w-16">{task.assignee.username}</span>
                   </div>
                   <span
                     className={`text-[11px] px-2 py-0.5 rounded-full ${
@@ -478,7 +478,7 @@ const Karban = ({
                         {task.assignee.username[0]}
                       </AvatarFallback>
                     </Avatar>
-                    <span>{task.assignee.username}</span>
+                    <span className="truncate w-16">{task.assignee.username}</span>
                   </div>
                   <span
                     className={`text-[11px] px-2 py-0.5 rounded-full ${
@@ -534,7 +534,7 @@ const Karban = ({
                         {task.assignee.username[0]}
                       </AvatarFallback>
                     </Avatar>
-                    <span>{task.assignee.username}</span>
+                    <span className="truncate w-16">{task.assignee.username}</span>
                   </div>
                   <span
                     className={`text-[11px] px-2 py-0.5 rounded-full bg-green-100 text-green-600 `}
